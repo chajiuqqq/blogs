@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>周报 on 茶酒的小站</title><link>https://chajiuqqq.github.io/categories/%E5%91%A8%E6%8A%A5/</link><description>Recent content in 周报 on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 24 Aug 2022 12:17:30 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/categories/%E5%91%A8%E6%8A%A5/index.xml" rel="self" type="application/rss+xml"/><item><title>Weekly 1</title><link>https://chajiuqqq.github.io/p/weekly-1/</link><pubDate>Wed, 24 Aug 2022 12:17:30 +0800</pubDate><guid>https://chajiuqqq.github.io/p/weekly-1/</guid><description>&lt;img src="https://chajiuqqq.github.io/p/weekly-1/zhou-xian-7tFFO6Mq5L4-unsplash.jpg" alt="Featured image of post Weekly 1" />&lt;h1 id="week-1-周报">Week 1 周报&lt;/h1>
+&lt;h2 id="文章">文章&lt;/h2>
+&lt;p>&lt;strong>1、&lt;a class="link" href="https://catcoding.me/p/entry-for-learning-programming/" target="_blank" rel="noopener"
+>学习编程难？先解决量的问题&lt;/a>&lt;/strong>&lt;/p>
+&lt;blockquote>
+&lt;p>就编程来说，三万行代码这么明确的一个指标，实际上大部分人做不到。以大多数人的努力程度之低，根本轮不到拼天赋。不信你可以问问，即使是大学计算机专业的学生，很多人毕业的时候并未完成过 3 万行有效编程的这个量。&lt;/p>
+&lt;/blockquote>
+&lt;p>作者从大学的5w行代码培养了编程的手感，学习任何技能的前期都需要一定量的积累，我们要做的是找到有效练习的方式，持续投入再阶段性回顾。&lt;/p>
+&lt;p>而不是在量没达到的时候怀疑方法论，放弃坚持下去。这个量就像门槛。&lt;/p>
+&lt;h2 id="工具">工具&lt;/h2>
+&lt;p>&lt;strong>1、&lt;a class="link" href="https://github.com/foamzou/melody" target="_blank" rel="noopener"
+>Melody音乐搜索和上传网站（开源）&lt;/a>&lt;/strong>
+&lt;img src="https://chajiuqqq.github.io/p/weekly-1/melody.png"
+width="1903"
+height="954"
+srcset="https://chajiuqqq.github.io/p/weekly-1/melody_hu64eced638b9db17a4c9d31d773344010_127928_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/p/weekly-1/melody_hu64eced638b9db17a4c9d31d773344010_127928_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Melody"
+class="gallery-image"
+data-flex-grow="199"
+data-flex-basis="478px"
+>
+可以实现多平台音乐搜索播放、上传云盘、账号歌单同步功能，另外支持bilibili链接音频解析。&lt;/p></description></item></channel></rss>
