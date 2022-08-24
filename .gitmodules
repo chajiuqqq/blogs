@@ -5,3 +5,7 @@
 	path = themes/ananke
 	url = git@github.com:theNewDynamic/gohugo-theme-ananke.git
 	
+[submodule "hugo-theme-stack"]
+	path = themes/hugo-theme-stack
+	url = git@github.com:CaiJimmy/hugo-theme-stack.git
+	
