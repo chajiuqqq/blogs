@@ -7,11 +7,11 @@ title: 茶酒的小站
 languages:
   en:
     languageName: English
-    title: 茶酒的小站
+    title: Chajiu's blog
     weight: 1
   zh-cn:
     languageName: 中文
-    title: 演示站点
+    title: 茶酒的小站
     weight: 2
   ar:
     languageName: عربي
@@ -23,11 +23,11 @@ languages:
 disqusShortname: hugo-theme-stack
 
 # GA Tracking ID
-googleAnalytics:
+googleAnalytics: G-BCR6BTPPNW
 
 # Theme i18n support
 # Available values: ar, bn, ca, de, el, en, es, fr, hu, id, it, ja, ko, nl, pt-br, th, uk, zh-cn, zh-hk, zh-tw
-DefaultContentLanguage: en
+DefaultContentLanguage: zh-cn
 
 # Set hasCJKLanguage to true if DefaultContentLanguage is in [zh-cn ja ko]
 # This will make .Summary and .WordCount behave correctly for CJK languages.
