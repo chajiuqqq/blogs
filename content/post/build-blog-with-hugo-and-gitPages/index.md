@@ -49,9 +49,14 @@ brew install hugo
 Windows:
 choco install hugo -confirm
 ```
-安装完成后使用`hugo new site quickstart`创建`quickstart`文件夹作为网站主目录。进入目录，使用`hugo new posts/my-first-post.md`创建一个新的文章。然后把`draft: true`删除或者改为`draft: false`，这样就公开文章咯。
+安装完成后使用`hugo new site quickstart`创建`quickstart`文件夹作为网站主目录。
 
-更多Hugo使用教程参考[这个](https://gohugo.io/getting-started/quick-start/)
+进入目录，使用`hugo new posts/my-first-post.md`创建一个新的文章。然后把`draft: true`删除或者改为`draft: false`，这样就公开文章咯。
+
+使用`hugo server`可以在本地部署网站，访问 http://localhost:1313/ 就可以看到网站咯！
+
+
+更多Hugo使用教程参考[这个](https://gohugo.io/getting-started/quick-start/)。
 
 
 ### 2、添加Github Action
@@ -116,6 +121,14 @@ git commit -m "init"
 
 ![Pages](pages.png)
 
+**如果看得到网站，但是文章点不进去，请修改config.yaml，将`baseurl`换成你的网站地址即可！这是线上部署网站必要的步骤！**
+
+如：
+```
+baseurl: https://chajiuqqq.github.io/blogs/
+```
+
+如果没有config.yaml咋办？把原来的config.xxx删了，自己创建config.yaml即可！hugo会识别到这个配置文件哦！
 
 
 
