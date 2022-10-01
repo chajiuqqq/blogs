@@ -1,4 +1,72 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 24 Aug 2022 16:32:10 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>Hugo + GitPages博客搭建指南</title><link>https://chajiuqqq.github.io/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</link><pubDate>Wed, 24 Aug 2022 16:32:10 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</guid><description>&lt;p>应该算是第一篇比较正式的blog吧，前几天把bolg搭起来了，今天又实现了持续集成，可以实现一个仓库保存blogs和网站页面，并在更新的时候自动构建+部署网站。这种构建方式最大的好处是免费+资料掌握+自动部署，那下面就来介绍一下怎么实现。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 01 Oct 2022 13:31:05 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>使用Cloudflare Tunnel实现本地服务暴露</title><link>https://chajiuqqq.github.io/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</link><pubDate>Sat, 01 Oct 2022 13:31:05 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</guid><description>&lt;p>Cloudflare Tunnel可以实现通过域名访问本地暴露的服务功能，类似frp做的隧道，但是不用自己搭建服务端，只要配置好客户端即可。&lt;a class="link" href="https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/" target="_blank" rel="noopener"
+>doc link&lt;/a>&lt;/p>
+&lt;p>下面说一下配置方式。&lt;/p>
+&lt;h1 id="1dashboard创建tunnel">1、Dashboard创建tunnel&lt;/h1>
+&lt;p>首先给出官方教程，熟悉英文的可以直接看 &lt;a class="link" href="https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/tunnel-guide/remote/#1-create-a-tunnel" target="_blank" rel="noopener"
+>link&lt;/a>&lt;/p>
+&lt;p>去到 &lt;a class="link" href="https://dash.teams.cloudflare.com/" target="_blank" rel="noopener"
+>Zero Trust dashboard&lt;/a>，在Access &amp;gt; Tunnels创建tunnel。&lt;/p>
+&lt;ol>
+&lt;li>先取个名字&lt;/li>
+&lt;li>public hostname 里添加自定义subdomain，domain选择在cloudflare绑定过的域名。&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>如果cloudflare没有创建过website，在&lt;a class="link" href="https://developers.cloudflare.com/fundamentals/get-started/setup/add-site/" target="_blank" rel="noopener"
+>这里&lt;/a>创建。需要自行申请一个域名，推荐&lt;a class="link" href="https://www.freenom.com/zh/index.html?lang=zh" target="_blank" rel="noopener"
+>freenom&lt;/a>，然后修改域名nameserver为cloudflare的，这样这个域名就可以由cloudflare管理了。&lt;/p>
+&lt;/blockquote>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting.png"
+width="1084"
+height="551"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Public-Hostname-setting"
+class="gallery-image"
+data-flex-grow="196"
+data-flex-basis="472px"
+>&lt;/p>
+&lt;ol start="3">
+&lt;li>service选择你要的服务，一般是http，然后地址一般是写127.0.0.1+本地服务端口号，如&lt;code>127.0.0.1:5000&lt;/code>。保存后这个website自动添加dns解析到你的本地机器。&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>这里不再需要去域名dns处手动添加了，他自动添加好了&lt;/p>
+&lt;/blockquote>
+&lt;h1 id="2运行cloudflared客户端">2、运行cloudflared客户端&lt;/h1>
+&lt;p>我使用的是群晖nas+docker版，主要是图形化的docker怎么运行cloudflared。&lt;/p>
+&lt;ol>
+&lt;li>下载docker套件
+&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1.png"
+width="988"
+height="568"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="docker"
+class="gallery-image"
+data-flex-grow="173"
+data-flex-basis="417px"
+>&lt;/li>
+&lt;li>在注册表里搜索cloudflared并下载&lt;/li>
+&lt;li>开启容器，需要配置两个地方
+&lt;ul>
+&lt;li>环境变量添加&lt;code>TUNNEL_TRANSPORT_PROTOCOL&lt;/code>，值为&lt;code>http2&lt;/code>，因为默认的quic协议国内不支持，需要改成http2&lt;/li>
+&lt;li>下方命令输入创建tunnel时docker下的提示部分，如&lt;code>docker run cloudflare/cloudflared:latest tunnel --no-autoupdate run --token eyJhIjoiZjYyMDUyMjxxxxx&lt;/code>你就复制&lt;code>tunnel --no-autoupdate run --token eyJhIjoiZjYyMDUyMjxxxxx&lt;/code>进去&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="https://dash.teams.cloudflare.com/" target="_blank" rel="noopener"
+>Zero Trust dashboard&lt;/a>的tunnel里看到active就说明连上了&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels.png"
+width="1562"
+height="344"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="tunnel"
+class="gallery-image"
+data-flex-grow="454"
+data-flex-basis="1089px"
+>&lt;/p>
+&lt;h1 id="3访问subdomin就会代理到你本地的服务">3、访问subdomin就会代理到你本地的服务&lt;/h1>
+&lt;p>如我的nas域名设置了&lt;code>https://nas.ipppz.tk/&lt;/code>，并转发到nas的5000端口，接下来就直接用域名访问即可，也是支持https的。&lt;/p></description></item><item><title>Hugo + GitPages博客搭建指南</title><link>https://chajiuqqq.github.io/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</link><pubDate>Wed, 24 Aug 2022 16:32:10 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</guid><description>&lt;p>应该算是第一篇比较正式的blog吧，前几天把bolg搭起来了，今天又实现了持续集成，可以实现一个仓库保存blogs和网站页面，并在更新的时候自动构建+部署网站。这种构建方式最大的好处是免费+资料掌握+自动部署，那下面就来介绍一下怎么实现。&lt;/p>
 &lt;h2 id="使用流程">使用流程&lt;/h2>
 &lt;p>在多台设备上可clone一个仓库，使用hugo或手动在content/post下新建md文件攥写文章，完成后git提交并推送远程仓库，远程仓库会自动构建网站，用户等一会就可以看到网站更新了。&lt;/p>
 &lt;p>编写环境只要有git即可完成编写+部署流程（当然添加了hugo在创建文章时会更方便啦，而且可以本地看到效果）。&lt;/p>
