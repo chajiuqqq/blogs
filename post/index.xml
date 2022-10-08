@@ -18,25 +18,30 @@
 &lt;pre>&lt;code>const sample = &amp;quot;\xbd\xb2\x3d\xbc\x20\xe2\x8c\x98&amp;quot;
 &lt;/code>&lt;/pre>
 &lt;h1 id="打印字符串">打印字符串&lt;/h1>
-&lt;p>由于举例的字符串中的一些字节是非ASCII字符，甚至不是UTF-8，直接打印字符串会产生不好看的输出，打印语句如下：
-fmt.Println(sample)&lt;/p>
+&lt;p>由于举例的字符串中的一些字节是非ASCII字符，甚至不是UTF-8，直接打印字符串会产生不好看的输出，打印语句如下：&lt;/p>
+&lt;pre>&lt;code>fmt.Println(sample)
+&lt;/code>&lt;/pre>
 &lt;p>会产生这样一堆东西（环境不同显示的东西也不同）&lt;/p>
 &lt;pre>&lt;code>��=� ⌘
 &lt;/code>&lt;/pre>
-&lt;p>为了找出字符串到底包含什么，我们需要把它分开，并单独检验每一块。有一些方法可以做到，最明显的就是遍历他的内容，并把每个字节单独输出，看这个for循环：
-for i := 0; i &amp;lt; len(sample); i++ {
-fmt.Printf(&amp;quot;%x &amp;ldquo;, sample[i])
-}&lt;/p>
+&lt;p>为了找出字符串到底包含什么，我们需要把它分开，并单独检验每一块。有一些方法可以做到，最明显的就是遍历他的内容，并把每个字节单独输出，看这个for循环：&lt;/p>
+&lt;pre>&lt;code>for i := 0; i &amp;lt; len(sample); i++ {
+fmt.Printf(&amp;quot;%x &amp;quot;, sample[i])
+}
+&lt;/code>&lt;/pre>
 &lt;p>如上面展示的，通过索引可以获取到字符串的每个字节，而不是字符。下面我们再细致的看看循环输出的字节：&lt;/p>
 &lt;pre>&lt;code>bd b2 3d bc 20 e2 8c 98
 &lt;/code>&lt;/pre>
 &lt;p>注意一下每个字节是如何和与字符串中定义的16进制值对应的。&lt;/p>
-&lt;p>一个更短的产生可观输出的方法是使用fmt的&lt;code>%X&lt;/code>（16进制）格式。它会以16进制输出字符串的字节序列，每个字节是两位：
-fmt.Printf(&amp;quot;%x\n&amp;rdquo;, sample)&lt;/p>
-&lt;p>它的输出是：
-bdb23dbc20e28c98&lt;/p>
-&lt;p>一个小技巧是在%和x中间添加空格，比较一下区别：
-fmt.Printf(&amp;quot;% x\n&amp;quot;, sample)&lt;/p>
+&lt;p>一个更短的产生可观输出的方法是使用fmt的&lt;code>%X&lt;/code>（16进制）格式。它会以16进制输出字符串的字节序列，每个字节是两位：&lt;/p>
+&lt;pre>&lt;code>fmt.Printf(&amp;quot;%x\n&amp;quot;, sample)
+&lt;/code>&lt;/pre>
+&lt;p>它的输出是：&lt;/p>
+&lt;pre>&lt;code>bdb23dbc20e28c98
+&lt;/code>&lt;/pre>
+&lt;p>一个小技巧是在%和x中间添加空格，比较一下区别：&lt;/p>
+&lt;pre>&lt;code>fmt.Printf(&amp;quot;% x\n&amp;quot;, sample)
+&lt;/code>&lt;/pre>
 &lt;p>注意下字节间如何打印空格的：&lt;/p>
 &lt;pre>&lt;code>bd b2 3d bc 20 e2 8c 98
 &lt;/code>&lt;/pre>
