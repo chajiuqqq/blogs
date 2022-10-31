@@ -1,0 +1,269 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="实验室二次开发一个blockly平台，这是一个积木化编程平台，可从积木生成各种语言代码，如Python。界面如下，积木到代码由原blockl"><title>Blockly2python Web Edition开发流程</title><link rel=canonical href=https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/><link rel=stylesheet href=/blogs/scss/style.min.ac77dcf8b111b51da39a92990f431923f210f3876d85798a2125667f96dc33a4.css><meta property="og:title" content="Blockly2python Web Edition开发流程"><meta property="og:description" content="实验室二次开发一个blockly平台，这是一个积木化编程平台，可从积木生成各种语言代码，如Python。界面如下，积木到代码由原blockl"><meta property="og:url" content="https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/"><meta property="og:site_name" content="茶酒的小站"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:published_time" content="2022-10-31T22:19:10+08:00"><meta property="article:modified_time" content="2022-10-31T22:19:10+08:00"><meta name=twitter:title content="Blockly2python Web Edition开发流程"><meta name=twitter:description content="实验室二次开发一个blockly平台，这是一个积木化编程平台，可从积木生成各种语言代码，如Python。界面如下，积木到代码由原blockl"><script async src="https://www.googletagmanager.com/gtag/js?id=G-BCR6BTPPNW"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-BCR6BTPPNW",{anonymize_ip:!1})}</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/blogs/><img src=/blogs/img/avatar_hu4031dbb736a187d9130ab1a88d3b3ee1_9967_300x0_resize_q75_box.jpeg width=300 height=300 class=site-logo loading=lazy alt=Avatar></a>
+<span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/blogs>茶酒的小站</a></h1><h2 class=site-description>一个年轻的小站</h2></div></header><ol class=social-menu><li><a href=https://github.com/chajiuqqq target=_blank title=GitHub><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://twitter.com target=_blank title=Twitter><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/blogs/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>主页</span></a></li><li><a href=/blogs/%E5%85%B3%E4%BA%8E/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>关于</span></a></li><li><a href=/blogs/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/blogs/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/blogs/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=i18n-switch><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><select name=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://chajiuqqq.github.io/blogs/en/>English</option><option value=https://chajiuqqq.github.io/blogs/ selected>中文</option><option value=https://chajiuqqq.github.io/blogs/ar/>عربي</option></select></li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>暗色模式</span></li></div></ol></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/>Blockly2python Web Edition开发流程</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Oct 31, 2022</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>阅读时长: 4 分钟</time></div></footer></div></header><section class=article-content><p>实验室二次开发一个blockly平台，这是一个积木化编程平台，可从积木生成各种语言代码，如Python。界面如下，积木到代码由原blockly库提供，不难。
+而运行python代码刚开始是放在jupyter notebook，手动复制过去运行。
+<img src=/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1.png width=1920 height=956 srcset="/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1_hub3116288970dfe0c4418dcd69b8a6259_195771_480x0_resize_box_3.png 480w, /blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1_hub3116288970dfe0c4418dcd69b8a6259_195771_1024x0_resize_box_3.png 1024w" loading=lazy class=gallery-image data-flex-grow=200 data-flex-basis=482px></p><p>进一步优化的方案就是在线运行（在浏览器）Python代码。基本库的浏览器化不难，但是之前一直没找到可以运行第三方库如pandas的js库。这次看到<a class=link href=https://pyodide.org/en/stable/index.html target=_blank rel=noopener>pyodide</a>，可以实现第三方库的导入。于是开始折腾。</p><h1 id=初步运行pyodide>初步运行pyodide</h1><p>直接看官网的例子，可以直接跑python基础库：</p><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;p&gt;
+    You can execute any Python code. Just enter something in the box below and
+    click the button.
+    &lt;/p&gt;
+    &lt;input id=&quot;code&quot; value=&quot;sum([1, 2, 3, 4, 5])&quot; /&gt;
+    &lt;button onclick=&quot;evaluatePython()&quot;&gt;Run&lt;/button&gt;
+    &lt;br /&gt;
+    &lt;br /&gt;
+    &lt;div&gt;Output:&lt;/div&gt;
+    &lt;textarea id=&quot;output&quot; style=&quot;width: 100%;&quot; rows=&quot;6&quot; disabled&gt;&lt;/textarea&gt;
+
+    &lt;script&gt;
+    const output = document.getElementById(&quot;output&quot;);
+    const code = document.getElementById(&quot;code&quot;);
+
+    function addToOutput(s) {
+        output.value += &quot;&gt;&gt;&gt;&quot; + code.value + &quot;\n&quot; + s + &quot;\n&quot;;
+    }
+
+    output.value = &quot;Initializing...\n&quot;;
+    // init Pyodide
+    async function main() {
+        let pyodide = await loadPyodide();
+        output.value += &quot;Ready!\n&quot;;
+        return pyodide;
+    }
+    let pyodideReadyPromise = main();
+
+    async function evaluatePython() {
+        let pyodide = await pyodideReadyPromise;
+        try {
+        let output = pyodide.runPython(code.value);
+        addToOutput(output);
+        } catch (err) {
+        addToOutput(err);
+        }
+    }
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p><img src=/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo.png width=861 height=253 srcset="/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo_hue20e8405241a231c5633442d0a619047_8568_480x0_resize_box_3.png 480w, /blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo_hue20e8405241a231c5633442d0a619047_8568_1024x0_resize_box_3.png 1024w" loading=lazy class=gallery-image data-flex-grow=340 data-flex-basis=816px></p><h1 id=print问题>print问题</h1><p>基本库python代码可以正常运行，但是运行<code>print('abc')</code>函数时，发现打印的东西不在返回的结果里，而是在console里。幸运的是这个问题也有<a class=link href=https://github.com/pyodide/pyodide/issues/8 target=_blank rel=noopener>issue</a>。</p><p>这个issue下面的<a class=link href=https://github.com/pyodide/pyodide/issues/8#issuecomment-772024841 target=_blank rel=noopener>这个回答</a>提供了一种方法，可以将执行的代码的输出转到返回结果，而不是console。</p><pre><code>&lt;script type=&quot;text/javascript&quot;&gt;
+  // set the pyodide files URL (packages.json, pyodide.asm.data etc)
+  window.languagePluginUrl = 'https://cdn.jsdelivr.net/pyodide/v0.16.1/full/';
+&lt;/script&gt;
+&lt;script src=&quot;https://cdn.jsdelivr.net/pyodide/v0.16.1/full/pyodide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+function setup_pyodide() {
+    // setup pyodide environment to run code blocks as needed
+    var setup_code = `
+    import sys, io, traceback
+    namespace = {}  # use separate namespace to hide run_code, modules, etc.
+    def run_code(code):
+    &quot;&quot;&quot;run specified code and return stdout and stderr&quot;&quot;&quot;
+    out = io.StringIO()
+    oldout = sys.stdout
+    olderr = sys.stderr
+    sys.stdout = sys.stderr = out
+    try:
+        # change next line to exec(code, {}) if you want to clear vars each time
+        exec(code, namespace)
+    except:
+        traceback.print_exc()
+
+    sys.stdout = oldout
+    sys.stderr = olderr
+    return out.getvalue()
+    `
+    pyodide.runPython(setup_code)
+}
+
+function runPython() {
+    // run code currently stored in editor
+    pyodide.globals.code_to_run = editor.getValue()
+    document.getElementById(&quot;output&quot;).value = pyodide.runPython('run_code(code_to_run)')
+}
+
+// run setup_pyodide() when pyodide finishes loading
+languagePluginLoader.then(setup_pyodide)
+
+&lt;/script&gt;
+</code></pre><p>注意他用的是v0.16.1版本pyodide，最新的0.21.3会报错。但是思路很好，贴一下我自己修改的0.21.3版本代码,原理就是把运行的代码当作参数输入预先运行的run_code函数：</p><pre><code>&lt;script src=&quot;https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+    const output = document.getElementById(&quot;output&quot;);
+    const pyplotfigure = document.getElementById(&quot;pyplotfigure&quot;);
+
+    function addToOutput(s) {
+        output.value += &quot;&gt;&gt;&gt;  &quot; + s + &quot;\n&quot;;
+    }
+
+    output.value = &quot;Initializing...\n&quot;;
+
+    function clearOutput() {
+        output.value = 'Ready!\n'
+        pyplotfigure.src=''
+    }
+
+
+    let pyodide 
+
+    async function runPython() {
+        // run code currently stored in editor
+        let code_to_run = editor.getValue()
+        await pyodide.loadPackagesFromImports(code_to_run);
+        pyodide.globals.set('code_to_run',code_to_run);
+        addToOutput(pyodide.runPython('run_code(code_to_run)'));
+    }
+    async function main(){
+        pyodide = await loadPyodide();
+        // await pyodide.loadPackage(['pandas','matplotlib']);
+        var setup_code = `
+    import sys, io, traceback
+    namespace = {}  # use separate namespace to hide run_code, modules, etc.
+    def run_code(_code):
+        &quot;&quot;&quot;run specified code and return stdout and stderr&quot;&quot;&quot;
+        namespace={}
+        _out = io.StringIO()
+        _oldout = sys.stdout
+        _olderr = sys.stderr
+        sys.stdout = sys.stderr = _out
+        try:
+            # change next line to exec(code, {}) if you want to clear vars each time
+            exec(_code,namespace)
+        except:
+            traceback.print_exc()
+    
+        sys.stdout = _oldout
+        sys.stderr = _olderr
+        return _out.getvalue()
+    `
+        pyodide.runPython(setup_code)
+
+        output.value += 'Ready!\n'
+    }
+    
+    main()
+
+&lt;/script&gt;
+</code></pre><h1 id=画图显示问题>画图显示问题</h1><p>这下print没问题了，下面解决画图的问题。上面的</p><pre><code>await pyodide.loadPackagesFromImports(code_to_run);
+</code></pre><p>会自动识别import并导入对应python库的js版本。但是matplotlab画图没法直接出来。我找了两个解决方法</p><ul><li>修改matplotlab的<a class=link href=https://matplotlib.org/stable/users/explain/backends.html#selecting-a-backend target=_blank rel=noopener>backends</a>，可以把图片输出成canvas在页面中显示</li><li>保存图片的base64编码，然后html中的img读取base64编码显示图片</li></ul><p><strong>第一个方法</strong>参考这个<a class=link href=https://blog.pyodide.org/posts/canvas-renderer-matplotlib-in-pyodide/ target=_blank rel=noopener>blog</a>，里面提到的这个<a class=link href=https://jsfiddle.net/gh/get/library/pure/pyodide/pyodide-blog/contents/demos/canvas-renderer-matplotlib/demo-1/ target=_blank rel=noopener>demo</a>用处很大，直接显示了如何从matplotlab显示图像到网页。</p><p><img src=/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2.png width=1709 height=481 srcset="/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2_hua31076cea541db4698eea6ed159fad99_97981_480x0_resize_box_3.png 480w, /blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2_hua31076cea541db4698eea6ed159fad99_97981_1024x0_resize_box_3.png 1024w" loading=lazy class=gallery-image data-flex-grow=355 data-flex-basis=852px></p><p>使用方法就是在运行的python代码里，最前面加上</p><pre><code>import matplotlib
+matplotlib.use(&quot;module://matplotlib.backends.html5_canvas_backend&quot;)
+</code></pre><p>指定matplotlab的backend为html5_canvas_backend，就可以生成canvas了，但是有个问题是我不知道如何控制这个canvas的位置，于是使用第二个方法。</p><p><strong>第二个方法</strong>参考这个<a class=link href="https://codepen.io/aagostini/pen/LYExVJL?editors=1000" target=_blank rel=noopener>网页</a>，虽然它的pyodide.js链接失效了看不出效果，但是可以修改一下，看到matplotlab作图出现在html上了：</p><p><img src=/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3.png width=672 height=523 srcset="/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3_hu6129f7b5febdece6f7990ff7a3cd189c_23069_480x0_resize_box_3.png 480w, /blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3_hu6129f7b5febdece6f7990ff7a3cd189c_23069_1024x0_resize_box_3.png 1024w" loading=lazy class=gallery-image data-flex-grow=128 data-flex-basis=308px></p><p>代码如下：</p><pre><code>&lt;!doctype html&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Demo&lt;/title&gt;
+    &lt;script src=&quot;https://cdn.jsdelivr.net/pyodide/v0.16.1/full/pyodide.js&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    languagePluginLoader.then(() =&gt; {
+    pyodide.loadPackage(['matplotlib']).then(() =&gt; {
+        pyodide.runPython(`
+                import matplotlib.pyplot as plt
+                import io, base64
+                fig, ax = plt.subplots()
+                ax.plot([1,3,2])
+                buf = io.BytesIO()
+                fig.savefig(buf, format='png')
+                buf.seek(0)
+                img_str = 'data:image/png;base64,' + base64.b64encode(buf.read()).decode('UTF-8')`
+        );
+        document.getElementById(&quot;pyplotfigure&quot;).src=pyodide.globals.img_str
+
+    });});
+
+    &lt;/script&gt;
+
+    &lt;div id=&quot;textfield&quot;&gt;A matplotlib figure:&lt;/div&gt;
+    &lt;div id=&quot;pyplotdiv&quot;&gt;&lt;img id=&quot;pyplotfigure&quot;/&gt;&lt;/div&gt;
+&lt;html&gt;
+</code></pre><h1 id=整合>整合</h1><p>把解决print的方法和第二个输出图片的方法结合起来有点小插曲，一开始修改runPython()</p><pre><code>async function runPython() {
+    // run code currently stored in editor
+    let code_to_run = editor.getValue()
+    await pyodide.loadPackagesFromImports(code_to_run);
+    pyodide.globals.set('code_to_run',code_to_run);
+    addToOutput(pyodide.runPython('run_code(code_to_run)'));
+
+    let a = pyodide.globals.get('img_str')
+    if(a){
+        pyplotfigure.src=a
+    }
+}
+</code></pre><p>但是<code>let a = pyodide.globals.get('img_str')</code>一开始提示无法找到img_str，后来发现是namespace的锅：</p><pre><code> exec(_code,namespace)
+</code></pre><p>这个会在一个新的namespace里执行，所以在外面找不到里面定义的img_str，改为</p><pre><code>exec(_code,globals())
+</code></pre><p>使用全局的namespace，就可以看到图片了</p><p>最后代码：</p><p>js：</p><pre><code>&lt;script src=&quot;https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+    const output = document.getElementById(&quot;output&quot;);
+    const pyplotfigure = document.getElementById(&quot;pyplotfigure&quot;);
+
+    function addToOutput(s) {
+        output.value += &quot;&gt;&gt;&gt;  &quot; + s + &quot;\n&quot;;
+    }
+
+    output.value = &quot;Initializing...\n&quot;;
+
+    function clearOutput() {
+        output.value = 'Ready!\n'
+        pyplotfigure.src=''
+    }
+
+
+    let pyodide 
+
+    async function runPython() {
+        // run code currently stored in editor
+        let code_to_run = editor.getValue()
+        await pyodide.loadPackagesFromImports(code_to_run);
+        pyodide.globals.set('code_to_run',code_to_run);
+        addToOutput(pyodide.runPython('run_code(code_to_run)'));
+
+        let a = pyodide.globals.get('img_str')
+        if(a){
+            pyplotfigure.src=a
+        }
+    }
+    async function main(){
+        pyodide = await loadPyodide();
+        // await pyodide.loadPackage(['pandas','matplotlib']);
+        var setup_code = `
+    import sys, io, traceback
+    namespace = {}  # use separate namespace to hide run_code, modules, etc.
+    def run_code(_code):
+        &quot;&quot;&quot;run specified code and return stdout and stderr&quot;&quot;&quot;
+        _out = io.StringIO()
+        _oldout = sys.stdout
+        _olderr = sys.stderr
+        sys.stdout = sys.stderr = _out
+        try:
+            # change next line to exec(code, {}) if you want to clear vars each time
+            exec(_code,globals())
+        except:
+            traceback.print_exc()
+    
+        sys.stdout = _oldout
+        sys.stderr = _olderr
+        return _out.getvalue()
+    `
+        pyodide.runPython(setup_code)
+
+        output.value += 'Ready!\n'
+    }
+    
+    main()
+&lt;/script&gt;
+</code></pre><p>html要加上放图片的地方：</p><pre><code>&lt;div id=&quot;pyplotdiv&quot;&gt;&lt;img id=&quot;pyplotfigure&quot; style=&quot;width: 100% ;&quot;/&gt;&lt;/div&gt;
+</code></pre><p>最后展示一下：</p><p><img src=/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2.png width=1920 height=950 srcset="/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2_hud88af843e7fc05c8a3089f4e81c8046f_281315_480x0_resize_box_3.png 480w, /blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2_hud88af843e7fc05c8a3089f4e81c8046f_281315_1024x0_resize_box_3.png 1024w" loading=lazy class=gallery-image data-flex-grow=202 data-flex-basis=485px></p></section><footer class=article-footer><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><div class=disqus-container><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//hugo-theme-stack.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2022 茶酒的小站</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.13.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/blogs/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

@@ -1,4 +1,317 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/post/</link><description>Recent content in Posts on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 07 Oct 2022 12:16:11 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/post/index.xml" rel="self" type="application/rss+xml"/><item><title>GoLang中的Strings, bytes, runes和characters</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</link><pubDate>Fri, 07 Oct 2022 12:16:11 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/post/</link><description>Recent content in Posts on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 31 Oct 2022 22:19:10 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Blockly2python Web Edition开发流程</title><link>https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</link><pubDate>Mon, 31 Oct 2022 22:19:10 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</guid><description>&lt;p>实验室二次开发一个blockly平台，这是一个积木化编程平台，可从积木生成各种语言代码，如Python。界面如下，积木到代码由原blockly库提供，不难。
+而运行python代码刚开始是放在jupyter notebook，手动复制过去运行。
+&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1.png"
+width="1920"
+height="956"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1_hub3116288970dfe0c4418dcd69b8a6259_195771_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1_hub3116288970dfe0c4418dcd69b8a6259_195771_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="200"
+data-flex-basis="482px"
+>&lt;/p>
+&lt;p>进一步优化的方案就是在线运行（在浏览器）Python代码。基本库的浏览器化不难，但是之前一直没找到可以运行第三方库如pandas的js库。这次看到&lt;a class="link" href="https://pyodide.org/en/stable/index.html" target="_blank" rel="noopener"
+>pyodide&lt;/a>，可以实现第三方库的导入。于是开始折腾。&lt;/p>
+&lt;h1 id="初步运行pyodide">初步运行pyodide&lt;/h1>
+&lt;p>直接看官网的例子，可以直接跑python基础库：&lt;/p>
+&lt;pre>&lt;code>&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;script src=&amp;quot;https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;p&amp;gt;
+You can execute any Python code. Just enter something in the box below and
+click the button.
+&amp;lt;/p&amp;gt;
+&amp;lt;input id=&amp;quot;code&amp;quot; value=&amp;quot;sum([1, 2, 3, 4, 5])&amp;quot; /&amp;gt;
+&amp;lt;button onclick=&amp;quot;evaluatePython()&amp;quot;&amp;gt;Run&amp;lt;/button&amp;gt;
+&amp;lt;br /&amp;gt;
+&amp;lt;br /&amp;gt;
+&amp;lt;div&amp;gt;Output:&amp;lt;/div&amp;gt;
+&amp;lt;textarea id=&amp;quot;output&amp;quot; style=&amp;quot;width: 100%;&amp;quot; rows=&amp;quot;6&amp;quot; disabled&amp;gt;&amp;lt;/textarea&amp;gt;
+&amp;lt;script&amp;gt;
+const output = document.getElementById(&amp;quot;output&amp;quot;);
+const code = document.getElementById(&amp;quot;code&amp;quot;);
+function addToOutput(s) {
+output.value += &amp;quot;&amp;gt;&amp;gt;&amp;gt;&amp;quot; + code.value + &amp;quot;\n&amp;quot; + s + &amp;quot;\n&amp;quot;;
+}
+output.value = &amp;quot;Initializing...\n&amp;quot;;
+// init Pyodide
+async function main() {
+let pyodide = await loadPyodide();
+output.value += &amp;quot;Ready!\n&amp;quot;;
+return pyodide;
+}
+let pyodideReadyPromise = main();
+async function evaluatePython() {
+let pyodide = await pyodideReadyPromise;
+try {
+let output = pyodide.runPython(code.value);
+addToOutput(output);
+} catch (err) {
+addToOutput(err);
+}
+}
+&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo.png"
+width="861"
+height="253"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo_hue20e8405241a231c5633442d0a619047_8568_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo_hue20e8405241a231c5633442d0a619047_8568_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="340"
+data-flex-basis="816px"
+>&lt;/p>
+&lt;h1 id="print问题">print问题&lt;/h1>
+&lt;p>基本库python代码可以正常运行，但是运行&lt;code>print('abc')&lt;/code>函数时，发现打印的东西不在返回的结果里，而是在console里。幸运的是这个问题也有&lt;a class="link" href="https://github.com/pyodide/pyodide/issues/8" target="_blank" rel="noopener"
+>issue&lt;/a>。&lt;/p>
+&lt;p>这个issue下面的&lt;a class="link" href="https://github.com/pyodide/pyodide/issues/8#issuecomment-772024841" target="_blank" rel="noopener"
+>这个回答&lt;/a>提供了一种方法，可以将执行的代码的输出转到返回结果，而不是console。&lt;/p>
+&lt;pre>&lt;code>&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+// set the pyodide files URL (packages.json, pyodide.asm.data etc)
+window.languagePluginUrl = 'https://cdn.jsdelivr.net/pyodide/v0.16.1/full/';
+&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;https://cdn.jsdelivr.net/pyodide/v0.16.1/full/pyodide.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script&amp;gt;
+function setup_pyodide() {
+// setup pyodide environment to run code blocks as needed
+var setup_code = `
+import sys, io, traceback
+namespace = {} # use separate namespace to hide run_code, modules, etc.
+def run_code(code):
+&amp;quot;&amp;quot;&amp;quot;run specified code and return stdout and stderr&amp;quot;&amp;quot;&amp;quot;
+out = io.StringIO()
+oldout = sys.stdout
+olderr = sys.stderr
+sys.stdout = sys.stderr = out
+try:
+# change next line to exec(code, {}) if you want to clear vars each time
+exec(code, namespace)
+except:
+traceback.print_exc()
+sys.stdout = oldout
+sys.stderr = olderr
+return out.getvalue()
+`
+pyodide.runPython(setup_code)
+}
+function runPython() {
+// run code currently stored in editor
+pyodide.globals.code_to_run = editor.getValue()
+document.getElementById(&amp;quot;output&amp;quot;).value = pyodide.runPython('run_code(code_to_run)')
+}
+// run setup_pyodide() when pyodide finishes loading
+languagePluginLoader.then(setup_pyodide)
+&amp;lt;/script&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>注意他用的是v0.16.1版本pyodide，最新的0.21.3会报错。但是思路很好，贴一下我自己修改的0.21.3版本代码,原理就是把运行的代码当作参数输入预先运行的run_code函数：&lt;/p>
+&lt;pre>&lt;code>&amp;lt;script src=&amp;quot;https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script&amp;gt;
+const output = document.getElementById(&amp;quot;output&amp;quot;);
+const pyplotfigure = document.getElementById(&amp;quot;pyplotfigure&amp;quot;);
+function addToOutput(s) {
+output.value += &amp;quot;&amp;gt;&amp;gt;&amp;gt; &amp;quot; + s + &amp;quot;\n&amp;quot;;
+}
+output.value = &amp;quot;Initializing...\n&amp;quot;;
+function clearOutput() {
+output.value = 'Ready!\n'
+pyplotfigure.src=''
+}
+let pyodide
+async function runPython() {
+// run code currently stored in editor
+let code_to_run = editor.getValue()
+await pyodide.loadPackagesFromImports(code_to_run);
+pyodide.globals.set('code_to_run',code_to_run);
+addToOutput(pyodide.runPython('run_code(code_to_run)'));
+}
+async function main(){
+pyodide = await loadPyodide();
+// await pyodide.loadPackage(['pandas','matplotlib']);
+var setup_code = `
+import sys, io, traceback
+namespace = {} # use separate namespace to hide run_code, modules, etc.
+def run_code(_code):
+&amp;quot;&amp;quot;&amp;quot;run specified code and return stdout and stderr&amp;quot;&amp;quot;&amp;quot;
+namespace={}
+_out = io.StringIO()
+_oldout = sys.stdout
+_olderr = sys.stderr
+sys.stdout = sys.stderr = _out
+try:
+# change next line to exec(code, {}) if you want to clear vars each time
+exec(_code,namespace)
+except:
+traceback.print_exc()
+sys.stdout = _oldout
+sys.stderr = _olderr
+return _out.getvalue()
+`
+pyodide.runPython(setup_code)
+output.value += 'Ready!\n'
+}
+main()
+&amp;lt;/script&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;h1 id="画图显示问题">画图显示问题&lt;/h1>
+&lt;p>这下print没问题了，下面解决画图的问题。上面的&lt;/p>
+&lt;pre>&lt;code>await pyodide.loadPackagesFromImports(code_to_run);
+&lt;/code>&lt;/pre>
+&lt;p>会自动识别import并导入对应python库的js版本。但是matplotlab画图没法直接出来。我找了两个解决方法&lt;/p>
+&lt;ul>
+&lt;li>修改matplotlab的&lt;a class="link" href="https://matplotlib.org/stable/users/explain/backends.html#selecting-a-backend" target="_blank" rel="noopener"
+>backends&lt;/a>，可以把图片输出成canvas在页面中显示&lt;/li>
+&lt;li>保存图片的base64编码，然后html中的img读取base64编码显示图片&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第一个方法&lt;/strong>参考这个&lt;a class="link" href="https://blog.pyodide.org/posts/canvas-renderer-matplotlib-in-pyodide/" target="_blank" rel="noopener"
+>blog&lt;/a>，里面提到的这个&lt;a class="link" href="https://jsfiddle.net/gh/get/library/pure/pyodide/pyodide-blog/contents/demos/canvas-renderer-matplotlib/demo-1/" target="_blank" rel="noopener"
+>demo&lt;/a>用处很大，直接显示了如何从matplotlab显示图像到网页。&lt;/p>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2.png"
+width="1709"
+height="481"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2_hua31076cea541db4698eea6ed159fad99_97981_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2_hua31076cea541db4698eea6ed159fad99_97981_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="355"
+data-flex-basis="852px"
+>&lt;/p>
+&lt;p>使用方法就是在运行的python代码里，最前面加上&lt;/p>
+&lt;pre>&lt;code>import matplotlib
+matplotlib.use(&amp;quot;module://matplotlib.backends.html5_canvas_backend&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;p>指定matplotlab的backend为html5_canvas_backend，就可以生成canvas了，但是有个问题是我不知道如何控制这个canvas的位置，于是使用第二个方法。&lt;/p>
+&lt;p>&lt;strong>第二个方法&lt;/strong>参考这个&lt;a class="link" href="https://codepen.io/aagostini/pen/LYExVJL?editors=1000" target="_blank" rel="noopener"
+>网页&lt;/a>，虽然它的pyodide.js链接失效了看不出效果，但是可以修改一下，看到matplotlab作图出现在html上了：&lt;/p>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3.png"
+width="672"
+height="523"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3_hu6129f7b5febdece6f7990ff7a3cd189c_23069_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3_hu6129f7b5febdece6f7990ff7a3cd189c_23069_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="128"
+data-flex-basis="308px"
+>&lt;/p>
+&lt;p>代码如下：&lt;/p>
+&lt;pre>&lt;code>&amp;lt;!doctype html&amp;gt;
+&amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;
+&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;title&amp;gt;Demo&amp;lt;/title&amp;gt;
+&amp;lt;script src=&amp;quot;https://cdn.jsdelivr.net/pyodide/v0.16.1/full/pyodide.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt;
+languagePluginLoader.then(() =&amp;gt; {
+pyodide.loadPackage(['matplotlib']).then(() =&amp;gt; {
+pyodide.runPython(`
+import matplotlib.pyplot as plt
+import io, base64
+fig, ax = plt.subplots()
+ax.plot([1,3,2])
+buf = io.BytesIO()
+fig.savefig(buf, format='png')
+buf.seek(0)
+img_str = 'data:image/png;base64,' + base64.b64encode(buf.read()).decode('UTF-8')`
+);
+document.getElementById(&amp;quot;pyplotfigure&amp;quot;).src=pyodide.globals.img_str
+});});
+&amp;lt;/script&amp;gt;
+&amp;lt;div id=&amp;quot;textfield&amp;quot;&amp;gt;A matplotlib figure:&amp;lt;/div&amp;gt;
+&amp;lt;div id=&amp;quot;pyplotdiv&amp;quot;&amp;gt;&amp;lt;img id=&amp;quot;pyplotfigure&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;html&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;h1 id="整合">整合&lt;/h1>
+&lt;p>把解决print的方法和第二个输出图片的方法结合起来有点小插曲，一开始修改runPython()&lt;/p>
+&lt;pre>&lt;code>async function runPython() {
+// run code currently stored in editor
+let code_to_run = editor.getValue()
+await pyodide.loadPackagesFromImports(code_to_run);
+pyodide.globals.set('code_to_run',code_to_run);
+addToOutput(pyodide.runPython('run_code(code_to_run)'));
+let a = pyodide.globals.get('img_str')
+if(a){
+pyplotfigure.src=a
+}
+}
+&lt;/code>&lt;/pre>
+&lt;p>但是&lt;code>let a = pyodide.globals.get('img_str')&lt;/code>一开始提示无法找到img_str，后来发现是namespace的锅：&lt;/p>
+&lt;pre>&lt;code> exec(_code,namespace)
+&lt;/code>&lt;/pre>
+&lt;p>这个会在一个新的namespace里执行，所以在外面找不到里面定义的img_str，改为&lt;/p>
+&lt;pre>&lt;code>exec(_code,globals())
+&lt;/code>&lt;/pre>
+&lt;p>使用全局的namespace，就可以看到图片了&lt;/p>
+&lt;p>最后代码：&lt;/p>
+&lt;p>js：&lt;/p>
+&lt;pre>&lt;code>&amp;lt;script src=&amp;quot;https://cdn.jsdelivr.net/pyodide/v0.21.3/full/pyodide.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script&amp;gt;
+const output = document.getElementById(&amp;quot;output&amp;quot;);
+const pyplotfigure = document.getElementById(&amp;quot;pyplotfigure&amp;quot;);
+function addToOutput(s) {
+output.value += &amp;quot;&amp;gt;&amp;gt;&amp;gt; &amp;quot; + s + &amp;quot;\n&amp;quot;;
+}
+output.value = &amp;quot;Initializing...\n&amp;quot;;
+function clearOutput() {
+output.value = 'Ready!\n'
+pyplotfigure.src=''
+}
+let pyodide
+async function runPython() {
+// run code currently stored in editor
+let code_to_run = editor.getValue()
+await pyodide.loadPackagesFromImports(code_to_run);
+pyodide.globals.set('code_to_run',code_to_run);
+addToOutput(pyodide.runPython('run_code(code_to_run)'));
+let a = pyodide.globals.get('img_str')
+if(a){
+pyplotfigure.src=a
+}
+}
+async function main(){
+pyodide = await loadPyodide();
+// await pyodide.loadPackage(['pandas','matplotlib']);
+var setup_code = `
+import sys, io, traceback
+namespace = {} # use separate namespace to hide run_code, modules, etc.
+def run_code(_code):
+&amp;quot;&amp;quot;&amp;quot;run specified code and return stdout and stderr&amp;quot;&amp;quot;&amp;quot;
+_out = io.StringIO()
+_oldout = sys.stdout
+_olderr = sys.stderr
+sys.stdout = sys.stderr = _out
+try:
+# change next line to exec(code, {}) if you want to clear vars each time
+exec(_code,globals())
+except:
+traceback.print_exc()
+sys.stdout = _oldout
+sys.stderr = _olderr
+return _out.getvalue()
+`
+pyodide.runPython(setup_code)
+output.value += 'Ready!\n'
+}
+main()
+&amp;lt;/script&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>html要加上放图片的地方：&lt;/p>
+&lt;pre>&lt;code>&amp;lt;div id=&amp;quot;pyplotdiv&amp;quot;&amp;gt;&amp;lt;img id=&amp;quot;pyplotfigure&amp;quot; style=&amp;quot;width: 100% ;&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>最后展示一下：&lt;/p>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2.png"
+width="1920"
+height="950"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2_hud88af843e7fc05c8a3089f4e81c8046f_281315_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2_hud88af843e7fc05c8a3089f4e81c8046f_281315_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="202"
+data-flex-basis="485px"
+>&lt;/p></description></item><item><title>GoLang中的Strings, bytes, runes和characters</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</link><pubDate>Fri, 07 Oct 2022 12:16:11 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</guid><description>&lt;blockquote>
 &lt;p>原文标题：Strings, bytes, runes and characters in Go&lt;/p>
 &lt;p>原文地址：https://go.dev/blog/strings&lt;/p>
 &lt;p>译者：z&lt;/p>
