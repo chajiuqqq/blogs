@@ -1,4 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 31 Oct 2022 22:19:10 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>Blockly2python Web Edition开发流程</title><link>https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</link><pubDate>Mon, 31 Oct 2022 22:19:10 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</guid><description>&lt;p>实验室二次开发一个blockly平台，这是一个积木化编程平台，可从积木生成各种语言代码，如Python。界面如下，积木到代码由原blockly库提供，不难。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 07 Feb 2023 11:03:38 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>golang自定义日志记录器</title><link>https://chajiuqqq.github.io/blogs/p/golang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</link><pubDate>Tue, 07 Feb 2023 11:03:38 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</guid><description>&lt;p>标准库的log包无法实现日志分级处理，这个demo可以实现日志的多级处理。原理是定义多个log对象，并指定不同的输出，实现不同等级日志不同输出。&lt;/p>
+&lt;p>mlog包代码如下：&lt;/p>
+&lt;pre>&lt;code>// mlog.go
+package mlog
+import (
+&amp;quot;io&amp;quot;
+&amp;quot;log&amp;quot;
+&amp;quot;os&amp;quot;
+)
+var (
+Trace *log.Logger
+Info *log.Logger
+Warning *log.Logger
+Error *log.Logger
+)
+func init() {
+file, err := os.OpenFile(&amp;quot;error.txt&amp;quot;, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+if err != nil {
+log.Fatalln(&amp;quot;Fail to open error file:&amp;quot;, err)
+}
+Trace = log.New(io.Discard, &amp;quot;TRACE: &amp;quot;, log.Ldate|log.Ltime|log.Lshortfile)
+Info = log.New(os.Stdout, &amp;quot;INFO: &amp;quot;, log.Ldate|log.Ltime|log.Lshortfile)
+Warning = log.New(os.Stdout, &amp;quot;WARNING: &amp;quot;, log.Ldate|log.Ltime|log.Lshortfile)
+Error = log.New(file, &amp;quot;ERROR: &amp;quot;, log.Ldate|log.Ltime|log.Lshortfile)
+}
+&lt;/code>&lt;/pre>
+&lt;p>调用测试：&lt;/p>
+&lt;pre>&lt;code>package main
+import &amp;quot;github.com/chajiu/go-example/mlog&amp;quot;
+func main() {
+mlog.Trace.Println(&amp;quot;trace...&amp;quot;)
+mlog.Info.Println(&amp;quot;Info...&amp;quot;)
+mlog.Warning.Println(&amp;quot;warning...&amp;quot;)
+mlog.Error.Println(&amp;quot;error...&amp;quot;)
+}
+&lt;/code>&lt;/pre>
+&lt;p>error.txt会在main目录下生成。&lt;/p>
+&lt;pre>&lt;code>ERROR: 2023/02/07 10:56:13 main.go:9: error...
+ERROR: 2023/02/07 10:56:23 main.go:9: error...
+&lt;/code>&lt;/pre>
+&lt;p>Info和Warning则是直接输出到stdout：&lt;/p>
+&lt;pre>&lt;code>INFO: 2023/02/07 10:56:23 main.go:7: Info...
+WARNING: 2023/02/07 10:56:23 main.go:8: warning...
+&lt;/code>&lt;/pre></description></item><item><title>Blockly2python Web Edition开发流程</title><link>https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</link><pubDate>Mon, 31 Oct 2022 22:19:10 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</guid><description>&lt;p>实验室二次开发一个blockly平台，这是一个积木化编程平台，可从积木生成各种语言代码，如Python。界面如下，积木到代码由原blockly库提供，不难。
 而运行python代码刚开始是放在jupyter notebook，手动复制过去运行。
 &lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1.png"
 width="1920"
