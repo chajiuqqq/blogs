@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-web on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/tags/go-web/</link><description>Recent content in go-web on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 12 Feb 2023 08:47:06 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/tags/go-web/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang中的数据存储</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</link><pubDate>Sun, 12 Feb 2023 08:47:06 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</guid><description>&lt;p>Golang中的数据存储有三种方案：&lt;/p>
+&lt;ul>
+&lt;li>利用容器的内存存储（非内存数据库）&lt;/li>
+&lt;li>利用文件读写的存储（文本文件如csv、二进制文件如gob）&lt;/li>
+&lt;li>数据库存储&lt;/li>
+&lt;/ul>
+&lt;p>本文简述后面两种。&lt;/p>
+&lt;h1 id="文件存储">文件存储&lt;/h1>
+&lt;p>下面展示了golang中读写文件的常用方式。&lt;/p>
+&lt;ul>
+&lt;li>ioutil的函数读写文件&lt;/li>
+&lt;li>os创建File，再读写文件&lt;/li>
+&lt;/ul>
+&lt;p>code:&lt;/p>
+&lt;pre>&lt;code>package main
+import (
+&amp;quot;fmt&amp;quot;
+&amp;quot;io/ioutil&amp;quot;
+&amp;quot;os&amp;quot;
+)
+func main() {
+//ioutil读写文件
+data := []byte(&amp;quot;hello world!&amp;quot;)
+err := ioutil.WriteFile(&amp;quot;data1&amp;quot;, data, 0644)
+if err != nil {
+panic(err)
+}
+read1, _ := ioutil.ReadFile(&amp;quot;data1&amp;quot;)
+fmt.Println(string(read1))
+//os读写文件
+file1, _ := os.Create(&amp;quot;data2&amp;quot;)
+defer file1.Close()
+nbytes, _ := file1.Write(data)
+fmt.Printf(&amp;quot;wrote %d bytes to file\n&amp;quot;, nbytes)
+file2, _ := os.Open(&amp;quot;data2&amp;quot;)
+defer file2.Close()
+read2 := make([]byte, len(data))
+nbytes, _ = file2.Read(read2)
+fmt.Printf(&amp;quot;Read %d bytes from file\n&amp;quot;, nbytes)
+fmt.Println(string(read2))
+}
+//
+hello world!
+wrote 12 bytes to file
+Read 12 bytes from file
+hello world!
+&lt;/code>&lt;/pre>
+&lt;h2 id="csv读写">csv读写&lt;/h2>
+&lt;p>利用&amp;quot;encoding/csv&amp;quot;可实现csv读写，下面是小例子。将File传给csv.NewWriter()或csv.NewReader()&lt;/p>
+&lt;pre>&lt;code>package main
+import (
+&amp;quot;encoding/csv&amp;quot;
+&amp;quot;fmt&amp;quot;
+&amp;quot;os&amp;quot;
+&amp;quot;strconv&amp;quot;
+)
+type Post struct {
+Id int
+Content string
+Author string
+}
+func main() {
+csvFile, err := os.Create(&amp;quot;posts.csv&amp;quot;)
+if err != nil {
+panic(err)
+}
+defer csvFile.Close()
+allPosts := []Post{
+Post{1, &amp;quot;hello world 1&amp;quot;, &amp;quot;Jack1&amp;quot;},
+Post{2, &amp;quot;hello world 2&amp;quot;, &amp;quot;Jack2&amp;quot;},
+Post{3, &amp;quot;hello world 3&amp;quot;, &amp;quot;Jack3&amp;quot;},
+Post{4, &amp;quot;hello world 4&amp;quot;, &amp;quot;Jack4&amp;quot;},
+Post{5, &amp;quot;hello world 5&amp;quot;, &amp;quot;Jack5&amp;quot;},
+}
+writer := csv.NewWriter(csvFile)
+for _, post := range allPosts {
+line := []string{strconv.Itoa(post.Id), post.Content, post.Author}
+if err := writer.Write(line); err != nil {
+panic(err)
+}
+}
+writer.Flush()
+file, err := os.Open(&amp;quot;posts.csv&amp;quot;)
+if err != nil {
+panic(err)
+}
+defer file.Close()
+reader := csv.NewReader(file)
+reader.FieldsPerRecord = -1
+records, err := reader.ReadAll()
+if err != nil {
+panic(err)
+}
+var posts []Post
+for _, item := range records {
+id, _ := strconv.Atoi(item[0])
+post := Post{id, item[1], item[2]}
+posts = append(posts, post)
+}
+fmt.Println(posts[0].Id)
+fmt.Println(posts[0].Content)
+fmt.Println(posts[0].Author)
+}
+&lt;/code>&lt;/pre>
+&lt;p>生成posts.csv:&lt;/p>
+&lt;pre>&lt;code>1,hello world 1,Jack1
+2,hello world 2,Jack2
+3,hello world 3,Jack3
+4,hello world 4,Jack4
+5,hello world 5,Jack5
+&lt;/code>&lt;/pre>
+&lt;h2 id="gob读写">gob读写&lt;/h2>
+&lt;p>利用&amp;quot;encoding/gob&amp;quot;包，gob.NewEncoder()接受一个io.Writer; gob.NewDecoder()接受一个io.Reader.&lt;/p>
+&lt;p>也就是说，可以提供一个buffer，供编码时存储结果；供解码时存储输入。&lt;/p>
+&lt;p>最后传入&lt;code>&amp;amp;postRecord&lt;/code>才能修改原变量内容。&lt;/p>
+&lt;pre>&lt;code>package main
+import (
+&amp;quot;bytes&amp;quot;
+&amp;quot;encoding/gob&amp;quot;
+&amp;quot;fmt&amp;quot;
+&amp;quot;io/ioutil&amp;quot;
+)
+type Post struct {
+Id int
+Content string
+Author string
+}
+func store(data interface{}, filename string) {
+buffer := new(bytes.Buffer)
+encoder := gob.NewEncoder(buffer)
+err := encoder.Encode(data)
+if err != nil {
+panic(err)
+}
+err = ioutil.WriteFile(filename, buffer.Bytes(), 0600)
+if err != nil {
+panic(err)
+}
+}
+func load(data interface{}, filename string) {
+raw, err := ioutil.ReadFile(filename)
+if err != nil {
+panic(err)
+}
+buffer := bytes.NewBuffer(raw)
+decoder := gob.NewDecoder(buffer)
+err = decoder.Decode(data)
+if err != nil {
+panic(err)
+}
+}
+func main() {
+post := Post{1, &amp;quot;hello world&amp;quot;, &amp;quot;jack&amp;quot;}
+store(post, &amp;quot;post1&amp;quot;)
+var postRecord Post
+load(&amp;amp;postRecord, &amp;quot;post1&amp;quot;)
+fmt.Println(postRecord)
+}
+&lt;/code>&lt;/pre>
+&lt;h1 id="利用databasesql连接数据库并执行crud">利用database/sql连接数据库并执行CRUD&lt;/h1>
+&lt;p>首先需要注入对应的数据库驱动，如postgres常用github.com/lib/pq驱动。在main包中注入：&lt;/p>
+&lt;pre>&lt;code>import(
+_ &amp;quot;github.com/lib/pq&amp;quot;
+)
+&lt;/code>&lt;/pre>
+&lt;p>数据库连接，使用sql.Open(数据库名称，数据源字符串)，其中数据源字符串需要符合对应驱动的格式，如pq的话，有这么几种合法的格式：&lt;/p>
+&lt;ul>
+&lt;li>&amp;ldquo;user=pqgotest dbname=pqgotest sslmode=verify-full&amp;rdquo;&lt;/li>
+&lt;li>&amp;ldquo;postgres://pqgotest:password@localhost/pqgotest?sslmode=verify-full&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;p>见 &lt;a class="link" href="https://pkg.go.dev/github.com/lib/pq" target="_blank" rel="noopener"
+>https://pkg.go.dev/github.com/lib/pq&lt;/a>&lt;/p>
+&lt;p>CRUD总结：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>预处理语句：使用sql.Stmt结构&lt;/p>
+&lt;pre>&lt;code> stmt,err := db.Prepare(&amp;quot;...&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>执行语句并获取一个sql.Row,一般后跟Scan(),用于把这一行读取到某些变量中&lt;/p>
+&lt;pre>&lt;code> db.QueryRow(&amp;quot;...&amp;quot;, , )
+或
+stmt.QueryRow( , )
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>执行并获取多个sql.Row:&lt;/p>
+&lt;pre>&lt;code> rows,err := db.Query(&amp;quot;...&amp;quot;, , )
+rows.Next()
+rows.Scan()
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;p>直接执行语句，只返回最后插入ID(如果insert)、影响的行数（insert、update、delete），不返回查询结果：&lt;/p>
+&lt;pre>&lt;code> res,err := db.Exec(&amp;quot;...&amp;quot;, , )
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;h1 id="go-orm-关系映射器">go orm 关系映射器&lt;/h1>
+&lt;p>ORM 思想是将数据结构和表结构相对应。Gorm是go里最棒的ORM。&lt;/p></description></item></channel></rss>

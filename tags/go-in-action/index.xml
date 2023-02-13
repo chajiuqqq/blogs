@@ -48,7 +48,7 @@ China's foreign ministry described the balloon as &amp;quot;a civilian airship&a
 &lt;li>设计matcherMap，不同类型的Matcher注册后保存在这里，方便不同数据源匹配和数据源类型拓展&lt;/li>
 &lt;li>每个goroutine执行一个feed的搜索，并发执行，提高性能&lt;/li>
 &lt;li>查询结果后，goroutine通过无缓冲chan把数据发送主线程展示，同步获取并展示，利用了语言特性&lt;/li>
-&lt;/ul></description></item><item><title>golang自定义日志记录器</title><link>https://chajiuqqq.github.io/blogs/p/golang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</link><pubDate>Tue, 07 Feb 2023 11:03:38 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</guid><description>&lt;p>标准库的log包无法实现日志分级处理，这个demo可以实现日志的多级处理。原理是定义多个log对象，并指定不同的输出，实现不同等级日志不同输出。&lt;/p>
+&lt;/ul></description></item><item><title>一个golang自定义日志记录器</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</link><pubDate>Tue, 07 Feb 2023 11:03:38 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</guid><description>&lt;p>标准库的log包无法实现日志分级处理，这个demo可以实现日志的多级处理。原理是定义多个log对象，并指定不同的输出，实现不同等级日志不同输出。&lt;/p>
 &lt;p>mlog包代码如下：&lt;/p>
 &lt;pre>&lt;code>// mlog.go
 package mlog
