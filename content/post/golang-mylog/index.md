@@ -1,5 +1,5 @@
 ---
-title: "golang自定义日志记录器"
+title: "一个golang自定义日志记录器"
 date: 2023-02-07T11:03:38+08:00
 draft: false
 categories:
