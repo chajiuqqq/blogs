@@ -30,10 +30,10 @@
 &lt;/ul>
 &lt;/li>
 &lt;/ul>
-&lt;h1 id="go应用测试概述">go应用测试概述&lt;/h1>
+&lt;h2 id="go应用测试概述">go应用测试概述&lt;/h2>
 &lt;p>go的testing包用于测试，net/http/httptest用于测试web程序。对于源码文件server.go，可以在同目录下创建server_test.go文件，定义func TestXxx(*testing.T)函数。函数内部使用Error、Fail等方法表示测试失败，如果测试时没有出现任何失败，则表示测试通过。&lt;/p>
 &lt;p>编写完测试文件后，在当前目录下用&lt;code>go test&lt;/code>测试所有测试文件。&lt;/p>
-&lt;h2 id="单元测试">单元测试&lt;/h2>
+&lt;h3 id="单元测试">单元测试&lt;/h3>
 &lt;p>如果一个部分能独立进行测试，那被称为“单元”。向单元输入数据，并检查输出是否符合预期就是单元测试。&lt;/p>
 &lt;p>testing.T中的有用的方法：&lt;/p>
 &lt;ul>
@@ -70,7 +70,7 @@
 &lt;li>&lt;code>-cover&lt;/code>输出代码覆盖率&lt;/li>
 &lt;/ul>
 &lt;p>如&lt;code>go test -v -cover&lt;/code>&lt;/p>
-&lt;h3 id="跳过测试用例">跳过测试用例&lt;/h3>
+&lt;h4 id="跳过测试用例">跳过测试用例&lt;/h4>
 &lt;p>如果在单元测试中调用&lt;code>t.Skip()&lt;/code>函数，则会在执行到这一行时跳过该测试单元的其余部分。&lt;/p>
 &lt;p>命令中也提供这么个flag，用于逻辑判断：&lt;code>-short&lt;/code>，当设置了&lt;code>-short&lt;/code>时（如&lt;code>go test -v -cover -short&lt;/code>），代码中调用testing.Short()返回true.&lt;/p>
 &lt;p>将&lt;code>-short&lt;/code>和&lt;code>t.Skip()&lt;/code>结合使用，可实现命令行控制是否跳过某些测试函数，如：&lt;/p>
@@ -81,9 +81,9 @@ t.Skip(&amp;quot;skip for short flag.&amp;quot;)
 ...
 }
 &lt;/code>&lt;/pre>
-&lt;h3 id="设置并行运行的单元测试数量">设置并行运行的单元测试数量&lt;/h3>
+&lt;h4 id="设置并行运行的单元测试数量">设置并行运行的单元测试数量&lt;/h4>
 &lt;p>利用&lt;code>-parallel n&lt;/code>设置并行运行的单元测试数量。如&lt;code>go test -v -parallel 3&lt;/code>表示最多并行运行3个单元测试。&lt;/p>
-&lt;h2 id="基准测试">基准测试&lt;/h2>
+&lt;h3 id="基准测试">基准测试&lt;/h3>
 &lt;p>利用&lt;code>-bench [函数名的正则表达式]&lt;/code>flag，执行*_test.go中定义的基准函数的测试，用于评估函数的性能。基准函数格式：&lt;/p>
 &lt;pre>&lt;code>func BenchmarkXxx(*testing.B){...}
 &lt;/code>&lt;/pre>
@@ -96,7 +96,7 @@ for i:=0;i&amp;lt;b.N;i++{
 &lt;/code>&lt;/pre>
 &lt;p>执行所有单元测试和基准函数：&lt;code>go test -v -bench .&lt;/code>&lt;/p>
 &lt;p>如要忽略单元测试，使用&lt;code>-run [函数名的正则表达式]&lt;/code>来指定要运行的单元测试。设置为&lt;code>-run none&lt;/code>则会忽略所有单元测试。结合一下，&lt;code>go test -v -run none -bench .&lt;/code>就只会执行基准测试了。&lt;/p>
-&lt;h2 id="如何测试http">如何测试http&lt;/h2>
+&lt;h3 id="如何测试http">如何测试http&lt;/h3>
 &lt;p>测试http就是在测试处理器函数，这种函数接受http.ResponseWriter和*http.Request.问题在于如何提供这两个参数。我们可以在测试函数中伪造http server、http请求，并把response记录下来，实现伪造http整个流程，从而实现测试。&lt;/p>
 &lt;p>下面代码实现了对处理器函数的测试：&lt;/p>
 &lt;ol>
@@ -122,7 +122,7 @@ t.Error(&amp;quot;can't retrieve JSON post&amp;quot;)
 }
 }
 &lt;/code>&lt;/pre>
-&lt;h3 id="生命周期函数我自己取的名字">生命周期函数（我自己取的名字）&lt;/h3>
+&lt;h4 id="生命周期函数我自己取的名字">生命周期函数（我自己取的名字）&lt;/h4>
 &lt;p>为了在测试前、测试后统一执行一些共有的代码，可以利用生命周期函数实现。首先定义函数TestMain&lt;/p>
 &lt;pre>&lt;code>func TestMain(m *testing.M) {
 setUp()
@@ -159,10 +159,10 @@ t.Error(&amp;quot;can't retrieve JSON post&amp;quot;)
 }
 &lt;/code>&lt;/pre>
 &lt;p>这样就把mux和writer作为全局变量。测试开始前进行初始化设置。&lt;/p>
-&lt;h1 id="测试替身和依赖注入">测试替身和依赖注入&lt;/h1>
+&lt;h2 id="测试替身和依赖注入">测试替身和依赖注入&lt;/h2>
 &lt;p>为了不在测试中执行真实的操作，如测试邮件发送不希望真的发送邮件；测试数据库不希望真的修改数据库（某些场景下），我们需要用接口来实现依赖注入（替换实际对象），由依赖关系代替实际的操作，实现层的解耦。&lt;/p>
-&lt;h1 id="第三方go检测库">第三方go检测库&lt;/h1>
-&lt;h2 id="gocheck">gocheck&lt;/h2>
+&lt;h2 id="第三方go检测库">第三方go检测库&lt;/h2>
+&lt;h3 id="gocheck">gocheck&lt;/h3>
 &lt;p>这是一个基于testing构建的测试框架。安装：&lt;code>go get gopkg.in/check.v1&lt;/code>&lt;/p>
 &lt;p>有几个特点：&lt;/p>
 &lt;ul>
@@ -228,7 +228,7 @@ t.Error(&amp;quot;can't retrieve JSON post&amp;quot;)
 &lt;/li>
 &lt;/ul>
 &lt;p>注意这几个函数需要定义在suite内，如：&lt;code>func (x *XxxSuite) SetUpSuite(c *C){}&lt;/code> &lt;code>func (x *XxxSuite) SetUpTest(c *C){}&lt;/code>&lt;/p>
-&lt;h2 id="ginkgo">ginkgo&lt;/h2>
+&lt;h3 id="ginkgo">ginkgo&lt;/h3>
 &lt;p>一个行为驱动开发（BDD）风格的Go测试框架。主要用于实现BDD，但是这里只用作测试框架使用。&lt;/p>
 &lt;p>BDD，软件由目标行为定义。这些行为也就是业务需求，如：&lt;/p>
 &lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd.png"
