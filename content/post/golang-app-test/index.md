@@ -1,19 +1,32 @@
 ---
 title: "Golang中的应用测试"
 date: 2023-02-15T11:31:41+08:00
-draft: true
+draft: false
 categories:
     - golang
 tags:
     - go-web
 ---
 
-目录：
+本文记录了一下内容：
 
 - golang的单元测试、基准测试、http测试
 - 测试替身和依赖注入
 - 第三方Go测试库，gocheck，ginkgo
 
+目录：
+
+- [go应用测试概述](#go应用测试概述)
+  - [单元测试](#单元测试)
+    - [跳过测试用例](#跳过测试用例)
+    - [设置并行运行的单元测试数量](#设置并行运行的单元测试数量)
+  - [基准测试](#基准测试)
+  - [如何测试http](#如何测试http)
+    - [生命周期函数（我自己取的名字）](#生命周期函数我自己取的名字)
+- [测试替身和依赖注入](#测试替身和依赖注入)
+- [第三方go检测库](#第三方go检测库)
+  - [gocheck](#gocheck)
+  - [ginkgo](#ginkgo)
 
 
 # go应用测试概述
@@ -169,7 +182,85 @@ Error,Errorf,Fatal,Fatalf是上述函数的复合，见下表。
 
 ## gocheck
 
-安装：`go get gopkg.in/check.v1`
+这是一个基于testing构建的测试框架。安装：`go get gopkg.in/check.v1`
+
+有几个特点：
+
+- 以suite为单位分组测试（测试某个结构里的所有测试方法）
+- suite或单个测试用例粒度的生命周期函数（测试夹具）
+- 。。。
+
+使用例子，只有注册过的Suite才会被测试：
+
+```
+import(
+    . "gopkg.in/check.v1"
+)
+//定义suite
+type XxxSuite struct{}
+
+//注册suite,只有注册过的Suite才会被测试
+func init(){
+    Suite(&XxxSuite{})
+}
+
+//定义suite里的测试方法
+func (x *XxxSuite) TestHandleGet(c *C){
+    ...
+    c.Check(code,Equals,200)
+    ...
+}
+```
+
+`go test -check.vv` 会显示更详细的日志
+
+测试夹具（预定义的生命周期函数）：
+
+- suite粒度（当前套件执行前后调用）
+  - SetUpSuite
+  - TearDownSuite
+- 测试用例粒度（当前套件的每个测试用例执行前后调用）
+  - SetUpTest
+  - TearDownTest
+
+注意这几个函数需要定义在suite内，如：`func (x *XxxSuite) SetUpSuite(c *C){}` `func (x *XxxSuite) SetUpTest(c *C){}`
 
 ## ginkgo
+
+一个行为驱动开发（BDD）风格的Go测试框架。主要用于实现BDD，但是这里只用作测试框架使用。
+
+BDD，软件由目标行为定义。这些行为也就是业务需求，如：
+
+![Alt text](bdd.png)
+
+**1、用ginkgo转换已存在的测试用例为BDD风格**
+
+在包含测试文件的目录下执行`ginkgo convert .`，会生成`xxx_suite_test.go`（相当于原来testing的入口），并对原`xxx_test.go`进行修改，因此注意备份。
+
+![Alt text](ginkgo1.png)
+
+![Alt text](ginkgo2.png)
+
+![Alt text](ginkgo3.png)
+
+**2、自己编写ginkgo用例**
+
+用到2个命令：
+
+- `ginkgo bootstrap`:创建引导文件（我取的名字），类似`xxx_suite_test.go`
+- `ginkgo generate`:创建测试用例文件的骨架：
+  
+![Alt text](ginkgo4.png)
+
+这里首先再导入一个断言包Gomega，为啥要用这个呢，可能功能更强大吧。
+
+`go get github.com/onsi/gomega`
+
+接下来就在这个Describe函数里描述用户故事、情景。也就是用他给定的格式写测试代码。
+
+![Alt text](ginkgo5.png)
+
+当然ginkgo的测试夹具（预定义的生命周期函数）也不可少，`BeforeEach()`会在每个`情景`前执行(也就是每个context函数前执行)：
+
+![Alt text](ginkgo6.png)
 
