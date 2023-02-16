@@ -29,12 +29,12 @@ tags:
   - [ginkgo](#ginkgo)
 
 
-# go应用测试概述
+## go应用测试概述
 go的testing包用于测试，net/http/httptest用于测试web程序。对于源码文件server.go，可以在同目录下创建server_test.go文件，定义func TestXxx(*testing.T)函数。函数内部使用Error、Fail等方法表示测试失败，如果测试时没有出现任何失败，则表示测试通过。
 
 编写完测试文件后，在当前目录下用`go test`测试所有测试文件。
 
-## 单元测试
+### 单元测试
 
 如果一个部分能独立进行测试，那被称为“单元”。向单元输入数据，并检查输出是否符合预期就是单元测试。
 
@@ -60,7 +60,7 @@ Error,Errorf,Fatal,Fatalf是上述函数的复合，见下表。
 
 如`go test -v -cover`
 
-### 跳过测试用例
+#### 跳过测试用例
 
 如果在单元测试中调用`t.Skip()`函数，则会在执行到这一行时跳过该测试单元的其余部分。
 
@@ -75,11 +75,11 @@ Error,Errorf,Fatal,Fatalf是上述函数的复合，见下表。
         ...
     }
 
-### 设置并行运行的单元测试数量
+#### 设置并行运行的单元测试数量
 
 利用`-parallel n`设置并行运行的单元测试数量。如`go test -v -parallel 3`表示最多并行运行3个单元测试。
 
-## 基准测试
+### 基准测试
 
 利用`-bench [函数名的正则表达式]`flag，执行*_test.go中定义的基准函数的测试，用于评估函数的性能。基准函数格式：
 
@@ -97,7 +97,7 @@ Error,Errorf,Fatal,Fatalf是上述函数的复合，见下表。
 
 如要忽略单元测试，使用`-run [函数名的正则表达式]`来指定要运行的单元测试。设置为`-run none`则会忽略所有单元测试。结合一下，`go test -v -run none -bench .`就只会执行基准测试了。
 
-## 如何测试http
+### 如何测试http
 
 测试http就是在测试处理器函数，这种函数接受http.ResponseWriter和*http.Request.问题在于如何提供这两个参数。我们可以在测试函数中伪造http server、http请求，并把response记录下来，实现伪造http整个流程，从而实现测试。
 
@@ -127,7 +127,7 @@ Error,Errorf,Fatal,Fatalf是上述函数的复合，见下表。
         }
     }
 
-### 生命周期函数（我自己取的名字）
+#### 生命周期函数（我自己取的名字）
 
 为了在测试前、测试后统一执行一些共有的代码，可以利用生命周期函数实现。首先定义函数TestMain
 
@@ -174,13 +174,13 @@ Error,Errorf,Fatal,Fatalf是上述函数的复合，见下表。
 
 这样就把mux和writer作为全局变量。测试开始前进行初始化设置。
 
-# 测试替身和依赖注入
+## 测试替身和依赖注入
 
 为了不在测试中执行真实的操作，如测试邮件发送不希望真的发送邮件；测试数据库不希望真的修改数据库（某些场景下），我们需要用接口来实现依赖注入（替换实际对象），由依赖关系代替实际的操作，实现层的解耦。
 
-# 第三方go检测库
+## 第三方go检测库
 
-## gocheck
+### gocheck
 
 这是一个基于testing构建的测试框架。安装：`go get gopkg.in/check.v1`
 
@@ -225,7 +225,7 @@ func (x *XxxSuite) TestHandleGet(c *C){
 
 注意这几个函数需要定义在suite内，如：`func (x *XxxSuite) SetUpSuite(c *C){}` `func (x *XxxSuite) SetUpTest(c *C){}`
 
-## ginkgo
+### ginkgo
 
 一个行为驱动开发（BDD）风格的Go测试框架。主要用于实现BDD，但是这里只用作测试框架使用。
 
