@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-web on 茶酒的小站</title><link>http://blogs.chajiuqqq.cn/tags/go-web/</link><description>Recent content in go-web on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 15 Feb 2023 11:31:41 +0800</lastBuildDate><atom:link href="http://blogs.chajiuqqq.cn/tags/go-web/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang中的应用测试</title><link>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</link><pubDate>Wed, 15 Feb 2023 11:31:41 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</guid><description>&lt;p>本文记录了一下内容：&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-web on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/tags/go-web/</link><description>Recent content in go-web on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 15 Feb 2023 11:31:41 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/tags/go-web/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang中的应用测试</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</link><pubDate>Wed, 15 Feb 2023 11:31:41 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</guid><description>&lt;p>本文记录了一下内容：&lt;/p>
 &lt;ul>
 &lt;li>golang的单元测试、基准测试、http测试&lt;/li>
 &lt;li>测试替身和依赖注入&lt;/li>
@@ -231,10 +231,10 @@ t.Error(&amp;quot;can't retrieve JSON post&amp;quot;)
 &lt;h2 id="ginkgo">ginkgo&lt;/h2>
 &lt;p>一个行为驱动开发（BDD）风格的Go测试框架。主要用于实现BDD，但是这里只用作测试框架使用。&lt;/p>
 &lt;p>BDD，软件由目标行为定义。这些行为也就是业务需求，如：&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd.png"
 width="360"
 height="288"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd_hu562acb1999a1026474a0aa02db55fa8e_62212_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd_hu562acb1999a1026474a0aa02db55fa8e_62212_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd_hu562acb1999a1026474a0aa02db55fa8e_62212_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd_hu562acb1999a1026474a0aa02db55fa8e_62212_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
@@ -243,30 +243,30 @@ data-flex-basis="300px"
 >&lt;/p>
 &lt;p>&lt;strong>1、用ginkgo转换已存在的测试用例为BDD风格&lt;/strong>&lt;/p>
 &lt;p>在包含测试文件的目录下执行&lt;code>ginkgo convert .&lt;/code>，会生成&lt;code>xxx_suite_test.go&lt;/code>（相当于原来testing的入口），并对原&lt;code>xxx_test.go&lt;/code>进行修改，因此注意备份。&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1.png"
 width="415"
 height="295"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1_hucd32dd84a59b21270f8fc958c69c4140_58233_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1_hucd32dd84a59b21270f8fc958c69c4140_58233_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1_hucd32dd84a59b21270f8fc958c69c4140_58233_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1_hucd32dd84a59b21270f8fc958c69c4140_58233_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
 data-flex-grow="140"
 data-flex-basis="337px"
 >&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2.png"
 width="593"
 height="379"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2_hu58542b68b29aee11689b241cf1f01267_101146_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2_hu58542b68b29aee11689b241cf1f01267_101146_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2_hu58542b68b29aee11689b241cf1f01267_101146_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2_hu58542b68b29aee11689b241cf1f01267_101146_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
 data-flex-grow="156"
 data-flex-basis="375px"
 >&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3.png"
 width="661"
 height="645"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3_hu2b74b3cdcd9234ac0a5a7164ffd9d132_170488_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3_hu2b74b3cdcd9234ac0a5a7164ffd9d132_170488_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3_hu2b74b3cdcd9234ac0a5a7164ffd9d132_170488_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3_hu2b74b3cdcd9234ac0a5a7164ffd9d132_170488_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
@@ -279,10 +279,10 @@ data-flex-basis="245px"
 &lt;li>&lt;code>ginkgo bootstrap&lt;/code>:创建引导文件（我取的名字），类似&lt;code>xxx_suite_test.go&lt;/code>&lt;/li>
 &lt;li>&lt;code>ginkgo generate&lt;/code>:创建测试用例文件的骨架：&lt;/li>
 &lt;/ul>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4.png"
 width="428"
 height="254"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4_hu9c5292ea206b45f2fa38342a582ec3ea_59200_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4_hu9c5292ea206b45f2fa38342a582ec3ea_59200_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4_hu9c5292ea206b45f2fa38342a582ec3ea_59200_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4_hu9c5292ea206b45f2fa38342a582ec3ea_59200_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
@@ -292,10 +292,10 @@ data-flex-basis="404px"
 &lt;p>这里首先再导入一个断言包Gomega，为啥要用这个呢，可能功能更强大吧。&lt;/p>
 &lt;p>&lt;code>go get github.com/onsi/gomega&lt;/code>&lt;/p>
 &lt;p>接下来就在这个Describe函数里描述用户故事、情景。也就是用他给定的格式写测试代码。&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5.png"
 width="816"
 height="913"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5_hudf13b97f83400c128b950d090612810f_267180_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5_hudf13b97f83400c128b950d090612810f_267180_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5_hudf13b97f83400c128b950d090612810f_267180_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5_hudf13b97f83400c128b950d090612810f_267180_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
@@ -303,16 +303,16 @@ data-flex-grow="89"
 data-flex-basis="214px"
 >&lt;/p>
 &lt;p>当然ginkgo的测试夹具（预定义的生命周期函数）也不可少，&lt;code>BeforeEach()&lt;/code>会在每个&lt;code>情景&lt;/code>前执行(也就是每个context函数前执行)：&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6.png"
 width="719"
 height="199"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6_hu17f44393d4b37e520a6c6d067c66257d_69463_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6_hu17f44393d4b37e520a6c6d067c66257d_69463_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6_hu17f44393d4b37e520a6c6d067c66257d_69463_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6_hu17f44393d4b37e520a6c6d067c66257d_69463_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
 data-flex-grow="361"
 data-flex-basis="867px"
->&lt;/p></description></item><item><title>Golang中的数据存储</title><link>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</link><pubDate>Sun, 12 Feb 2023 08:47:06 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</guid><description>&lt;p>Golang中的数据存储有三种方案：&lt;/p>
+>&lt;/p></description></item><item><title>Golang中的数据存储</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</link><pubDate>Sun, 12 Feb 2023 08:47:06 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</guid><description>&lt;p>Golang中的数据存储有三种方案：&lt;/p>
 &lt;ul>
 &lt;li>利用容器的内存存储（非内存数据库）&lt;/li>
 &lt;li>利用文件读写的存储（文本文件如csv、二进制文件如gob）&lt;/li>

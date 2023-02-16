@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>http://blogs.chajiuqqq.cn/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 15 Feb 2023 11:31:41 +0800</lastBuildDate><atom:link href="http://blogs.chajiuqqq.cn/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang中的应用测试</title><link>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</link><pubDate>Wed, 15 Feb 2023 11:31:41 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</guid><description>&lt;p>本文记录了一下内容：&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 15 Feb 2023 11:31:41 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang中的应用测试</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</link><pubDate>Wed, 15 Feb 2023 11:31:41 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</guid><description>&lt;p>本文记录了一下内容：&lt;/p>
 &lt;ul>
 &lt;li>golang的单元测试、基准测试、http测试&lt;/li>
 &lt;li>测试替身和依赖注入&lt;/li>
@@ -231,10 +231,10 @@ t.Error(&amp;quot;can't retrieve JSON post&amp;quot;)
 &lt;h2 id="ginkgo">ginkgo&lt;/h2>
 &lt;p>一个行为驱动开发（BDD）风格的Go测试框架。主要用于实现BDD，但是这里只用作测试框架使用。&lt;/p>
 &lt;p>BDD，软件由目标行为定义。这些行为也就是业务需求，如：&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd.png"
 width="360"
 height="288"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd_hu562acb1999a1026474a0aa02db55fa8e_62212_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd_hu562acb1999a1026474a0aa02db55fa8e_62212_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd_hu562acb1999a1026474a0aa02db55fa8e_62212_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/bdd_hu562acb1999a1026474a0aa02db55fa8e_62212_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
@@ -243,30 +243,30 @@ data-flex-basis="300px"
 >&lt;/p>
 &lt;p>&lt;strong>1、用ginkgo转换已存在的测试用例为BDD风格&lt;/strong>&lt;/p>
 &lt;p>在包含测试文件的目录下执行&lt;code>ginkgo convert .&lt;/code>，会生成&lt;code>xxx_suite_test.go&lt;/code>（相当于原来testing的入口），并对原&lt;code>xxx_test.go&lt;/code>进行修改，因此注意备份。&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1.png"
 width="415"
 height="295"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1_hucd32dd84a59b21270f8fc958c69c4140_58233_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1_hucd32dd84a59b21270f8fc958c69c4140_58233_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1_hucd32dd84a59b21270f8fc958c69c4140_58233_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo1_hucd32dd84a59b21270f8fc958c69c4140_58233_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
 data-flex-grow="140"
 data-flex-basis="337px"
 >&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2.png"
 width="593"
 height="379"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2_hu58542b68b29aee11689b241cf1f01267_101146_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2_hu58542b68b29aee11689b241cf1f01267_101146_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2_hu58542b68b29aee11689b241cf1f01267_101146_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo2_hu58542b68b29aee11689b241cf1f01267_101146_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
 data-flex-grow="156"
 data-flex-basis="375px"
 >&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3.png"
 width="661"
 height="645"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3_hu2b74b3cdcd9234ac0a5a7164ffd9d132_170488_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3_hu2b74b3cdcd9234ac0a5a7164ffd9d132_170488_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3_hu2b74b3cdcd9234ac0a5a7164ffd9d132_170488_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo3_hu2b74b3cdcd9234ac0a5a7164ffd9d132_170488_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
@@ -279,10 +279,10 @@ data-flex-basis="245px"
 &lt;li>&lt;code>ginkgo bootstrap&lt;/code>:创建引导文件（我取的名字），类似&lt;code>xxx_suite_test.go&lt;/code>&lt;/li>
 &lt;li>&lt;code>ginkgo generate&lt;/code>:创建测试用例文件的骨架：&lt;/li>
 &lt;/ul>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4.png"
 width="428"
 height="254"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4_hu9c5292ea206b45f2fa38342a582ec3ea_59200_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4_hu9c5292ea206b45f2fa38342a582ec3ea_59200_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4_hu9c5292ea206b45f2fa38342a582ec3ea_59200_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo4_hu9c5292ea206b45f2fa38342a582ec3ea_59200_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
@@ -292,10 +292,10 @@ data-flex-basis="404px"
 &lt;p>这里首先再导入一个断言包Gomega，为啥要用这个呢，可能功能更强大吧。&lt;/p>
 &lt;p>&lt;code>go get github.com/onsi/gomega&lt;/code>&lt;/p>
 &lt;p>接下来就在这个Describe函数里描述用户故事、情景。也就是用他给定的格式写测试代码。&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5.png"
 width="816"
 height="913"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5_hudf13b97f83400c128b950d090612810f_267180_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5_hudf13b97f83400c128b950d090612810f_267180_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5_hudf13b97f83400c128b950d090612810f_267180_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo5_hudf13b97f83400c128b950d090612810f_267180_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
@@ -303,16 +303,16 @@ data-flex-grow="89"
 data-flex-basis="214px"
 >&lt;/p>
 &lt;p>当然ginkgo的测试夹具（预定义的生命周期函数）也不可少，&lt;code>BeforeEach()&lt;/code>会在每个&lt;code>情景&lt;/code>前执行(也就是每个context函数前执行)：&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6.png"
 width="719"
 height="199"
-srcset="http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6_hu17f44393d4b37e520a6c6d067c66257d_69463_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6_hu17f44393d4b37e520a6c6d067c66257d_69463_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6_hu17f44393d4b37e520a6c6d067c66257d_69463_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/ginkgo6_hu17f44393d4b37e520a6c6d067c66257d_69463_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
 data-flex-grow="361"
 data-flex-basis="867px"
->&lt;/p></description></item><item><title>Golang中的数据存储</title><link>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</link><pubDate>Sun, 12 Feb 2023 08:47:06 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</guid><description>&lt;p>Golang中的数据存储有三种方案：&lt;/p>
+>&lt;/p></description></item><item><title>Golang中的数据存储</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</link><pubDate>Sun, 12 Feb 2023 08:47:06 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/</guid><description>&lt;p>Golang中的数据存储有三种方案：&lt;/p>
 &lt;ul>
 &lt;li>利用容器的内存存储（非内存数据库）&lt;/li>
 &lt;li>利用文件读写的存储（文本文件如csv、二进制文件如gob）&lt;/li>
@@ -512,7 +512,7 @@ rows.Scan()
 &lt;/li>
 &lt;/ol>
 &lt;h1 id="go-orm-关系映射器">go orm 关系映射器&lt;/h1>
-&lt;p>ORM 思想是将数据结构和表结构相对应。Gorm是go里最棒的ORM。&lt;/p></description></item><item><title>一个Golang RSS内容匹配器</title><link>http://blogs.chajiuqqq.cn/p/%E4%B8%80%E4%B8%AAgolang-rss%E5%86%85%E5%AE%B9%E5%8C%B9%E9%85%8D%E5%99%A8/</link><pubDate>Tue, 07 Feb 2023 12:01:09 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/%E4%B8%80%E4%B8%AAgolang-rss%E5%86%85%E5%AE%B9%E5%8C%B9%E9%85%8D%E5%99%A8/</guid><description>&lt;blockquote>
+&lt;p>ORM 思想是将数据结构和表结构相对应。Gorm是go里最棒的ORM。&lt;/p></description></item><item><title>一个Golang RSS内容匹配器</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang-rss%E5%86%85%E5%AE%B9%E5%8C%B9%E9%85%8D%E5%99%A8/</link><pubDate>Tue, 07 Feb 2023 12:01:09 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang-rss%E5%86%85%E5%AE%B9%E5%8C%B9%E9%85%8D%E5%99%A8/</guid><description>&lt;blockquote>
 &lt;p>go-in-action里的一个demo，给定需要匹配的字符串，在搜索源（如rss）中批量查询最新文章，返回结果（如相匹配的title和description）&lt;/p>
 &lt;p>关键字：&lt;code>goroutine并发&lt;/code>，&lt;code>json/xml反序列化&lt;/code>，&lt;code>网络请求&lt;/code>&lt;/p>
 &lt;p>项目地址：https://github.com/chajiuqqq/go-rss-matcher&lt;/p>
@@ -562,7 +562,7 @@ China's foreign ministry described the balloon as &amp;quot;a civilian airship&a
 &lt;li>设计matcherMap，不同类型的Matcher注册后保存在这里，方便不同数据源匹配和数据源类型拓展&lt;/li>
 &lt;li>每个goroutine执行一个feed的搜索，并发执行，提高性能&lt;/li>
 &lt;li>查询结果后，goroutine通过无缓冲chan把数据发送主线程展示，同步获取并展示，利用了语言特性&lt;/li>
-&lt;/ul></description></item><item><title>一个golang自定义日志记录器</title><link>http://blogs.chajiuqqq.cn/p/%E4%B8%80%E4%B8%AAgolang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</link><pubDate>Tue, 07 Feb 2023 11:03:38 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/%E4%B8%80%E4%B8%AAgolang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</guid><description>&lt;p>标准库的log包无法实现日志分级处理，这个demo可以实现日志的多级处理。原理是定义多个log对象，并指定不同的输出，实现不同等级日志不同输出。&lt;/p>
+&lt;/ul></description></item><item><title>一个golang自定义日志记录器</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</link><pubDate>Tue, 07 Feb 2023 11:03:38 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang%E8%87%AA%E5%AE%9A%E4%B9%89%E6%97%A5%E5%BF%97%E8%AE%B0%E5%BD%95%E5%99%A8/</guid><description>&lt;p>标准库的log包无法实现日志分级处理，这个demo可以实现日志的多级处理。原理是定义多个log对象，并指定不同的输出，实现不同等级日志不同输出。&lt;/p>
 &lt;p>mlog包代码如下：&lt;/p>
 &lt;pre>&lt;code>// mlog.go
 package mlog
@@ -605,12 +605,12 @@ ERROR: 2023/02/07 10:56:23 main.go:9: error...
 &lt;p>Info和Warning则是直接输出到stdout：&lt;/p>
 &lt;pre>&lt;code>INFO: 2023/02/07 10:56:23 main.go:7: Info...
 WARNING: 2023/02/07 10:56:23 main.go:8: warning...
-&lt;/code>&lt;/pre></description></item><item><title>Blockly2python Web Edition开发流程</title><link>http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</link><pubDate>Mon, 31 Oct 2022 22:19:10 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</guid><description>&lt;p>实验室二次开发一个blockly平台，这是一个积木化编程平台，可从积木生成各种语言代码，如Python。界面如下，积木到代码由原blockly库提供，不难。
+&lt;/code>&lt;/pre></description></item><item><title>Blockly2python Web Edition开发流程</title><link>https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</link><pubDate>Mon, 31 Oct 2022 22:19:10 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/</guid><description>&lt;p>实验室二次开发一个blockly平台，这是一个积木化编程平台，可从积木生成各种语言代码，如Python。界面如下，积木到代码由原blockly库提供，不难。
 而运行python代码刚开始是放在jupyter notebook，手动复制过去运行。
-&lt;img src="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1.png"
+&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1.png"
 width="1920"
 height="956"
-srcset="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1_hub3116288970dfe0c4418dcd69b8a6259_195771_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1_hub3116288970dfe0c4418dcd69b8a6259_195771_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1_hub3116288970dfe0c4418dcd69b8a6259_195771_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly1_hub3116288970dfe0c4418dcd69b8a6259_195771_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 class="gallery-image"
 data-flex-grow="200"
@@ -663,10 +663,10 @@ addToOutput(err);
 &amp;lt;/body&amp;gt;
 &amp;lt;/html&amp;gt;
 &lt;/code>&lt;/pre>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo.png"
 width="861"
 height="253"
-srcset="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo_hue20e8405241a231c5633442d0a619047_8568_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo_hue20e8405241a231c5633442d0a619047_8568_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo_hue20e8405241a231c5633442d0a619047_8568_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/pyodide-demo_hue20e8405241a231c5633442d0a619047_8568_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 class="gallery-image"
 data-flex-grow="340"
@@ -776,10 +776,10 @@ main()
 &lt;p>&lt;strong>第一个方法&lt;/strong>参考这个&lt;a class="link" href="https://blog.pyodide.org/posts/canvas-renderer-matplotlib-in-pyodide/" target="_blank" rel="noopener"
 >blog&lt;/a>，里面提到的这个&lt;a class="link" href="https://jsfiddle.net/gh/get/library/pure/pyodide/pyodide-blog/contents/demos/canvas-renderer-matplotlib/demo-1/" target="_blank" rel="noopener"
 >demo&lt;/a>用处很大，直接显示了如何从matplotlab显示图像到网页。&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2.png"
 width="1709"
 height="481"
-srcset="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2_hua31076cea541db4698eea6ed159fad99_97981_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2_hua31076cea541db4698eea6ed159fad99_97981_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2_hua31076cea541db4698eea6ed159fad99_97981_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo2_hua31076cea541db4698eea6ed159fad99_97981_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 class="gallery-image"
 data-flex-grow="355"
@@ -792,10 +792,10 @@ matplotlib.use(&amp;quot;module://matplotlib.backends.html5_canvas_backend&amp;q
 &lt;p>指定matplotlab的backend为html5_canvas_backend，就可以生成canvas了，但是有个问题是我不知道如何控制这个canvas的位置，于是使用第二个方法。&lt;/p>
 &lt;p>&lt;strong>第二个方法&lt;/strong>参考这个&lt;a class="link" href="https://codepen.io/aagostini/pen/LYExVJL?editors=1000" target="_blank" rel="noopener"
 >网页&lt;/a>，虽然它的pyodide.js链接失效了看不出效果，但是可以修改一下，看到matplotlab作图出现在html上了：&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3.png"
 width="672"
 height="523"
-srcset="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3_hu6129f7b5febdece6f7990ff7a3cd189c_23069_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3_hu6129f7b5febdece6f7990ff7a3cd189c_23069_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3_hu6129f7b5febdece6f7990ff7a3cd189c_23069_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/demo3_hu6129f7b5febdece6f7990ff7a3cd189c_23069_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 class="gallery-image"
 data-flex-grow="128"
@@ -910,15 +910,15 @@ main()
 &lt;pre>&lt;code>&amp;lt;div id=&amp;quot;pyplotdiv&amp;quot;&amp;gt;&amp;lt;img id=&amp;quot;pyplotfigure&amp;quot; style=&amp;quot;width: 100% ;&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt;
 &lt;/code>&lt;/pre>
 &lt;p>最后展示一下：&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2.png"
 width="1920"
 height="950"
-srcset="http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2_hud88af843e7fc05c8a3089f4e81c8046f_281315_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2_hud88af843e7fc05c8a3089f4e81c8046f_281315_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2_hud88af843e7fc05c8a3089f4e81c8046f_281315_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/blockly2python-web-edition%E5%BC%80%E5%8F%91%E6%B5%81%E7%A8%8B/blockly2_hud88af843e7fc05c8a3089f4e81c8046f_281315_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 class="gallery-image"
 data-flex-grow="202"
 data-flex-basis="485px"
->&lt;/p></description></item><item><title>GoLang中的Strings, bytes, runes和characters</title><link>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</link><pubDate>Fri, 07 Oct 2022 12:16:11 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</guid><description>&lt;blockquote>
+>&lt;/p></description></item><item><title>GoLang中的Strings, bytes, runes和characters</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</link><pubDate>Fri, 07 Oct 2022 12:16:11 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</guid><description>&lt;blockquote>
 &lt;p>原文标题：Strings, bytes, runes and characters in Go&lt;/p>
 &lt;p>原文地址：https://go.dev/blog/strings&lt;/p>
 &lt;p>译者：z&lt;/p>
@@ -1084,7 +1084,7 @@ w = width
 >unicode/utf8文档&lt;/a>&lt;/p>
 &lt;h1 id="结论">结论&lt;/h1>
 &lt;p>回答一下文章开始提出的问题：字符串由字节组成，因此索引字符串会获得字节，而不是字符。一个字符串甚至可能不包含字符。实际上“字符”的定义就是模糊的，如果你把字符串定义为由字符组成，你可能会遇到一些模糊性问题。&lt;/p>
-&lt;p>还有很多关于unicode，UTF-8和多语言文本处理的东西可以讲，但是请等下一个blog吧，现在我希望你更理解Go的字符串如何呈现的了，即使它们可能包含任意的字节，它的核心设计的一部分仍旧是UTF-8编码.&lt;/p></description></item><item><title>使用Cloudflare Tunnel实现本地服务暴露</title><link>http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</link><pubDate>Sat, 01 Oct 2022 13:31:05 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</guid><description>&lt;p>Cloudflare Tunnel可以实现通过域名访问本地暴露的服务功能，类似frp做的隧道，但是不用自己搭建服务端，只要配置好客户端即可。&lt;a class="link" href="https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/" target="_blank" rel="noopener"
+&lt;p>还有很多关于unicode，UTF-8和多语言文本处理的东西可以讲，但是请等下一个blog吧，现在我希望你更理解Go的字符串如何呈现的了，即使它们可能包含任意的字节，它的核心设计的一部分仍旧是UTF-8编码.&lt;/p></description></item><item><title>使用Cloudflare Tunnel实现本地服务暴露</title><link>https://chajiuqqq.github.io/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</link><pubDate>Sat, 01 Oct 2022 13:31:05 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</guid><description>&lt;p>Cloudflare Tunnel可以实现通过域名访问本地暴露的服务功能，类似frp做的隧道，但是不用自己搭建服务端，只要配置好客户端即可。&lt;a class="link" href="https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/" target="_blank" rel="noopener"
 >doc link&lt;/a>&lt;/p>
 &lt;p>下面说一下配置方式。&lt;/p>
 &lt;h1 id="1dashboard创建tunnel">1、Dashboard创建tunnel&lt;/h1>
@@ -1101,10 +1101,10 @@ w = width
 >这里&lt;/a>创建。需要自行申请一个域名，推荐&lt;a class="link" href="https://www.freenom.com/zh/index.html?lang=zh" target="_blank" rel="noopener"
 >freenom&lt;/a>，然后修改域名nameserver为cloudflare的，这样这个域名就可以由cloudflare管理了。&lt;/p>
 &lt;/blockquote>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting.png"
 width="1084"
 height="551"
-srcset="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Public-Hostname-setting"
 class="gallery-image"
@@ -1121,10 +1121,10 @@ data-flex-basis="472px"
 &lt;p>我使用的是群晖nas+docker版，主要是图形化的docker怎么运行cloudflared。&lt;/p>
 &lt;ol>
 &lt;li>下载docker套件
-&lt;img src="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1.png"
+&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1.png"
 width="988"
 height="568"
-srcset="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="docker"
 class="gallery-image"
@@ -1141,10 +1141,10 @@ data-flex-basis="417px"
 &lt;li>&lt;a class="link" href="https://dash.teams.cloudflare.com/" target="_blank" rel="noopener"
 >Zero Trust dashboard&lt;/a>的tunnel里看到active就说明连上了&lt;/li>
 &lt;/ol>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels.png"
 width="1562"
 height="344"
-srcset="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="tunnel"
 class="gallery-image"
@@ -1152,7 +1152,7 @@ data-flex-grow="454"
 data-flex-basis="1089px"
 >&lt;/p>
 &lt;h1 id="3访问subdomin就会代理到你本地的服务">3、访问subdomin就会代理到你本地的服务&lt;/h1>
-&lt;p>如我的nas域名设置了&lt;code>https://nas.ipppz.tk/&lt;/code>，并转发到nas的5000端口，接下来就直接用域名访问即可，也是支持https的。&lt;/p></description></item><item><title>Hugo + GitPages博客搭建指南</title><link>http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</link><pubDate>Wed, 24 Aug 2022 16:32:10 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</guid><description>&lt;p>应该算是第一篇比较正式的blog吧，前几天把bolg搭起来了，今天又实现了持续集成，可以实现一个仓库保存blogs和网站页面，并在更新的时候自动构建+部署网站。这种构建方式最大的好处是免费+资料掌握+自动部署，那下面就来介绍一下怎么实现。&lt;/p>
+&lt;p>如我的nas域名设置了&lt;code>https://nas.ipppz.tk/&lt;/code>，并转发到nas的5000端口，接下来就直接用域名访问即可，也是支持https的。&lt;/p></description></item><item><title>Hugo + GitPages博客搭建指南</title><link>https://chajiuqqq.github.io/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</link><pubDate>Wed, 24 Aug 2022 16:32:10 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</guid><description>&lt;p>应该算是第一篇比较正式的blog吧，前几天把bolg搭起来了，今天又实现了持续集成，可以实现一个仓库保存blogs和网站页面，并在更新的时候自动构建+部署网站。这种构建方式最大的好处是免费+资料掌握+自动部署，那下面就来介绍一下怎么实现。&lt;/p>
 &lt;h2 id="使用流程">使用流程&lt;/h2>
 &lt;p>在多台设备上可clone一个仓库，使用hugo或手动在content/post下新建md文件攥写文章，完成后git提交并推送远程仓库，远程仓库会自动构建网站，用户等一会就可以看到网站更新了。&lt;/p>
 &lt;p>编写环境只要有git即可完成编写+部署流程（当然添加了hugo在创建文章时会更方便啦，而且可以本地看到效果）。&lt;/p>
@@ -1160,10 +1160,10 @@ data-flex-basis="1089px"
 &lt;p>博客可以是静态的，也可以是动态的。静态的就是一堆由HTML和CSS、JS组成的文件直接被浏览器访问，没有后台程序提供业务支持，好处是不吃资源，访问只受网络带宽限制，坏处是没法做业务处理了；&lt;/p>
 &lt;p>动态指的是由前端+后端组合支持的网站，好处是可以做自由的业务和管理，坏处是部署麻烦，对资源需求大，并发访问受到服务器性能限制。&lt;/p>
 &lt;p>为了便于维护，本文搭建的是静态网站。&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site.png"
 width="1920"
 height="956"
-srcset="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="网站首页"
 class="gallery-image"
@@ -1300,10 +1300,10 @@ data-flex-basis="482px"
 &lt;/div>
 &lt;/div>&lt;p>在github上创建新仓库，这个仓库名称可以是&lt;code>用户名.github.io&lt;/code>，或者别的。最后访问地址是&lt;code>用户名.github.io&lt;/code>或者&lt;code>用户名.github.io/仓库名&lt;/code>.不需要readme。然后本地仓库添加远程仓库，并推送。&lt;/p>
 &lt;p>推送成功后，Action会自动build网站并推送到&lt;code>gh-pages&lt;/code>分支。&lt;strong>因此我们使用一个仓库的不同分支来管理文章源代码和网站代码。&lt;/strong>&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions.png"
 width="1195"
 height="598"
-srcset="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions_hu9895419489f656548e8439ae60fcd50a_57435_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions_hu9895419489f656548e8439ae60fcd50a_57435_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions_hu9895419489f656548e8439ae60fcd50a_57435_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions_hu9895419489f656548e8439ae60fcd50a_57435_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="actions的任务"
 class="gallery-image"
@@ -1313,10 +1313,10 @@ data-flex-basis="479px"
 &lt;h3 id="3设置github-page">3、设置GitHub Page&lt;/h3>
 &lt;p>在项目设置里选择Pages，初次构建需要指定哪个分支的代码用作Page，选择&lt;code>gh-pages&lt;/code>分支并保存即可，上方会给出可以访问的地址。我的仓库名称是blogs，因此地址是 &lt;a class="link" href="https://chajiuqqq.github.io/blogs/" target="_blank" rel="noopener"
 >https://chajiuqqq.github.io/blogs/&lt;/a> ，试试访问你的网站，应该可以看到第一篇文章咯。&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages.png"
 width="1412"
 height="584"
-srcset="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages_hu35e357df209da35323a2b06f1e97eb4b_69984_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages_hu35e357df209da35323a2b06f1e97eb4b_69984_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages_hu35e357df209da35323a2b06f1e97eb4b_69984_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages_hu35e357df209da35323a2b06f1e97eb4b_69984_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Pages"
 class="gallery-image"
@@ -1365,10 +1365,10 @@ data-flex-basis="580px"
 &lt;p>hugo提供了很多好看的&lt;a class="link" href="https://themes.gohugo.io/" target="_blank" rel="noopener"
 >主题&lt;/a>，参考主题指南进行更换哦，比如我使用的&lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener"
 >hugo-theme-stack&lt;/a>&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site.png"
 width="1920"
 height="956"
-srcset="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="site"
 class="gallery-image"
@@ -1866,22 +1866,22 @@ data-flex-basis="482px"
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s1"> tabWidth: 4
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div></description></item><item><title>Say Hello</title><link>http://blogs.chajiuqqq.cn/p/say-hello/</link><pubDate>Thu, 18 Aug 2022 15:20:49 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/say-hello/</guid><description>&lt;img src="http://blogs.chajiuqqq.cn/p/say-hello/butterfly-7353884_1920.jpeg" alt="Featured image of post Say Hello" />&lt;h1 id="正文">正文&lt;/h1>
+&lt;/div></description></item><item><title>Say Hello</title><link>https://chajiuqqq.github.io/blogs/p/say-hello/</link><pubDate>Thu, 18 Aug 2022 15:20:49 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/say-hello/</guid><description>&lt;img src="https://chajiuqqq.github.io/blogs/p/say-hello/butterfly-7353884_1920.jpeg" alt="Featured image of post Say Hello" />&lt;h1 id="正文">正文&lt;/h1>
 &lt;p>你好，测试&lt;/p>
 &lt;p>这是2朵美丽的花：&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/say-hello/hd-wallpaper-729509_1920.jpeg"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/say-hello/hd-wallpaper-729509_1920.jpeg"
 width="1920"
 height="1276"
-srcset="http://blogs.chajiuqqq.cn/p/say-hello/hd-wallpaper-729509_1920_hu1ea7706b7fdfa16a77a7c4890333d61b_217312_480x0_resize_q75_box.jpeg 480w, http://blogs.chajiuqqq.cn/p/say-hello/hd-wallpaper-729509_1920_hu1ea7706b7fdfa16a77a7c4890333d61b_217312_1024x0_resize_q75_box.jpeg 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/say-hello/hd-wallpaper-729509_1920_hu1ea7706b7fdfa16a77a7c4890333d61b_217312_480x0_resize_q75_box.jpeg 480w, https://chajiuqqq.github.io/blogs/blogs/p/say-hello/hd-wallpaper-729509_1920_hu1ea7706b7fdfa16a77a7c4890333d61b_217312_1024x0_resize_q75_box.jpeg 1024w"
 loading="lazy"
 alt="花"
 class="gallery-image"
 data-flex-grow="150"
 data-flex-basis="361px"
-> &lt;img src="http://blogs.chajiuqqq.cn/p/say-hello/pink-324175_1920.jpeg"
+> &lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/say-hello/pink-324175_1920.jpeg"
 width="1920"
 height="1280"
-srcset="http://blogs.chajiuqqq.cn/p/say-hello/pink-324175_1920_hu4e15e464a1e9f3ac1cfdc3bdb94f6e91_247638_480x0_resize_q75_box.jpeg 480w, http://blogs.chajiuqqq.cn/p/say-hello/pink-324175_1920_hu4e15e464a1e9f3ac1cfdc3bdb94f6e91_247638_1024x0_resize_q75_box.jpeg 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/say-hello/pink-324175_1920_hu4e15e464a1e9f3ac1cfdc3bdb94f6e91_247638_480x0_resize_q75_box.jpeg 480w, https://chajiuqqq.github.io/blogs/blogs/p/say-hello/pink-324175_1920_hu4e15e464a1e9f3ac1cfdc3bdb94f6e91_247638_1024x0_resize_q75_box.jpeg 1024w"
 loading="lazy"
 alt="樱花"
 class="gallery-image"
@@ -1889,19 +1889,19 @@ data-flex-grow="150"
 data-flex-basis="360px"
 >&lt;/p>
 &lt;p>竖排：&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/say-hello/flower-7383308_1920.jpeg"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/say-hello/flower-7383308_1920.jpeg"
 width="1280"
 height="1920"
-srcset="http://blogs.chajiuqqq.cn/p/say-hello/flower-7383308_1920_hub463be3c8ad1426b92fad2c544b4c6fb_189157_480x0_resize_q75_box.jpeg 480w, http://blogs.chajiuqqq.cn/p/say-hello/flower-7383308_1920_hub463be3c8ad1426b92fad2c544b4c6fb_189157_1024x0_resize_q75_box.jpeg 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/say-hello/flower-7383308_1920_hub463be3c8ad1426b92fad2c544b4c6fb_189157_480x0_resize_q75_box.jpeg 480w, https://chajiuqqq.github.io/blogs/blogs/p/say-hello/flower-7383308_1920_hub463be3c8ad1426b92fad2c544b4c6fb_189157_1024x0_resize_q75_box.jpeg 1024w"
 loading="lazy"
 alt="荷花"
 class="gallery-image"
 data-flex-grow="66"
 data-flex-basis="160px"
-> &lt;img src="http://blogs.chajiuqqq.cn/p/say-hello/cat-2083492_1920.jpeg"
+> &lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/say-hello/cat-2083492_1920.jpeg"
 width="1920"
 height="1171"
-srcset="http://blogs.chajiuqqq.cn/p/say-hello/cat-2083492_1920_hu7a831542b4a972124b3df6473c37debd_414826_480x0_resize_q75_box.jpeg 480w, http://blogs.chajiuqqq.cn/p/say-hello/cat-2083492_1920_hu7a831542b4a972124b3df6473c37debd_414826_1024x0_resize_q75_box.jpeg 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/say-hello/cat-2083492_1920_hu7a831542b4a972124b3df6473c37debd_414826_480x0_resize_q75_box.jpeg 480w, https://chajiuqqq.github.io/blogs/blogs/p/say-hello/cat-2083492_1920_hu7a831542b4a972124b3df6473c37debd_414826_1024x0_resize_q75_box.jpeg 1024w"
 loading="lazy"
 alt="猫"
 class="gallery-image"
@@ -1909,7 +1909,7 @@ data-flex-grow="163"
 data-flex-basis="393px"
 >&lt;/p>
 &lt;h1 id="第二段">第二段&lt;/h1>
-&lt;p>会议&lt;/p></description></item><item><title>Archives</title><link>http://blogs.chajiuqqq.cn/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>http://blogs.chajiuqqq.cn/archives/</guid><description/></item><item><title>Links</title><link>http://blogs.chajiuqqq.cn/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://blogs.chajiuqqq.cn/links/</guid><description>&lt;p>To use this feature, add &lt;code>links&lt;/code> section to frontmatter.&lt;/p>
+&lt;p>会议&lt;/p></description></item><item><title>Archives</title><link>https://chajiuqqq.github.io/blogs/archives/</link><pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate><guid>https://chajiuqqq.github.io/blogs/archives/</guid><description/></item><item><title>Links</title><link>https://chajiuqqq.github.io/blogs/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chajiuqqq.github.io/blogs/links/</guid><description>&lt;p>To use this feature, add &lt;code>links&lt;/code> section to frontmatter.&lt;/p>
 &lt;p>This page&amp;rsquo;s frontmatter:&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -1935,4 +1935,4 @@ data-flex-basis="393px"
 &lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ts-logo-128.jpg&lt;/span>&lt;span class="w">
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>&lt;code>image&lt;/code> field accepts both local and external images.&lt;/p></description></item><item><title>Search</title><link>http://blogs.chajiuqqq.cn/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://blogs.chajiuqqq.cn/search/</guid><description/></item><item><title>关于</title><link>http://blogs.chajiuqqq.cn/%E5%85%B3%E4%BA%8E/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>http://blogs.chajiuqqq.cn/%E5%85%B3%E4%BA%8E/</guid><description>&lt;p>This is a test page for i18n support.&lt;/p></description></item></channel></rss>
+&lt;/div>&lt;p>&lt;code>image&lt;/code> field accepts both local and external images.&lt;/p></description></item><item><title>Search</title><link>https://chajiuqqq.github.io/blogs/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chajiuqqq.github.io/blogs/search/</guid><description/></item><item><title>关于</title><link>https://chajiuqqq.github.io/blogs/%E5%85%B3%E4%BA%8E/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chajiuqqq.github.io/blogs/%E5%85%B3%E4%BA%8E/</guid><description>&lt;p>This is a test page for i18n support.&lt;/p></description></item></channel></rss>

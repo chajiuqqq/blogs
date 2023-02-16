@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技术 on 茶酒的小站</title><link>http://blogs.chajiuqqq.cn/categories/%E6%8A%80%E6%9C%AF/</link><description>Recent content in 技术 on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 07 Oct 2022 12:16:11 +0800</lastBuildDate><atom:link href="http://blogs.chajiuqqq.cn/categories/%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml"/><item><title>GoLang中的Strings, bytes, runes和characters</title><link>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</link><pubDate>Fri, 07 Oct 2022 12:16:11 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>技术 on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/categories/%E6%8A%80%E6%9C%AF/</link><description>Recent content in 技术 on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 07 Oct 2022 12:16:11 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/categories/%E6%8A%80%E6%9C%AF/index.xml" rel="self" type="application/rss+xml"/><item><title>GoLang中的Strings, bytes, runes和characters</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</link><pubDate>Fri, 07 Oct 2022 12:16:11 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84strings-bytes-runes%E5%92%8Ccharacters/</guid><description>&lt;blockquote>
 &lt;p>原文标题：Strings, bytes, runes and characters in Go&lt;/p>
 &lt;p>原文地址：https://go.dev/blog/strings&lt;/p>
 &lt;p>译者：z&lt;/p>
@@ -164,7 +164,7 @@ w = width
 >unicode/utf8文档&lt;/a>&lt;/p>
 &lt;h1 id="结论">结论&lt;/h1>
 &lt;p>回答一下文章开始提出的问题：字符串由字节组成，因此索引字符串会获得字节，而不是字符。一个字符串甚至可能不包含字符。实际上“字符”的定义就是模糊的，如果你把字符串定义为由字符组成，你可能会遇到一些模糊性问题。&lt;/p>
-&lt;p>还有很多关于unicode，UTF-8和多语言文本处理的东西可以讲，但是请等下一个blog吧，现在我希望你更理解Go的字符串如何呈现的了，即使它们可能包含任意的字节，它的核心设计的一部分仍旧是UTF-8编码.&lt;/p></description></item><item><title>使用Cloudflare Tunnel实现本地服务暴露</title><link>http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</link><pubDate>Sat, 01 Oct 2022 13:31:05 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</guid><description>&lt;p>Cloudflare Tunnel可以实现通过域名访问本地暴露的服务功能，类似frp做的隧道，但是不用自己搭建服务端，只要配置好客户端即可。&lt;a class="link" href="https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/" target="_blank" rel="noopener"
+&lt;p>还有很多关于unicode，UTF-8和多语言文本处理的东西可以讲，但是请等下一个blog吧，现在我希望你更理解Go的字符串如何呈现的了，即使它们可能包含任意的字节，它的核心设计的一部分仍旧是UTF-8编码.&lt;/p></description></item><item><title>使用Cloudflare Tunnel实现本地服务暴露</title><link>https://chajiuqqq.github.io/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</link><pubDate>Sat, 01 Oct 2022 13:31:05 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/</guid><description>&lt;p>Cloudflare Tunnel可以实现通过域名访问本地暴露的服务功能，类似frp做的隧道，但是不用自己搭建服务端，只要配置好客户端即可。&lt;a class="link" href="https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/" target="_blank" rel="noopener"
 >doc link&lt;/a>&lt;/p>
 &lt;p>下面说一下配置方式。&lt;/p>
 &lt;h1 id="1dashboard创建tunnel">1、Dashboard创建tunnel&lt;/h1>
@@ -181,10 +181,10 @@ w = width
 >这里&lt;/a>创建。需要自行申请一个域名，推荐&lt;a class="link" href="https://www.freenom.com/zh/index.html?lang=zh" target="_blank" rel="noopener"
 >freenom&lt;/a>，然后修改域名nameserver为cloudflare的，这样这个域名就可以由cloudflare管理了。&lt;/p>
 &lt;/blockquote>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting.png"
 width="1084"
 height="551"
-srcset="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/Public-Hostname-setting_hu4a20066970291721232917880ba3e00e_33635_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Public-Hostname-setting"
 class="gallery-image"
@@ -201,10 +201,10 @@ data-flex-basis="472px"
 &lt;p>我使用的是群晖nas+docker版，主要是图形化的docker怎么运行cloudflared。&lt;/p>
 &lt;ol>
 &lt;li>下载docker套件
-&lt;img src="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1.png"
+&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1.png"
 width="988"
 height="568"
-srcset="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/docker1_hu3058fc238dddf7c434e62d2f7d791943_44011_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="docker"
 class="gallery-image"
@@ -221,10 +221,10 @@ data-flex-basis="417px"
 &lt;li>&lt;a class="link" href="https://dash.teams.cloudflare.com/" target="_blank" rel="noopener"
 >Zero Trust dashboard&lt;/a>的tunnel里看到active就说明连上了&lt;/li>
 &lt;/ol>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels.png"
 width="1562"
 height="344"
-srcset="http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E4%BD%BF%E7%94%A8cloudflare-tunnel%E5%AE%9E%E7%8E%B0%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E6%9A%B4%E9%9C%B2/tunnels_hu78e136ca2f87245cb30a4fe2dac75327_21867_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="tunnel"
 class="gallery-image"
@@ -232,7 +232,7 @@ data-flex-grow="454"
 data-flex-basis="1089px"
 >&lt;/p>
 &lt;h1 id="3访问subdomin就会代理到你本地的服务">3、访问subdomin就会代理到你本地的服务&lt;/h1>
-&lt;p>如我的nas域名设置了&lt;code>https://nas.ipppz.tk/&lt;/code>，并转发到nas的5000端口，接下来就直接用域名访问即可，也是支持https的。&lt;/p></description></item><item><title>Hugo + GitPages博客搭建指南</title><link>http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</link><pubDate>Wed, 24 Aug 2022 16:32:10 +0800</pubDate><guid>http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</guid><description>&lt;p>应该算是第一篇比较正式的blog吧，前几天把bolg搭起来了，今天又实现了持续集成，可以实现一个仓库保存blogs和网站页面，并在更新的时候自动构建+部署网站。这种构建方式最大的好处是免费+资料掌握+自动部署，那下面就来介绍一下怎么实现。&lt;/p>
+&lt;p>如我的nas域名设置了&lt;code>https://nas.ipppz.tk/&lt;/code>，并转发到nas的5000端口，接下来就直接用域名访问即可，也是支持https的。&lt;/p></description></item><item><title>Hugo + GitPages博客搭建指南</title><link>https://chajiuqqq.github.io/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</link><pubDate>Wed, 24 Aug 2022 16:32:10 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/</guid><description>&lt;p>应该算是第一篇比较正式的blog吧，前几天把bolg搭起来了，今天又实现了持续集成，可以实现一个仓库保存blogs和网站页面，并在更新的时候自动构建+部署网站。这种构建方式最大的好处是免费+资料掌握+自动部署，那下面就来介绍一下怎么实现。&lt;/p>
 &lt;h2 id="使用流程">使用流程&lt;/h2>
 &lt;p>在多台设备上可clone一个仓库，使用hugo或手动在content/post下新建md文件攥写文章，完成后git提交并推送远程仓库，远程仓库会自动构建网站，用户等一会就可以看到网站更新了。&lt;/p>
 &lt;p>编写环境只要有git即可完成编写+部署流程（当然添加了hugo在创建文章时会更方便啦，而且可以本地看到效果）。&lt;/p>
@@ -240,10 +240,10 @@ data-flex-basis="1089px"
 &lt;p>博客可以是静态的，也可以是动态的。静态的就是一堆由HTML和CSS、JS组成的文件直接被浏览器访问，没有后台程序提供业务支持，好处是不吃资源，访问只受网络带宽限制，坏处是没法做业务处理了；&lt;/p>
 &lt;p>动态指的是由前端+后端组合支持的网站，好处是可以做自由的业务和管理，坏处是部署麻烦，对资源需求大，并发访问受到服务器性能限制。&lt;/p>
 &lt;p>为了便于维护，本文搭建的是静态网站。&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site.png"
 width="1920"
 height="956"
-srcset="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="网站首页"
 class="gallery-image"
@@ -380,10 +380,10 @@ data-flex-basis="482px"
 &lt;/div>
 &lt;/div>&lt;p>在github上创建新仓库，这个仓库名称可以是&lt;code>用户名.github.io&lt;/code>，或者别的。最后访问地址是&lt;code>用户名.github.io&lt;/code>或者&lt;code>用户名.github.io/仓库名&lt;/code>.不需要readme。然后本地仓库添加远程仓库，并推送。&lt;/p>
 &lt;p>推送成功后，Action会自动build网站并推送到&lt;code>gh-pages&lt;/code>分支。&lt;strong>因此我们使用一个仓库的不同分支来管理文章源代码和网站代码。&lt;/strong>&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions.png"
 width="1195"
 height="598"
-srcset="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions_hu9895419489f656548e8439ae60fcd50a_57435_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions_hu9895419489f656548e8439ae60fcd50a_57435_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions_hu9895419489f656548e8439ae60fcd50a_57435_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/actions_hu9895419489f656548e8439ae60fcd50a_57435_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="actions的任务"
 class="gallery-image"
@@ -393,10 +393,10 @@ data-flex-basis="479px"
 &lt;h3 id="3设置github-page">3、设置GitHub Page&lt;/h3>
 &lt;p>在项目设置里选择Pages，初次构建需要指定哪个分支的代码用作Page，选择&lt;code>gh-pages&lt;/code>分支并保存即可，上方会给出可以访问的地址。我的仓库名称是blogs，因此地址是 &lt;a class="link" href="https://chajiuqqq.github.io/blogs/" target="_blank" rel="noopener"
 >https://chajiuqqq.github.io/blogs/&lt;/a> ，试试访问你的网站，应该可以看到第一篇文章咯。&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages.png"
 width="1412"
 height="584"
-srcset="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages_hu35e357df209da35323a2b06f1e97eb4b_69984_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages_hu35e357df209da35323a2b06f1e97eb4b_69984_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages_hu35e357df209da35323a2b06f1e97eb4b_69984_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/pages_hu35e357df209da35323a2b06f1e97eb4b_69984_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Pages"
 class="gallery-image"
@@ -445,10 +445,10 @@ data-flex-basis="580px"
 &lt;p>hugo提供了很多好看的&lt;a class="link" href="https://themes.gohugo.io/" target="_blank" rel="noopener"
 >主题&lt;/a>，参考主题指南进行更换哦，比如我使用的&lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener"
 >hugo-theme-stack&lt;/a>&lt;/p>
-&lt;p>&lt;img src="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site.png"
 width="1920"
 height="956"
-srcset="http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_480x0_resize_box_3.png 480w, http://blogs.chajiuqqq.cn/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/hugo--gitpages%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%8C%87%E5%8D%97/site_hu09785a97a006931e2c73fa78e466fe9e_1043218_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="site"
 class="gallery-image"
