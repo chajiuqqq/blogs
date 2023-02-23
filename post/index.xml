@@ -1,4 +1,214 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/post/</link><description>Recent content in Posts on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 15 Feb 2023 11:31:41 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang中的应用测试</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</link><pubDate>Wed, 15 Feb 2023 11:31:41 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</guid><description>&lt;p>本文记录了一下内容：&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/post/</link><description>Recent content in Posts on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 23 Feb 2023 15:24:58 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang中的Template模板引擎</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/</link><pubDate>Thu, 23 Feb 2023 15:24:58 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/</guid><description>&lt;ul>
+&lt;li>&lt;a class="link" href="#%e5%a6%82%e4%bd%95%e8%af%bb%e5%8f%96%e6%a8%a1%e7%89%88%e5%b9%b6%e8%bf%94%e5%9b%9ehtml" >如何读取模版并返回HTML&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#template%e9%87%8c%e7%9a%84%e5%8a%a8%e4%bd%9c" >template里的动作&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#1-%e6%9d%a1%e4%bb%b6%e5%8a%a8%e4%bd%9c" >1. 条件动作&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#2-%e8%bf%ad%e4%bb%a3%e5%8a%a8%e4%bd%9c" >2. 迭代动作&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#3-%e8%ae%be%e7%bd%ae%e5%8a%a8%e4%bd%9c" >3. 设置动作&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#4-%e5%8c%85%e5%90%ab%e5%8a%a8%e4%bd%9c" >4. 包含动作&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#%e5%8f%82%e6%95%b0" >参数&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#%e5%8f%98%e9%87%8f" >变量&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#%e7%ae%a1%e9%81%93" >管道&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#%e5%87%bd%e6%95%b0" >函数&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#%e4%b8%8a%e4%b8%8b%e6%96%87%e6%84%9f%e7%9f%a5" >上下文感知&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#%e5%8f%96%e6%b6%88html%e8%bd%ac%e4%b9%89" >取消HTML转义&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#%e5%b5%8c%e5%a5%97%e6%a8%a1%e6%9d%bf" >嵌套模板&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#%e5%9d%97%e6%a8%a1%e6%9d%bf" >块模板&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h1 id="如何读取模版并返回html">如何读取模版并返回HTML&lt;/h1>
+&lt;p>模版中的动作默认使用{{和}}包围，也可以自行修改界定符。&lt;code>{{.}}&lt;/code>指的是用传入的值替换这个动作本身。&lt;/p>
+&lt;p>go web的模版引擎使用方法分为以下两个步骤：&lt;/p>
+&lt;ul>
+&lt;li>读取文本模版文件（或一个模版字符串），进行语法分析，创建一个模版结构。&lt;/li>
+&lt;li>将数据传入，执行模版，生成HTML。&lt;/li>
+&lt;/ul>
+&lt;p>第一个步骤：&lt;/p>
+&lt;pre>&lt;code>//从文件中生成模版
+t,_ := template.ParseFiles(&amp;quot;index.html&amp;quot;)
+//读取多个文件，但是只生成第一个文件的模板（因为第一个模版可能调用其他模版）
+t,_ := template.ParseFiles(&amp;quot;index.html&amp;quot;,&amp;quot;content.html&amp;quot;,&amp;quot;navbar.html&amp;quot;)
+//从字符串中生成模版
+tmpl := `...`
+t := template.New(&amp;quot;tmpl.html&amp;quot;)
+t,_ = t.Parse(tmpl)
+&lt;/code>&lt;/pre>
+&lt;p>第二个步骤：&lt;/p>
+&lt;pre>&lt;code>// t.Execute第一个参数是io.Writer，第二个参数是传入的数据。这个方法只会执行第一个模版，也就是index.html
+t,_ := template.ParseFiles(&amp;quot;index.html&amp;quot;,&amp;quot;content.html&amp;quot;,&amp;quot;navbar.html&amp;quot;)
+t.Execute(w,&amp;quot;hello world&amp;quot;)
+//如果想要执行其他模板，用t.ExecuteTemplate,并在第二个参数指定模版名称
+t,_ := template.ParseFiles(&amp;quot;index.html&amp;quot;,&amp;quot;content.html&amp;quot;,&amp;quot;navbar.html&amp;quot;)
+t.ExecuteTemplate(w,&amp;quot;content.html&amp;quot;,&amp;quot;hello world&amp;quot;)
+&lt;/code>&lt;/pre>
+&lt;p>如果你只是在html中加入一些{{.}}的指令，模板的名称和文件名称一样，当然也可以重新定义模版的名字，或在一个模板文件中定义多个模板。&lt;/p>
+&lt;p>&lt;strong>讲了这么多还不知道模版文件怎么写呢。下面讲讲动作语法。&lt;/strong>&lt;/p>
+&lt;h1 id="template里的动作">template里的动作&lt;/h1>
+&lt;p>如果要访问结构里的field，用：&lt;code>{{ .Name }}&lt;/code>，或 &lt;code>{{ .User.Name }}&lt;/code>&lt;/p>
+&lt;h2 id="1-条件动作">1. 条件动作&lt;/h2>
+&lt;p>接受true或false，从而决定执行（显示）哪条语句。下面如果传入true，则会显示content1语句。&lt;/p>
+&lt;pre>&lt;code>{{ if . }}
+content1
+{{ else }}
+content2
+{{ end }}
+&lt;/code>&lt;/pre>
+&lt;h2 id="2-迭代动作">2. 迭代动作&lt;/h2>
+&lt;p>可对传入的数组、切片、映射、或通道进行迭代，迭代里，&lt;code>.&lt;/code>会被设置为当前迭代的元素.&lt;code>else&lt;/code>用于当迭代的结构为空或nil时显示备选结果。&lt;/p>
+&lt;pre>&lt;code>{{ range . }}
+&amp;lt;li&amp;gt;The Elem: {{ . }} &amp;lt;/li&amp;gt;
+{{ end }}
+{{ range . }}
+&amp;lt;li&amp;gt;The Elem: {{ . }} &amp;lt;/li&amp;gt;
+{{ else }}
+&amp;lt;li&amp;gt; No elems. &amp;lt;/li&amp;gt;
+{{ end }}
+&lt;/code>&lt;/pre>
+&lt;h2 id="3-设置动作">3. 设置动作&lt;/h2>
+&lt;p>类似if，&lt;code>{{if pipeline}} T1 {{end}}&lt;/code>,如果pipeline为空（false，0，nil，空的array, slice, map,string），则执行T0，否则执行T1.同时with里面{{.}}会被设置为pipeline的值。这是和if唯一的区别。&lt;/p>
+&lt;pre>&lt;code>{{with pipeline}} T1 {{end}}
+{{with pipeline}} T1 {{else}} T0 {{end}}
+&lt;/code>&lt;/pre>
+&lt;p>可以用来判断当某个集合为空时，显示xxx话。当不为空时，在with里用dot显示这个集合里的东西。&lt;/p>
+&lt;h2 id="4-包含动作">4. 包含动作&lt;/h2>
+&lt;p>可以在一个模板里包含另一个模板，用到&lt;code>{{ template &amp;quot;name&amp;quot; }}&lt;/code>,或&lt;code>{{template &amp;quot;name&amp;quot; pipeline}}&lt;/code>&lt;/p>
+&lt;p>第一个参数是模板的名字（如果没定义，那就是模板文件名称），第二个参数是要传给这下一个模板的参数。&lt;/p>
+&lt;p>通常这么用：&lt;code>{{template &amp;quot;name&amp;quot; . }}&lt;/code>&lt;/p>
+&lt;h1 id="参数">参数&lt;/h1>
+&lt;p>上述的if后边跟的就是arg参数，这边传了dot过去。&lt;/p>
+&lt;pre>&lt;code>{{ if . }}
+content1
+{{ else }}
+content2
+{{ end }}
+&lt;/code>&lt;/pre>
+&lt;p>arg可以是一个值，一个变量，或一个返回一个值的函数。&lt;/p>
+&lt;p>如：&lt;/p>
+&lt;pre>&lt;code>{{ if . }} content1 {{ end }}
+{{ if $key }} content1 {{ end }}
+{{ if .IsExist }} content1 {{ end }}
+&lt;/code>&lt;/pre>
+&lt;h1 id="变量">变量&lt;/h1>
+&lt;p>可以在动作中设置变量：&lt;code>$key := something&lt;/code>,如：&lt;/p>
+&lt;pre>&lt;code>{{ range $key, $value := . }}
+&amp;lt;li&amp;gt;{{ $key }} : {{ $value }} &amp;lt;/li&amp;gt;
+{{ end }}
+&lt;/code>&lt;/pre>
+&lt;h1 id="管道">管道&lt;/h1>
+&lt;p>管道可以串联参数和函数、方法。如&lt;/p>
+&lt;pre>&lt;code>{{ p1 | p2 | p3 }}
+&lt;/code>&lt;/pre>
+&lt;p>这三者都是参数。&lt;/p>
+&lt;pre>&lt;code>{{ 123.456 | printf &amp;quot;%.2f&amp;quot; }}
+&lt;/code>&lt;/pre>
+&lt;p>将123.456传给&lt;strong>模板内置printf函数&lt;/strong>&lt;/p>
+&lt;p>当然函数也可以通过后置参数调用：&lt;/p>
+&lt;pre>&lt;code>{{ printf &amp;quot;%.2f&amp;quot; 123.456 }}
+&lt;/code>&lt;/pre>
+&lt;h1 id="函数">函数&lt;/h1>
+&lt;p>模板引擎里的内置函数虽然可以接受多个参数，但是只能返回一个值，或返回一个值+一个错误。内置函数列表见 &lt;a class="link" href="https://pkg.go.dev/text/template#hdr-Functions" target="_blank" rel="noopener"
+>https://pkg.go.dev/text/template#hdr-Functions&lt;/a>&lt;/p>
+&lt;p>用户可以自定义函数并传入模板，步骤如下：&lt;/p>
+&lt;ol>
+&lt;li>创建一个FuncMap，并传入&lt;code>函数名称：真的函数名&lt;/code>，后面模板里就用函数名称进行调用&lt;/li>
+&lt;li>将FuncMap和模板绑定&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/1.png"
+width="1000"
+height="430"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/1_huef1bbdaf32f80678fafa93f55074d365_190394_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/1_huef1bbdaf32f80678fafa93f55074d365_190394_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Alt text"
+class="gallery-image"
+data-flex-grow="232"
+data-flex-basis="558px"
+>&lt;/p>
+&lt;p>调用：&lt;/p>
+&lt;pre>&lt;code>{{ . | fdate }}
+或
+{{ fdate . }}
+&lt;/code>&lt;/pre>
+&lt;p>还有些参数、变量、管道和函数这里先略过。&lt;/p>
+&lt;h1 id="上下文感知">上下文感知&lt;/h1>
+&lt;p>go模板里动作的输出会根据所处的上下文改变输出形态，如&lt;/p>
+&lt;ul>
+&lt;li>{{ . }}在HTML处，会将输出进行html转译后输出&lt;/li>
+&lt;li>{{ . }}在href或src处，会将输出进行URL转译后输出&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/2.png"
+width="1536"
+height="426"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/2_hu7ca5a1e6d4d0f62c5bd7a77332d8f790_495731_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/2_hu7ca5a1e6d4d0f62c5bd7a77332d8f790_495731_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Alt text"
+class="gallery-image"
+data-flex-grow="360"
+data-flex-basis="865px"
+>&lt;/p>
+&lt;p>这主要用于实现自动防御编程，可以抵御XSS攻击。&lt;/p>
+&lt;h2 id="取消html转义">取消HTML转义&lt;/h2>
+&lt;p>使用&lt;code>template.HTML()&lt;/code>包裹值并传入模板即可。如&lt;code>template.HTML(r.FormValue(&amp;quot;comment&amp;quot;))&lt;/code>&lt;/p>
+&lt;h1 id="嵌套模板">嵌套模板&lt;/h1>
+&lt;p>通常我们会在网站开发中复用某套layout，如有导航栏，服务器状态，版权声明。然后中间是展示的内容。如果要实现内容替换而其他东西复用，我们就不能使用默认的模板名字。比如下面这个lauout.html&lt;/p>
+&lt;pre>&lt;code>&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;
+&amp;lt;meta http-equiv=&amp;quot;X-UA-Compatible&amp;quot; content=&amp;quot;IE=9&amp;quot;&amp;gt;
+&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1&amp;quot;&amp;gt;
+&amp;lt;title&amp;gt;ChitChat&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+{{ template &amp;quot;content.html&amp;quot; }}
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>这里嵌套了&amp;quot;content.html&amp;quot;模板。问题是只有唯一一个&amp;quot;content.html&amp;quot;，这么写除了把一个文件拆成两个文件，无法复用layout.html。于是我们可以定义模板名称，而不是用默认的文件名：&lt;/p>
+&lt;pre>&lt;code>&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+&amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;
+&amp;lt;meta http-equiv=&amp;quot;X-UA-Compatible&amp;quot; content=&amp;quot;IE=9&amp;quot;&amp;gt;
+&amp;lt;meta name=&amp;quot;viewport&amp;quot; content=&amp;quot;width=device-width, initial-scale=1&amp;quot;&amp;gt;
+&amp;lt;title&amp;gt;ChitChat&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+{{ template &amp;quot;content&amp;quot; }}
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code>&lt;/pre>
+&lt;p>然后在index.html中定义一个模板为content：&lt;/p>
+&lt;pre>&lt;code>{{ define &amp;quot;content&amp;quot; }}
+&amp;lt;p class=&amp;quot;lead&amp;quot;&amp;gt;
+&amp;lt;a href=&amp;quot;/thread/new&amp;quot;&amp;gt;Start a thread&amp;lt;/a&amp;gt; or join one below!
+&amp;lt;/p&amp;gt;
+{{ end }}
+&lt;/code>&lt;/pre>
+&lt;p>parseFiles时传入layout.html和index.html，就可以实现模板嵌入。&lt;/p>
+&lt;p>同理，我们还可以定义另一个login.html,并在其中定义content：&lt;/p>
+&lt;pre>&lt;code>{{ define &amp;quot;content&amp;quot; }}
+&amp;lt;a href=&amp;quot;/login&amp;quot;&amp;gt;Login！&amp;lt;/a&amp;gt;
+{{ end }}
+&lt;/code>&lt;/pre>
+&lt;p>parseFiles时传入layout.html和login.html，就可以实现另一个模板的嵌入。&lt;/p>
+&lt;p>如果模板名字不同，也可以在同一个文件里定义多个不同的模板；可以在多个文件里定义同名模板。&lt;/p>
+&lt;h2 id="块模板">块模板&lt;/h2>
+&lt;p>这是另一种定义模板的方法。主要用于直接在一个模板中定义新的模板，并且作为缺省模板使用。&lt;/p>
+&lt;pre>&lt;code>{{ define &amp;quot;layout&amp;quot; }}
+hello
+{{ block &amp;quot;content&amp;quot; . }}
+&amp;lt;p&amp;gt;someone!&amp;lt;/p&amp;gt;
+{{ end }}
+{{ end }}
+&lt;/code>&lt;/pre>
+&lt;p>如果在parseFiles时没有传入额外的content模板，则会使用layout里定义的content块作为缺省使用。&lt;/p></description></item><item><title>Golang中的应用测试</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</link><pubDate>Wed, 15 Feb 2023 11:31:41 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/</guid><description>&lt;p>本文记录了一下内容：&lt;/p>
 &lt;ul>
 &lt;li>golang的单元测试、基准测试、http测试&lt;/li>
 &lt;li>测试替身和依赖注入&lt;/li>
@@ -319,6 +529,24 @@ data-flex-basis="867px"
 &lt;li>数据库存储&lt;/li>
 &lt;/ul>
 &lt;p>本文简述后面两种。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#%e6%96%87%e4%bb%b6%e5%ad%98%e5%82%a8" >文件存储&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#csv%e8%af%bb%e5%86%99" >csv读写&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#gob%e8%af%bb%e5%86%99" >gob读写&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;a class="link" href="#%e5%88%a9%e7%94%a8databasesql%e8%bf%9e%e6%8e%a5%e6%95%b0%e6%8d%ae%e5%ba%93%e5%b9%b6%e6%89%a7%e8%a1%8ccrud" >利用database/sql连接数据库并执行CRUD&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#go-orm-%e5%85%b3%e7%b3%bb%e6%98%a0%e5%b0%84%e5%99%a8" >go orm 关系映射器&lt;/a>
+&lt;ul>
+&lt;li>&lt;a class="link" href="#%e5%ae%89%e8%a3%85" >安装&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#%e8%bf%9e%e6%8e%a5%e6%95%b0%e6%8d%ae%e5%ba%93" >连接数据库&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#%e6%a8%a1%e5%9e%8b%e5%a3%b0%e6%98%8e" >模型声明&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#%e9%a2%84%e5%8a%a0%e8%bd%bd" >预加载&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="#%e5%85%b3%e8%81%94%e6%a8%a1%e5%bc%8f" >关联模式&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
 &lt;h1 id="文件存储">文件存储&lt;/h1>
 &lt;p>下面展示了golang中读写文件的常用方式。&lt;/p>
 &lt;ul>
@@ -512,7 +740,121 @@ rows.Scan()
 &lt;/li>
 &lt;/ol>
 &lt;h1 id="go-orm-关系映射器">go orm 关系映射器&lt;/h1>
-&lt;p>ORM 思想是将数据结构和表结构相对应。Gorm是go里最棒的ORM。&lt;/p></description></item><item><title>一个Golang RSS内容匹配器</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang-rss%E5%86%85%E5%AE%B9%E5%8C%B9%E9%85%8D%E5%99%A8/</link><pubDate>Tue, 07 Feb 2023 12:01:09 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang-rss%E5%86%85%E5%AE%B9%E5%8C%B9%E9%85%8D%E5%99%A8/</guid><description>&lt;blockquote>
+&lt;p>ORM 思想是将数据结构和表结构相对应。Gorm是go里最棒的ORM。下面介绍Gorm的大概用法，具体可见文档 &lt;a class="link" href="https://gorm.io/zh_CN/docs/index.html" target="_blank" rel="noopener"
+>https://gorm.io/zh_CN/docs/index.html&lt;/a>&lt;/p>
+&lt;h2 id="安装">安装&lt;/h2>
+&lt;p>需要安装gorm和对应的数据库驱动&lt;/p>
+&lt;pre>&lt;code>go get -u gorm.io/gorm
+go get -u gorm.io/driver/postgres
+&lt;/code>&lt;/pre>
+&lt;h2 id="连接数据库">连接数据库&lt;/h2>
+&lt;p>一般在init中执行连接和数据库自动迁移：&lt;/p>
+&lt;pre>&lt;code>func init() {
+var err error
+dsn := &amp;quot;user=postgres password=mkQ445683 dbname=chitchat sslmode=disable&amp;quot;
+Db, err = gorm.Open(postgres.Open(dsn), &amp;amp;gorm.Config{})
+if err != nil {
+log.Fatal(err)
+}
+Db.AutoMigrate(&amp;amp;Post{}, &amp;amp;Thread{}, &amp;amp;Session{}, &amp;amp;User{})
+}
+&lt;/code>&lt;/pre>
+&lt;blockquote>
+&lt;p>迁移：Db.AutoMigrate()，AutoMigrate 会创建表、缺失的外键、约束、列和索引，出于保护您数据的目的，它&lt;strong>不会&lt;/strong>删除未使用的列&lt;/p>
+&lt;p>db.AutoMigrate(&amp;amp;User{})&lt;/p>
+&lt;p>db.AutoMigrate(&amp;amp;User{}, &amp;amp;Product{}, &amp;amp;Order{})&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="模型声明">模型声明&lt;/h2>
+&lt;p>Gorm默认用ID作为主键，使用结构体名的 &lt;code>蛇形复数&lt;/code> 作为表名，字段名的 &lt;code>蛇形&lt;/code> 作为列名，并使用 CreatedAt、UpdatedAt 字段追踪创建、更新时间&lt;/p>
+&lt;p>如：MemberNumber &amp;ndash;&amp;gt; member_number; CreatedAt &amp;ndash;&amp;gt; created_at&lt;/p>
+&lt;p>通常将gorm.Model嵌入自己的结构体中，如：&lt;/p>
+&lt;pre>&lt;code>User struct {
+gorm.Model
+Uuid string
+Name string
+Email string
+Password string
+}
+&lt;/code>&lt;/pre>
+&lt;p>gorm.Model包括字段 ID、CreatedAt、UpdatedAt、DeletedAt，所以你的结构体也会包含这些字段。对于包含的field，也可以用标签embedded嵌入：&lt;/p>
+&lt;pre>&lt;code>type Blog struct {
+ID int
+Author Author `gorm:&amp;quot;embedded&amp;quot;`
+Upvotes int32
+}
+&lt;/code>&lt;/pre>
+&lt;h2 id="预加载">预加载&lt;/h2>
+&lt;p>首先我们定义User、Order、City. User和Order是一对多关系，User和City是一对一关系。&lt;/p>
+&lt;pre>&lt;code>type User struct {
+gorm.Model
+Username string
+Orders []Order
+City City
+}
+type Order struct {
+gorm.Model
+UserID uint
+Price float64
+}
+type City struct{
+gorm.Model
+UserID uint
+Name string
+}
+&lt;/code>&lt;/pre>
+&lt;p>这种关系由外键定义，Gorm默认会将类似UserID识别为User的外键。所以上述关系会被Gorm建立。&lt;/p>
+&lt;p>同时我们可以在&lt;code>User&lt;/code>里包含&lt;code>[]Order&lt;/code>和&lt;code>City&lt;/code>，这很方便我们获取和User相关联的对象。如果仅仅通过&lt;/p>
+&lt;pre>&lt;code>users := []User{}
+db.Find(&amp;amp;users)
+&lt;/code>&lt;/pre>
+&lt;p>无法加载&lt;code>[]Order&lt;/code>和&lt;code>City&lt;/code>。一个加载内在关联的对象的方法是&lt;code>预加载Preload&lt;/code>：&lt;/p>
+&lt;pre>&lt;code>users := []User{}
+db.Preload(&amp;quot;Orders&amp;quot;).Preload(&amp;quot;City&amp;quot;).Find(&amp;amp;users)
+&lt;/code>&lt;/pre>
+&lt;p>通过在Preload里指定结构字段名，再查询，Gorm会自动加载对应关联的对象。这样我们就可以获得User和与其匹配的Orders和City。&lt;/p>
+&lt;p>&lt;strong>1、条件预加载&lt;/strong>&lt;/p>
+&lt;p>上述Preload会匹配所有UserID符合的Order，如果想进一步添加约束条件，如已完成的Order，如何实现？可以用条件预加载：&lt;/p>
+&lt;pre>&lt;code>db.Preload(&amp;quot;Orders&amp;quot;, &amp;quot;state=?&amp;quot;, &amp;quot;completed&amp;quot;).Find(&amp;amp;users)
+// SELECT * FROM users;
+// SELECT * FROM orders WHERE user_id IN (1,2,3,4) AND state NOT IN ('cancelled');
+db.Where(&amp;quot;state = ?&amp;quot;, &amp;quot;active&amp;quot;).Preload(&amp;quot;Orders&amp;quot;, &amp;quot;state NOT IN (?)&amp;quot;, &amp;quot;cancelled&amp;quot;).Find(&amp;amp;users)
+// SELECT * FROM users WHERE state = 'active';
+// SELECT * FROM orders WHERE user_id IN (1,2) AND state NOT IN ('cancelled');
+&lt;/code>&lt;/pre>
+&lt;p>第一个是在查找Order时添加约束，第二个是在查找User时添加where，然后查找Order时添加约束&lt;/p>
+&lt;p>&lt;strong>2、嵌套预加载&lt;/strong>&lt;/p>
+&lt;p>假设Order里又包含has one关系，对应一个产品，查User时能把Orders.Product查出来吗？&lt;/p>
+&lt;pre>&lt;code>type User struct {
+gorm.Model
+Username string
+Orders []Order
+City City
+}
+type Order struct {
+gorm.Model
+UserID uint
+Price float64
+ProductID uint
+Product Product
+}
+type Product struct {
+gorm.Model
+Name string
+Price float64
+}
+&lt;/code>&lt;/pre>
+&lt;p>是可以的，但是要用嵌套预加载，指定加载&lt;code>Orders.Product&lt;/code>&lt;/p>
+&lt;pre>&lt;code>db.Preload(&amp;quot;Orders.Product&amp;quot;).Preload(&amp;quot;City&amp;quot;).Find(&amp;amp;users)
+&lt;/code>&lt;/pre>
+&lt;h2 id="关联模式">关联模式&lt;/h2>
+&lt;p>由于关系的存在（belongs to，has one，has many，many to many），我们可以通过关系进行CRUD。&lt;/p>
+&lt;p>比如假设一个人有多张卡，User和CreditCard是一对多关系，想给User添加一张新的卡，一个方法是直接操作CreditCard表，设置卡属性、UserID，再保存。&lt;/p>
+&lt;p>另一个方法是通过User和CreditCard的一对多关系操作，给User Append一张卡：&lt;/p>
+&lt;pre>&lt;code>db.Model(&amp;amp;user).Association(&amp;quot;CreditCard&amp;quot;).Append(&amp;amp;CreditCard{Number: &amp;quot;411111111111&amp;quot;})
+&lt;/code>&lt;/pre>
+&lt;p>上述代码指明了User是谁（&amp;amp;user，源模型，主键不能为空），指明哪个关系（CreditCard，结构字段名），操作是什么（append+卡信息），注意此处卡不需要声明UserID，因为这个关系已经给出了。&lt;/p>
+&lt;p>这是通过关联模式的添加功能。我们可以通过关系实现完整的CRUD。&lt;/p>
+&lt;p>// to be continuing&lt;/p></description></item><item><title>一个Golang RSS内容匹配器</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang-rss%E5%86%85%E5%AE%B9%E5%8C%B9%E9%85%8D%E5%99%A8/</link><pubDate>Tue, 07 Feb 2023 12:01:09 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AAgolang-rss%E5%86%85%E5%AE%B9%E5%8C%B9%E9%85%8D%E5%99%A8/</guid><description>&lt;blockquote>
 &lt;p>go-in-action里的一个demo，给定需要匹配的字符串，在搜索源（如rss）中批量查询最新文章，返回结果（如相匹配的title和description）&lt;/p>
 &lt;p>关键字：&lt;code>goroutine并发&lt;/code>，&lt;code>json/xml反序列化&lt;/code>，&lt;code>网络请求&lt;/code>&lt;/p>
 &lt;p>项目地址：https://github.com/chajiuqqq/go-rss-matcher&lt;/p>
