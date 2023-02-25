@@ -1,4 +1,135 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/post/</link><description>Recent content in Posts on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 23 Feb 2023 15:24:58 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Golang中的Template模板引擎</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/</link><pubDate>Thu, 23 Feb 2023 15:24:58 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/</guid><description>&lt;ul>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/post/</link><description>Recent content in Posts on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 25 Feb 2023 13:14:03 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/post/index.xml" rel="self" type="application/rss+xml"/><item><title>一个使用Go Rpc库实现的RPC例子</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</link><pubDate>Sat, 25 Feb 2023 13:14:03 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</guid><description>&lt;p>本文使用go rpc库实现服务的创建、客户端的请求。&lt;/p>
+&lt;p>server提供字符串拼接和字符串区别的服务，运行在127.0.0.1:1234。client可以调用rpc发送请求，调用server上的服务，并获取到结果。&lt;/p>
+&lt;p>&lt;strong>注意点：&lt;/strong>&lt;/p>
+&lt;p>client和server都要维护请求参数结构和响应参数结构，如拼接字符串的请求参数：&lt;/p>
+&lt;pre>&lt;code>type StringRequest struct {
+A string
+B string
+}
+&lt;/code>&lt;/pre>
+&lt;p>响应结构这里用string即可，所以没有专门定义结构。&lt;/p>
+&lt;p>client调用Call或Go方法，传入远程方法名（结构+方法，如&lt;code>StringService.Concat&lt;/code>）、请求结构、响应结构的指针，等待结果完成即可。&lt;/p>
+&lt;p>&lt;strong>结果：&lt;/strong>&lt;/p>
+&lt;p>server运行：&lt;/p>
+&lt;pre>&lt;code>go build &amp;amp;&amp;amp; ./rpc-server
+2023/02/25 13:11:20 server at 127.0.0.1:1234
+&lt;/code>&lt;/pre>
+&lt;p>运行client：&lt;/p>
+&lt;pre>&lt;code>go build &amp;amp;&amp;amp; ./rpc-client
+StringService Concat : A concat B = AB
+StringService Diff : ABC diff BCD = BC
+&lt;/code>&lt;/pre>
+&lt;h2 id="server">server&lt;/h2>
+&lt;p>StringService是实现了Service接口的结构。&lt;/p>
+&lt;h3 id="servergo">server.go&lt;/h3>
+&lt;pre>&lt;code>package service
+import (
+&amp;quot;errors&amp;quot;
+&amp;quot;strings&amp;quot;
+)
+type StringRequest struct{
+A string
+B string
+}
+type Service interface {
+Concat(req StringRequest, ret *string) error
+Diff(req StringRequest, ret *string) error
+}
+type StringService struct {
+}
+const (
+StrMaxSize = 1024
+)
+var (
+ErrMaxSize = errors.New(&amp;quot;over max size of 1024&amp;quot;)
+ErrStrValue = errors.New(&amp;quot;maximum size of 1024 bytes exceeded&amp;quot;)
+)
+func (s StringService) Concat(req StringRequest, ret *string) error {
+if len(req.A)+len(req.B) &amp;gt; StrMaxSize {
+*ret = &amp;quot;&amp;quot;
+return ErrMaxSize
+}
+*ret = req.A + req.B
+return nil
+}
+func (s StringService) Diff(req StringRequest, ret *string) error {
+if len(req.A) &amp;lt; 1 || len(req.B) &amp;lt; 1 {
+*ret = &amp;quot;&amp;quot;
+return nil
+}
+res := &amp;quot;&amp;quot;
+if len(req.A) &amp;gt;= len(req.B) {
+for _, char := range req.B {
+if strings.Contains(req.A, string(char)) {
+res = res + string(char)
+}
+}
+} else {
+for _, char := range req.A {
+if strings.Contains(req.B, string(char)) {
+res = res + string(char)
+}
+}
+}
+*ret = res
+return nil
+}
+&lt;/code>&lt;/pre>
+&lt;h3 id="maingo">main.go&lt;/h3>
+&lt;pre>&lt;code>package main
+import (
+&amp;quot;log&amp;quot;
+&amp;quot;net&amp;quot;
+&amp;quot;net/http&amp;quot;
+&amp;quot;net/rpc&amp;quot;
+&amp;quot;rpc-server/service&amp;quot;
+)
+func main() {
+stringService := new(service.StringService)
+rpc.Register(stringService)
+rpc.HandleHTTP()
+l, e := net.Listen(&amp;quot;tcp&amp;quot;, &amp;quot;127.0.0.1:1234&amp;quot;)
+if e != nil {
+log.Fatal(&amp;quot;listen error,&amp;quot;, e)
+}
+log.Println(&amp;quot;server at 127.0.0.1:1234&amp;quot;)
+http.Serve(l, nil)
+}
+&lt;/code>&lt;/pre>
+&lt;h2 id="client">Client&lt;/h2>
+&lt;h3 id="servergo-1">server.go&lt;/h3>
+&lt;pre>&lt;code>package service
+type StringRequest struct {
+A string
+B string
+}
+&lt;/code>&lt;/pre>
+&lt;h3 id="maingo-1">main.go&lt;/h3>
+&lt;pre>&lt;code>package main
+import (
+&amp;quot;fmt&amp;quot;
+&amp;quot;log&amp;quot;
+&amp;quot;net/rpc&amp;quot;
+&amp;quot;rpc-client/service&amp;quot;
+)
+func main() {
+client, err := rpc.DialHTTP(&amp;quot;tcp&amp;quot;, &amp;quot;127.0.0.1:1234&amp;quot;)
+if err != nil {
+log.Fatal(&amp;quot;dialing:&amp;quot;, err)
+}
+stringReq := &amp;amp;service.StringRequest{&amp;quot;A&amp;quot;, &amp;quot;B&amp;quot;}
+var reply string
+err = client.Call(&amp;quot;StringService.Concat&amp;quot;, stringReq, &amp;amp;reply)
+if err != nil {
+log.Fatal(&amp;quot;Concat err:&amp;quot;, err)
+}
+fmt.Printf(&amp;quot;StringService Concat : %s concat %s = %s\n&amp;quot;, stringReq.A, stringReq.B, reply)
+stringReq = &amp;amp;service.StringRequest{&amp;quot;ABC&amp;quot;, &amp;quot;BCD&amp;quot;}
+call := client.Go(&amp;quot;StringService.Diff&amp;quot;, stringReq, &amp;amp;reply, nil)
+_ = &amp;lt;-call.Done
+fmt.Printf(&amp;quot;StringService Diff : %s diff %s = %s\n&amp;quot;, stringReq.A, stringReq.B, reply)
+}
+&lt;/code>&lt;/pre></description></item><item><title>Golang中的Template模板引擎</title><link>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/</link><pubDate>Thu, 23 Feb 2023 15:24:58 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/</guid><description>&lt;ul>
 &lt;li>&lt;a class="link" href="#%e5%a6%82%e4%bd%95%e8%af%bb%e5%8f%96%e6%a8%a1%e7%89%88%e5%b9%b6%e8%bf%94%e5%9b%9ehtml" >如何读取模版并返回HTML&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="#template%e9%87%8c%e7%9a%84%e5%8a%a8%e4%bd%9c" >template里的动作&lt;/a>
 &lt;ul>
