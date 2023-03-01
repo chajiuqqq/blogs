@@ -1,4 +1,266 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-micro-book on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/tags/go-micro-book/</link><description>Recent content in go-micro-book on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 25 Feb 2023 13:14:03 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/tags/go-micro-book/index.xml" rel="self" type="application/rss+xml"/><item><title>一个使用Go Rpc库实现的RPC例子</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</link><pubDate>Sat, 25 Feb 2023 13:14:03 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</guid><description>&lt;p>本文使用go rpc库实现服务的创建、客户端的请求。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>go-micro-book on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/tags/go-micro-book/</link><description>Recent content in go-micro-book on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 01 Mar 2023 13:50:07 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/tags/go-micro-book/index.xml" rel="self" type="application/rss+xml"/><item><title>Gokit项目结构和Consul结合实现服务注册和发现</title><link>https://chajiuqqq.github.io/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/</link><pubDate>Wed, 01 Mar 2023 13:50:07 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/</guid><description>&lt;h1 id="go-kit的三层结构">go-kit的三层结构&lt;/h1>
+&lt;p>go-kit项目采用分层架构方式。&lt;/p>
+&lt;ul>
+&lt;li>transport层：处理http、grpc等逻辑。比如在http中就是返回一个http.Handler，里面包含了URL和对应处理器的关系&lt;/li>
+&lt;li>endpoint层：用于接受请求，处理请求，返回响应。每个服务都会包装成一个endpoint，在endpoint中调用service的方法，最后返回组装好的response。类似Java中controller的写法，不过这里没有涉及URL路径，只是提供包装后的服务。&lt;/li>
+&lt;li>service层：业务代码实现层，也就是定义了有什么服务，服务的具体实现。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/1.png"
+width="1598"
+height="394"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/1_hu7f74198fd50c76ee75e9c81f8c66bfea_337892_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/1_hu7f74198fd50c76ee75e9c81f8c66bfea_337892_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Alt text"
+class="gallery-image"
+data-flex-grow="405"
+data-flex-basis="973px"
+>&lt;/p>
+&lt;p>代码中使用了go-kit的函数，影响较大的是endpoint层和transport层。写法和我们普通分层写不太一样，用了很多go-kit的API。下面我们先从service层讲起。&lt;/p>
+&lt;h2 id="service层">service层&lt;/h2>
+&lt;p>作为服务端，如果想要使用服务注册和发现中心，比如consul，那么服务端需要有这三个功能，&lt;strong>我们抽象为一个接口：&lt;/strong>&lt;/p>
+&lt;pre>&lt;code>type DiscoveryClient interface {
+/**
+* 服务注册接口
+* @param serviceName 服务名
+* @param instanceId 服务实例Id
+* @param instancePort 服务实例端口
+* @param healthCheckUrl 健康检查地址
+* @param instanceHost 服务实例地址
+* @param meta 服务实例元数据
+*/
+Register(serviceName, instanceId, healthCheckUrl string, instanceHost string, instancePort int, meta map[string]string, logger *log.Logger) bool
+/**
+* 服务注销接口
+* @param instanceId 服务实例Id
+*/
+DeRegister(instanceId string, logger *log.Logger) bool
+/**
+* 发现服务实例接口
+* @param serviceName 服务名
+*/
+DiscoverServices(serviceName string, logger *log.Logger) []interface{}
+}
+&lt;/code>&lt;/pre>
+&lt;ul>
+&lt;li>Register用于把自己注册到consul&lt;/li>
+&lt;li>DeRegister用于向consul注销自己的服务&lt;/li>
+&lt;li>DiscoverServices用于向consul请求别的服务&lt;/li>
+&lt;/ul>
+&lt;p>对应可以有自己的接口实现，比如定义MyDiscoverClient结构，然后实现DiscoveryClient接口，如注册方法可以自己写http请求，发送到consul注册；或者定义KitDiscoverClient结构，然后实现DiscoveryClient接口，调用go-kit的consul client进行快速注册。&lt;/p>
+&lt;p>简单贴一个注册方法的go-kit实现：&lt;/p>
+&lt;pre>&lt;code>func (consulClient *KitDiscoverClient) Register(serviceName, instanceId, healthCheckUrl string, instanceHost string, instancePort int, meta map[string]string, logger *log.Logger) bool {
+// 1. 构建服务实例元数据
+serviceRegistration := &amp;amp;api.AgentServiceRegistration{
+ID: instanceId,
+Name: serviceName,
+Address: instanceHost,
+Port: instancePort,
+Meta: meta,
+Check: &amp;amp;api.AgentServiceCheck{
+DeregisterCriticalServiceAfter: &amp;quot;30s&amp;quot;,
+HTTP: &amp;quot;http://&amp;quot; + instanceHost + &amp;quot;:&amp;quot; + strconv.Itoa(instancePort) + healthCheckUrl,
+Interval: &amp;quot;15s&amp;quot;,
+},
+}
+// 2. 发送服务注册到 Consul 中
+err := consulClient.client.Register(serviceRegistration)
+if err != nil {
+log.Println(&amp;quot;Register Service Error!&amp;quot;)
+return false
+}
+log.Println(&amp;quot;Register Service Success!&amp;quot;)
+return true
+}
+&lt;/code>&lt;/pre>
+&lt;p>&lt;strong>第二个接口是Service接口&lt;/strong>，包含你可以提供什么服务，比如连接字符串，比如心跳检查，比如发现服务。如：&lt;/p>
+&lt;pre>&lt;code>type Service interface {
+// HealthCheck check service health status
+HealthCheck() bool
+// sayHelloService
+SayHello() string
+// discovery service from consul by serviceName
+DiscoveryService(ctx context.Context, serviceName string) ([]interface{}, error)
+}
+&lt;/code>&lt;/pre>
+&lt;p>然后提供自己的结构实现，如DiscoveryServiceImpl，这个结构里也可以包含上面提到的DiscoveryClient实例，这样就可以复用DiscoveryClient的实现了：&lt;/p>
+&lt;pre>&lt;code>//定义接口实现的结构
+type DiscoveryServiceImpl struct {
+discoveryClient discover.DiscoveryClient
+}
+//定义工厂方法，其实不要也可以
+func NewDiscoveryServiceImpl(discoveryClient discover.DiscoveryClient) Service {
+return &amp;amp;DiscoveryServiceImpl{
+discoveryClient:discoveryClient,
+}
+}
+//下面是实现接口的方法
+func (*DiscoveryServiceImpl) SayHello() string {
+return &amp;quot;Hello World!&amp;quot;
+}
+func (service *DiscoveryServiceImpl) DiscoveryService(ctx context.Context, serviceName string) ([]interface{}, error) {
+instances := service.discoveryClient.DiscoverServices(serviceName, config.Logger)
+if instances == nil || len(instances) == 0 {
+return nil, ErrNotServiceInstances
+}
+return instances, nil
+}
+// HealthCheck implement Service method
+// 用于检查服务的健康状态，这里仅仅返回true
+func (*DiscoveryServiceImpl) HealthCheck() bool {
+return true
+}
+&lt;/code>&lt;/pre>
+&lt;p>通过上面的工厂方法NewDiscoveryServiceImpl，可以构建出一个Service的实现，用于调用自己的各种service&lt;/p>
+&lt;pre>&lt;code>// 声明并初始化 Service
+var svc = service.NewDiscoveryServiceImpl(discoveryClient)
+&lt;/code>&lt;/pre>
+&lt;p>接下来是要把服务暴露出来，一个很简单的方法是通过URL暴露，比如将GET的/say-hello映射到Service的sayHello方法上，也就是HTTP服务器里用处理器去处理URL请求。但是go-kit使用了endpoint的概念，把服务称为endpoint，其中不包含对应的URL。&lt;/p>
+&lt;p>URL和endpoint的绑定我们放在了transport层实现。&lt;/p>
+&lt;h2 id="endpoint层">endpoint层&lt;/h2>
+&lt;p>首先介绍endpoint层。每个服务都是一个endpoint，所以构建一个机构，包含所有的服务（endpoint）：&lt;/p>
+&lt;pre>&lt;code>type DiscoveryEndpoints struct {
+SayHelloEndpoint endpoint.Endpoint
+DiscoveryEndpoint endpoint.Endpoint
+HealthCheckEndpoint endpoint.Endpoint
+}
+&lt;/code>&lt;/pre>
+&lt;p>上面的endpoint.Endpoint其实就是一个函数别名：&lt;/p>
+&lt;pre>&lt;code>func(ctx context.Context, request interface{}) (response interface{}, err error)
+&lt;/code>&lt;/pre>
+&lt;p>也就是说，DiscoveryEndpoints是包含了几个函数的结构，这几个函数也就是提供请求响应服务的。&lt;/p>
+&lt;p>然后需要定义每个服务的请求结构、响应结构，如：&lt;/p>
+&lt;blockquote>
+&lt;p>SayHelloEndpoint&amp;ndash;&amp;gt;SayHelloRequest、SayHelloResponse&lt;/p>
+&lt;p>DiscoveryEndpoint&amp;ndash;&amp;gt;DiscoveryRequest、DiscoveryResponse&lt;/p>
+&lt;/blockquote>
+&lt;p>每个结构里就是你需要传递的数据字段，没有的话就空，同时要指明json序列化tag：&lt;/p>
+&lt;pre>&lt;code>// 打招呼请求结构体
+type SayHelloRequest struct {
+}
+// 打招呼响应结构体
+type SayHelloResponse struct {
+Message string `json:&amp;quot;message&amp;quot;`
+}
+&lt;/code>&lt;/pre>
+&lt;p>然后是写函数返回这个具体的endpoint，可以看到就是返回一个函数，最后返回的是SayHelloResponse：&lt;/p>
+&lt;pre>&lt;code>// 创建打招呼 Endpoint
+func MakeSayHelloEndpoint(svc service.Service) endpoint.Endpoint {
+return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+message := svc.SayHello()
+return SayHelloResponse{
+Message:message,
+}, nil
+}
+}
+&lt;/code>&lt;/pre>
+&lt;p>如果有请求数据，如何从请求中获取？&lt;/p>
+&lt;p>可以从request对象中转成你这个endpoint对应的请求结构，如&lt;code>req := request.(DiscoveryRequest)&lt;/code>，这样就可以用结构里的数据了。&lt;/p>
+&lt;pre>&lt;code>// 创建服务发现的 Endpoint
+func MakeDiscoveryEndpoint(svc service.Service) endpoint.Endpoint {
+return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+req := request.(DiscoveryRequest)
+instances, err := svc.DiscoveryService(ctx, req.ServiceName)
+var errString = &amp;quot;&amp;quot;
+if err != nil{
+errString = err.Error()
+}
+return &amp;amp;DiscoveryResponse{
+Instances:instances,
+Error:errString,
+}, nil
+}
+}
+&lt;/code>&lt;/pre>
+&lt;p>你可能会有疑问，为什么request直接可以转成对应的请求结构，是如何转的呢？这在后面会提到，系统会使用我们提供的反序列化方法，将请求decode为我们设计的请求结构。同理，最后response结构如何序列化发送给客户端？也是调用了我们提供的序列化方法。&lt;/p>
+&lt;p>至此，endpoint构建完毕&lt;/p>
+&lt;h2 id="transport层">transport层&lt;/h2>
+&lt;p>如在http服务中，我们可以构建一个函数返回Handler。区别于直接提供给URL一个处理器或处理器函数，这边我们使用kithttp提供的处理器。&lt;/p>
+&lt;p>我们需要提供几个参数去构建这个处理器：&lt;/p>
+&lt;ul>
+&lt;li>endpoint：服务处理函数，如endpoints.SayHelloEndpoint&lt;/li>
+&lt;li>请求解码函数：如decodeSayHelloRequest&lt;/li>
+&lt;li>响应编码函数：如encodeJsonResponse&lt;/li>
+&lt;li>处理器选项&lt;/li>
+&lt;/ul>
+&lt;p>看看第一个服务是如何暴露的：&lt;/p>
+&lt;ul>
+&lt;li>映射GET的/say-hello到一个处理器&lt;/li>
+&lt;li>这个处理器包含endpoints.SayHelloEndpoint用于处理请求，并返回响应&lt;/li>
+&lt;li>包含decodeSayHelloRequest用于将请求解码到SayHelloRequest&lt;/li>
+&lt;li>包含encodeJsonResponse用于将SayHelloRequest转为JSON格式&lt;/li>
+&lt;li>最后包含几个错误处理的方式&lt;/li>
+&lt;/ul>
+&lt;p>see：&lt;/p>
+&lt;pre>&lt;code>// MakeHttpHandler make http handler use mux
+func MakeHttpHandler(ctx context.Context, endpoints endpts.DiscoveryEndpoints, logger log.Logger) http.Handler {
+r := mux.NewRouter()
+options := []kithttp.ServerOption{
+kithttp.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
+kithttp.ServerErrorEncoder(encodeError),
+}
+r.Methods(&amp;quot;GET&amp;quot;).Path(&amp;quot;/say-hello&amp;quot;).Handler(kithttp.NewServer(
+endpoints.SayHelloEndpoint,
+decodeSayHelloRequest,
+encodeJsonResponse,
+options...,
+))
+r.Methods(&amp;quot;GET&amp;quot;).Path(&amp;quot;/discovery&amp;quot;).Handler(kithttp.NewServer(
+endpoints.DiscoveryEndpoint,
+decodeDiscoveryRequest,
+encodeJsonResponse,
+options...,
+))
+// create health check handler
+r.Methods(&amp;quot;GET&amp;quot;).Path(&amp;quot;/health&amp;quot;).Handler(kithttp.NewServer(
+endpoints.HealthCheckEndpoint,
+decodeHealthCheckRequest,
+encodeJsonResponse,
+options...,
+))
+return r
+}
+&lt;/code>&lt;/pre>
+&lt;p>当然上面提到的请求解码函数和响应编码函数都是自己写的，函数签名要遵照不同格式哦：&lt;/p>
+&lt;pre>&lt;code>// decodeSayHelloRequest decode request params to struct
+func decodeSayHelloRequest(_ context.Context, r *http.Request) (interface{}, error) {
+return endpts.SayHelloRequest{}, nil
+}
+// decodeDiscoveryRequest decode request params to struct
+func decodeDiscoveryRequest(_ context.Context, r *http.Request) (interface{}, error) {
+serviceName := r.URL.Query().Get(&amp;quot;serviceName&amp;quot;)
+if serviceName == &amp;quot;&amp;quot;{
+return nil, ErrorBadRequest
+}
+return endpts.DiscoveryRequest{
+ServiceName:serviceName,
+}, nil
+}
+// decodeHealthCheckRequest decode request
+func decodeHealthCheckRequest(ctx context.Context, r *http.Request) (interface{}, error) {
+return endpts.HealthRequest{}, nil
+}
+// encodeJsonResponse encode response to return
+func encodeJsonResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+w.Header().Set(&amp;quot;Content-Type&amp;quot;, &amp;quot;application/json;charset=utf-8&amp;quot;)
+return json.NewEncoder(w).Encode(response)
+}
+&lt;/code>&lt;/pre>
+&lt;h1 id="main函数调用">main函数调用&lt;/h1>
+&lt;p>处理流程如下&lt;/p>
+&lt;ol>
+&lt;li>读取consulHost, consulPort&lt;/li>
+&lt;li>用上述参数构建discoveryClient&lt;/li>
+&lt;li>用discoveryClient构建service&lt;/li>
+&lt;li>用service构建若干个endpoints&lt;/li>
+&lt;li>用若干个endpoints构建transport的handler&lt;/li>
+&lt;li>向consul注册自己&lt;/li>
+&lt;li>用handler和端口构建并开启http服务&lt;/li>
+&lt;li>监听到终止信号则向consul取消注册，并退出服务&lt;/li>
+&lt;/ol>
+&lt;p>注册时候有个问题，向服务中心注册时只要提交instanceId、serviceName、instanceHost、instancePort等信息，但是不包含结构化的有什么服务，服务对应的URL是什么，别人通过服务名查询到该实例，知道该实例的host和port，但是接下来怎做？我还是不知道你提供什么服务啊，不知道服务在哪个URL。&lt;/p>
+&lt;p>然后调用别人的服务也是手动发送http请求吗。&lt;/p>
+&lt;p>学了grpc之后，明白rpc是解决微服务之间的调用问题，而服务的注册和发现是这一章解决的，如何将二者结合？比如某个rpc服务向服务中心注册，然后客户端查询“XXX”服务，获得“XXX”服务的地址和端口，然后建立rpc连接，用rpc去调用。这是一个比较合理的逻辑。&lt;/p>
+&lt;p>即服务中心解决服务在哪的问题，RPC解决服务调用、返回的问题&lt;/p></description></item><item><title>一个使用Go Rpc库实现的RPC例子</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</link><pubDate>Sat, 25 Feb 2023 13:14:03 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</guid><description>&lt;p>本文使用go rpc库实现服务的创建、客户端的请求。&lt;/p>
 &lt;p>server提供字符串拼接和字符串区别的服务，运行在127.0.0.1:1234。client可以调用rpc发送请求，调用server上的服务，并获取到结果。&lt;/p>
 &lt;p>&lt;strong>注意点：&lt;/strong>&lt;/p>
 &lt;p>client和server都要维护请求参数结构和响应参数结构，如拼接字符串的请求参数：&lt;/p>

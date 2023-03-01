@@ -1,0 +1,210 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="go-kit的三层结构 go-kit项目采用分层架构方式。 transport层：处理http、grpc等逻辑。比如在http中就是返回一个ht"><title>Gokit项目结构和Consul结合实现服务注册和发现</title><link rel=canonical href=https://chajiuqqq.github.io/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/><link rel=stylesheet href=/blogs/scss/style.min.ac77dcf8b111b51da39a92990f431923f210f3876d85798a2125667f96dc33a4.css><meta property="og:title" content="Gokit项目结构和Consul结合实现服务注册和发现"><meta property="og:description" content="go-kit的三层结构 go-kit项目采用分层架构方式。 transport层：处理http、grpc等逻辑。比如在http中就是返回一个ht"><meta property="og:url" content="https://chajiuqqq.github.io/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/"><meta property="og:site_name" content="茶酒的小站"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="go-micro-book"><meta property="article:published_time" content="2023-03-01T13:50:07+08:00"><meta property="article:modified_time" content="2023-03-01T13:50:07+08:00"><meta name=twitter:title content="Gokit项目结构和Consul结合实现服务注册和发现"><meta name=twitter:description content="go-kit的三层结构 go-kit项目采用分层架构方式。 transport层：处理http、grpc等逻辑。比如在http中就是返回一个ht"><script async src="https://www.googletagmanager.com/gtag/js?id=G-BCR6BTPPNW"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-BCR6BTPPNW",{anonymize_ip:!1})}</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/blogs/><img src=/blogs/img/avatar_hu4031dbb736a187d9130ab1a88d3b3ee1_9967_300x0_resize_q75_box.jpeg width=300 height=300 class=site-logo loading=lazy alt=Avatar></a>
+<span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/blogs>茶酒的小站</a></h1><h2 class=site-description>一个年轻的小站</h2></div></header><ol class=social-menu><li><a href=https://github.com/chajiuqqq target=_blank title=GitHub><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://twitter.com target=_blank title=Twitter><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/blogs/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>主页</span></a></li><li><a href=/blogs/%E5%85%B3%E4%BA%8E/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>关于</span></a></li><li><a href=/blogs/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/blogs/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/blogs/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=i18n-switch><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><select name=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://chajiuqqq.github.io/blogs/en/>English</option><option value=https://chajiuqqq.github.io/blogs/ selected>中文</option><option value=https://chajiuqqq.github.io/blogs/ar/>عربي</option></select></li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>暗色模式</span></li></div></ol></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/blogs/categories/golang/>golang</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/>Gokit项目结构和Consul结合实现服务注册和发现</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Mar 01, 2023</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>阅读时长: 7 分钟</time></div></footer></div></header><section class=article-content><h1 id=go-kit的三层结构>go-kit的三层结构</h1><p>go-kit项目采用分层架构方式。</p><ul><li>transport层：处理http、grpc等逻辑。比如在http中就是返回一个http.Handler，里面包含了URL和对应处理器的关系</li><li>endpoint层：用于接受请求，处理请求，返回响应。每个服务都会包装成一个endpoint，在endpoint中调用service的方法，最后返回组装好的response。类似Java中controller的写法，不过这里没有涉及URL路径，只是提供包装后的服务。</li><li>service层：业务代码实现层，也就是定义了有什么服务，服务的具体实现。</li></ul><p><img src=/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/1.png width=1598 height=394 srcset="/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/1_hu7f74198fd50c76ee75e9c81f8c66bfea_337892_480x0_resize_box_3.png 480w, /blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/1_hu7f74198fd50c76ee75e9c81f8c66bfea_337892_1024x0_resize_box_3.png 1024w" loading=lazy alt="Alt text" class=gallery-image data-flex-grow=405 data-flex-basis=973px></p><p>代码中使用了go-kit的函数，影响较大的是endpoint层和transport层。写法和我们普通分层写不太一样，用了很多go-kit的API。下面我们先从service层讲起。</p><h2 id=service层>service层</h2><p>作为服务端，如果想要使用服务注册和发现中心，比如consul，那么服务端需要有这三个功能，<strong>我们抽象为一个接口：</strong></p><pre><code>type DiscoveryClient interface {
+
+    /**
+    * 服务注册接口
+    * @param serviceName 服务名
+    * @param instanceId 服务实例Id
+    * @param instancePort 服务实例端口
+    * @param healthCheckUrl 健康检查地址
+    * @param instanceHost 服务实例地址
+    * @param meta 服务实例元数据
+    */
+    Register(serviceName, instanceId, healthCheckUrl string, instanceHost string, instancePort int, meta map[string]string, logger *log.Logger) bool
+
+    /**
+    * 服务注销接口
+    * @param instanceId 服务实例Id
+    */
+    DeRegister(instanceId string, logger *log.Logger) bool
+
+    /**
+    * 发现服务实例接口
+    * @param serviceName 服务名
+    */
+    DiscoverServices(serviceName string, logger *log.Logger) []interface{}
+}
+</code></pre><ul><li>Register用于把自己注册到consul</li><li>DeRegister用于向consul注销自己的服务</li><li>DiscoverServices用于向consul请求别的服务</li></ul><p>对应可以有自己的接口实现，比如定义MyDiscoverClient结构，然后实现DiscoveryClient接口，如注册方法可以自己写http请求，发送到consul注册；或者定义KitDiscoverClient结构，然后实现DiscoveryClient接口，调用go-kit的consul client进行快速注册。</p><p>简单贴一个注册方法的go-kit实现：</p><pre><code>func (consulClient *KitDiscoverClient) Register(serviceName, instanceId, healthCheckUrl string, instanceHost string, instancePort int, meta map[string]string, logger *log.Logger) bool {
+
+    // 1. 构建服务实例元数据
+    serviceRegistration := &amp;api.AgentServiceRegistration{
+        ID:      instanceId,
+        Name:    serviceName,
+        Address: instanceHost,
+        Port:    instancePort,
+        Meta:    meta,
+        Check: &amp;api.AgentServiceCheck{
+            DeregisterCriticalServiceAfter: &quot;30s&quot;,
+            HTTP:                           &quot;http://&quot; + instanceHost + &quot;:&quot; + strconv.Itoa(instancePort) + healthCheckUrl,
+            Interval:                       &quot;15s&quot;,
+        },
+    }
+
+    // 2. 发送服务注册到 Consul 中
+    err := consulClient.client.Register(serviceRegistration)
+
+    if err != nil {
+        log.Println(&quot;Register Service Error!&quot;)
+        return false
+    }
+    log.Println(&quot;Register Service Success!&quot;)
+    return true
+}
+</code></pre><p><strong>第二个接口是Service接口</strong>，包含你可以提供什么服务，比如连接字符串，比如心跳检查，比如发现服务。如：</p><pre><code>type Service interface {
+
+
+    // HealthCheck check service health status
+    HealthCheck() bool
+
+    // sayHelloService
+    SayHello() string
+
+    //  discovery service from consul by serviceName
+    DiscoveryService(ctx context.Context, serviceName string) ([]interface{}, error)
+
+}
+</code></pre><p>然后提供自己的结构实现，如DiscoveryServiceImpl，这个结构里也可以包含上面提到的DiscoveryClient实例，这样就可以复用DiscoveryClient的实现了：</p><pre><code>//定义接口实现的结构
+type DiscoveryServiceImpl struct {
+    discoveryClient discover.DiscoveryClient
+}
+
+//定义工厂方法，其实不要也可以
+func NewDiscoveryServiceImpl(discoveryClient discover.DiscoveryClient) Service  {
+    return &amp;DiscoveryServiceImpl{
+        discoveryClient:discoveryClient,
+    }
+}
+
+//下面是实现接口的方法
+
+func (*DiscoveryServiceImpl) SayHello() string {
+    return &quot;Hello World!&quot;
+}
+
+func (service *DiscoveryServiceImpl) DiscoveryService(ctx context.Context, serviceName string) ([]interface{}, error)  {
+
+    instances := service.discoveryClient.DiscoverServices(serviceName, config.Logger)
+
+    if instances == nil || len(instances) == 0 {
+        return nil, ErrNotServiceInstances
+    }
+    return instances, nil
+}
+
+
+// HealthCheck implement Service method
+// 用于检查服务的健康状态，这里仅仅返回true
+func (*DiscoveryServiceImpl) HealthCheck() bool {
+    return true
+}
+</code></pre><p>通过上面的工厂方法NewDiscoveryServiceImpl，可以构建出一个Service的实现，用于调用自己的各种service</p><pre><code>// 声明并初始化 Service
+var svc = service.NewDiscoveryServiceImpl(discoveryClient)
+</code></pre><p>接下来是要把服务暴露出来，一个很简单的方法是通过URL暴露，比如将GET的/say-hello映射到Service的sayHello方法上，也就是HTTP服务器里用处理器去处理URL请求。但是go-kit使用了endpoint的概念，把服务称为endpoint，其中不包含对应的URL。</p><p>URL和endpoint的绑定我们放在了transport层实现。</p><h2 id=endpoint层>endpoint层</h2><p>首先介绍endpoint层。每个服务都是一个endpoint，所以构建一个机构，包含所有的服务（endpoint）：</p><pre><code>type DiscoveryEndpoints struct {
+    SayHelloEndpoint	endpoint.Endpoint
+    DiscoveryEndpoint	endpoint.Endpoint
+    HealthCheckEndpoint endpoint.Endpoint
+}
+</code></pre><p>上面的endpoint.Endpoint其实就是一个函数别名：</p><pre><code>func(ctx context.Context, request interface{}) (response interface{}, err error)
+</code></pre><p>也就是说，DiscoveryEndpoints是包含了几个函数的结构，这几个函数也就是提供请求响应服务的。</p><p>然后需要定义每个服务的请求结构、响应结构，如：</p><blockquote><p>SayHelloEndpoint&ndash;>SayHelloRequest、SayHelloResponse</p><p>DiscoveryEndpoint&ndash;>DiscoveryRequest、DiscoveryResponse</p></blockquote><p>每个结构里就是你需要传递的数据字段，没有的话就空，同时要指明json序列化tag：</p><pre><code>// 打招呼请求结构体
+type SayHelloRequest struct {
+}
+// 打招呼响应结构体
+type SayHelloResponse struct {
+    Message string `json:&quot;message&quot;`
+}
+</code></pre><p>然后是写函数返回这个具体的endpoint，可以看到就是返回一个函数，最后返回的是SayHelloResponse：</p><pre><code>// 创建打招呼 Endpoint
+func MakeSayHelloEndpoint(svc service.Service) endpoint.Endpoint {
+    return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+        message := svc.SayHello()
+        return SayHelloResponse{
+            Message:message,
+        }, nil
+    }
+}
+</code></pre><p>如果有请求数据，如何从请求中获取？</p><p>可以从request对象中转成你这个endpoint对应的请求结构，如<code>req := request.(DiscoveryRequest)</code>，这样就可以用结构里的数据了。</p><pre><code>// 创建服务发现的 Endpoint
+func MakeDiscoveryEndpoint(svc service.Service) endpoint.Endpoint {
+    return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+        req := request.(DiscoveryRequest)
+        instances, err := svc.DiscoveryService(ctx, req.ServiceName)
+        var errString = &quot;&quot;
+        if err != nil{
+            errString = err.Error()
+        }
+        return &amp;DiscoveryResponse{
+            Instances:instances,
+            Error:errString,
+        }, nil
+    }
+}
+</code></pre><p>你可能会有疑问，为什么request直接可以转成对应的请求结构，是如何转的呢？这在后面会提到，系统会使用我们提供的反序列化方法，将请求decode为我们设计的请求结构。同理，最后response结构如何序列化发送给客户端？也是调用了我们提供的序列化方法。</p><p>至此，endpoint构建完毕</p><h2 id=transport层>transport层</h2><p>如在http服务中，我们可以构建一个函数返回Handler。区别于直接提供给URL一个处理器或处理器函数，这边我们使用kithttp提供的处理器。</p><p>我们需要提供几个参数去构建这个处理器：</p><ul><li>endpoint：服务处理函数，如endpoints.SayHelloEndpoint</li><li>请求解码函数：如decodeSayHelloRequest</li><li>响应编码函数：如encodeJsonResponse</li><li>处理器选项</li></ul><p>看看第一个服务是如何暴露的：</p><ul><li>映射GET的/say-hello到一个处理器</li><li>这个处理器包含endpoints.SayHelloEndpoint用于处理请求，并返回响应</li><li>包含decodeSayHelloRequest用于将请求解码到SayHelloRequest</li><li>包含encodeJsonResponse用于将SayHelloRequest转为JSON格式</li><li>最后包含几个错误处理的方式</li></ul><p>see：</p><pre><code>// MakeHttpHandler make http handler use mux
+func MakeHttpHandler(ctx context.Context, endpoints endpts.DiscoveryEndpoints, logger log.Logger) http.Handler {
+    r := mux.NewRouter()
+
+    options := []kithttp.ServerOption{
+        kithttp.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
+        kithttp.ServerErrorEncoder(encodeError),
+    }
+
+    r.Methods(&quot;GET&quot;).Path(&quot;/say-hello&quot;).Handler(kithttp.NewServer(
+        endpoints.SayHelloEndpoint,
+        decodeSayHelloRequest,
+        encodeJsonResponse,
+        options...,
+    ))
+
+    r.Methods(&quot;GET&quot;).Path(&quot;/discovery&quot;).Handler(kithttp.NewServer(
+        endpoints.DiscoveryEndpoint,
+        decodeDiscoveryRequest,
+        encodeJsonResponse,
+        options...,
+    ))
+
+
+    // create health check handler
+    r.Methods(&quot;GET&quot;).Path(&quot;/health&quot;).Handler(kithttp.NewServer(
+        endpoints.HealthCheckEndpoint,
+        decodeHealthCheckRequest,
+        encodeJsonResponse,
+        options...,
+    ))
+
+    return r
+}
+</code></pre><p>当然上面提到的请求解码函数和响应编码函数都是自己写的，函数签名要遵照不同格式哦：</p><pre><code>// decodeSayHelloRequest decode request params to struct
+func decodeSayHelloRequest(_ context.Context, r *http.Request) (interface{}, error) {
+    return endpts.SayHelloRequest{}, nil
+}
+
+
+// decodeDiscoveryRequest decode request params to struct
+func decodeDiscoveryRequest(_ context.Context, r *http.Request) (interface{}, error) {
+    serviceName := r.URL.Query().Get(&quot;serviceName&quot;)
+    if serviceName == &quot;&quot;{
+        return nil, ErrorBadRequest
+    }
+    return endpts.DiscoveryRequest{
+        ServiceName:serviceName,
+    }, nil
+}
+
+
+// decodeHealthCheckRequest decode request
+func decodeHealthCheckRequest(ctx context.Context, r *http.Request) (interface{}, error) {
+    return endpts.HealthRequest{}, nil
+}
+
+// encodeJsonResponse encode response to return
+func encodeJsonResponse(ctx context.Context, w http.ResponseWriter, response interface{}) error {
+    w.Header().Set(&quot;Content-Type&quot;, &quot;application/json;charset=utf-8&quot;)
+    return json.NewEncoder(w).Encode(response)
+}
+</code></pre><h1 id=main函数调用>main函数调用</h1><p>处理流程如下</p><ol><li>读取consulHost, consulPort</li><li>用上述参数构建discoveryClient</li><li>用discoveryClient构建service</li><li>用service构建若干个endpoints</li><li>用若干个endpoints构建transport的handler</li><li>向consul注册自己</li><li>用handler和端口构建并开启http服务</li><li>监听到终止信号则向consul取消注册，并退出服务</li></ol><p>注册时候有个问题，向服务中心注册时只要提交instanceId、serviceName、instanceHost、instancePort等信息，但是不包含结构化的有什么服务，服务对应的URL是什么，别人通过服务名查询到该实例，知道该实例的host和port，但是接下来怎做？我还是不知道你提供什么服务啊，不知道服务在哪个URL。</p><p>然后调用别人的服务也是手动发送http请求吗。</p><p>学了grpc之后，明白rpc是解决微服务之间的调用问题，而服务的注册和发现是这一章解决的，如何将二者结合？比如某个rpc服务向服务中心注册，然后客户端查询“XXX”服务，获得“XXX”服务的地址和端口，然后建立rpc连接，用rpc去调用。这是一个比较合理的逻辑。</p><p>即服务中心解决服务在哪的问题，RPC解决服务调用、返回的问题</p></section><footer class=article-footer><section class=article-tags><a href=/blogs/tags/go-micro-book/>go-micro-book</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/><div class=article-details><h2 class=article-title>一个使用Go Rpc库实现的RPC例子</h2></div></a></article><article><a href=/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/><div class=article-details><h2 class=article-title>Golang中的Template模板引擎</h2></div></a></article><article><a href=/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/><div class=article-details><h2 class=article-title>Golang中的应用测试</h2></div></a></article><article><a href=/blogs/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/><div class=article-details><h2 class=article-title>Golang中的数据存储</h2></div></a></article><article><a href=/blogs/p/%E4%B8%80%E4%B8%AAgolang-rss%E5%86%85%E5%AE%B9%E5%8C%B9%E9%85%8D%E5%99%A8/><div class=article-details><h2 class=article-title>一个Golang RSS内容匹配器</h2></div></a></article></div></div></aside><div class=disqus-container><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//hugo-theme-stack.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2023 茶酒的小站</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.13.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#go-kit的三层结构>go-kit的三层结构</a><ol><li><a href=#service层>service层</a></li><li><a href=#endpoint层>endpoint层</a></li><li><a href=#transport层>transport层</a></li></ol></li><li><a href=#main函数调用>main函数调用</a></li></ol></nav></div></section></aside></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/blogs/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
