@@ -260,7 +260,292 @@ return json.NewEncoder(w).Encode(response)
 &lt;p>注册时候有个问题，向服务中心注册时只要提交instanceId、serviceName、instanceHost、instancePort等信息，但是不包含结构化的有什么服务，服务对应的URL是什么，别人通过服务名查询到该实例，知道该实例的host和port，但是接下来怎做？我还是不知道你提供什么服务啊，不知道服务在哪个URL。&lt;/p>
 &lt;p>然后调用别人的服务也是手动发送http请求吗。&lt;/p>
 &lt;p>学了grpc之后，明白rpc是解决微服务之间的调用问题，而服务的注册和发现是这一章解决的，如何将二者结合？比如某个rpc服务向服务中心注册，然后客户端查询“XXX”服务，获得“XXX”服务的地址和端口，然后建立rpc连接，用rpc去调用。这是一个比较合理的逻辑。&lt;/p>
-&lt;p>即服务中心解决服务在哪的问题，RPC解决服务调用、返回的问题&lt;/p></description></item><item><title>一个使用Go Rpc库实现的RPC例子</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</link><pubDate>Sat, 25 Feb 2023 13:14:03 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</guid><description>&lt;p>本文使用go rpc库实现服务的创建、客户端的请求。&lt;/p>
+&lt;p>即服务中心解决服务在哪的问题，RPC解决服务调用、返回的问题&lt;/p></description></item><item><title>介绍一下grpc的使用</title><link>https://chajiuqqq.github.io/blogs/p/%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8Bgrpc%E7%9A%84%E4%BD%BF%E7%94%A8/</link><pubDate>Tue, 28 Feb 2023 11:28:33 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8Bgrpc%E7%9A%84%E4%BD%BF%E7%94%A8/</guid><description>&lt;p>gRPC和protocol buffers通常被一起使用，protoBuf是gRPC的接口定义语言，也是其底层消息交换结构。通过gRPC，一个客户端可以像调用本地方法一样调用服务端应用的方法。客户端和服务端可以在多种不同环境下互动，比如java作为服务端语言，而go、python等作为客户端语言。&lt;/p>
+&lt;p>gRPC使用protoBuf作为结构化数据的序列算法，可以在&lt;code>.proto&lt;/code>文件中定义数据结构，并用&lt;code>protoc&lt;/code>生成目标语言的客户端、服务端代码。&lt;/p>
+&lt;p>下面是一个例子，数据被定义为一个message，并包含一系列的域；用rpc和方法名，参数，返回值构成服务。&lt;/p>
+&lt;pre>&lt;code>// The greeter service definition.
+service Greeter {
+// Sends a greeting
+rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+// The request message containing the user's name.
+message HelloRequest {
+string name = 1;
+}
+// The response message containing the greetings
+message HelloReply {
+string message = 1;
+}
+&lt;/code>&lt;/pre>
+&lt;p>在生成客户端、服务端代码后，还需要进一步开发使用。&lt;/p>
+&lt;h1 id="string-service例子">string-service例子&lt;/h1>
+&lt;p>下面以一个string-service作为例子介绍，首先定义proto文件：&lt;/p>
+&lt;pre>&lt;code>syntax = &amp;quot;proto3&amp;quot;;
+package pb;
+option go_package = &amp;quot;grpc-string-test/pb&amp;quot;;
+service StringService{
+rpc Concat(StringRequest) returns (StringResponse){}
+rpc Diff(StringRequest) returns (StringResponse){}
+}
+message StringRequest{
+string A = 1;
+string B = 2;
+}
+message StringResponse{
+string Ret = 1;
+string err = 2;
+}
+&lt;/code>&lt;/pre>
+&lt;p>proto3需要加上&lt;code>option go_package = &amp;quot;grpc-string-test/pb&amp;quot;;&lt;/code>前面是model名，后面是包名。这样才能生成成功。&lt;/p>
+&lt;p>编译代码是：&lt;/p>
+&lt;pre>&lt;code>protoc --go_out=. --go_opt=paths=source_relative \
+--go-grpc_out=. --go-grpc_opt=paths=source_relative \
+string.proto
+&lt;/code>&lt;/pre>
+&lt;p>这个命令需要到proto文件的目录执行。最后string.proto是要转换的proto文件名。最后会在当前目录下生成两个文件&lt;code>string.pb.go&lt;/code>和&lt;code>string_grpc.pb.go&lt;/code>，客户端和服务端都需要用到这两个文件。&lt;/p>
+&lt;h2 id="server端">server端&lt;/h2>
+&lt;p>为了实现具体的Concat和Diff方法，需要建立一个结构，并实现StringServiceServer接口&lt;/p>
+&lt;p>你首先可以这么做：&lt;/p>
+&lt;pre>&lt;code>type StringService struct {
+pb.UnimplementedStringServiceServer
+}
+&lt;/code>&lt;/pre>
+&lt;p>嵌入UnimplementedStringServiceServer，这是自动生成的一个结构，这样就默认实现了StringServiceServer接口，然后再重写Concat和Diff方法：&lt;/p>
+&lt;pre>&lt;code>func (s *StringService) Concat(ctx context.Context, req *StringRequest) (*StringResponse, error) {
+log.Println(req)
+if len(req.A)+len(req.B) &amp;gt; StrMaxSize {
+response := StringResponse{Ret: &amp;quot;&amp;quot;}
+return &amp;amp;response, nil
+}
+response := StringResponse{Ret: req.A + req.B}
+return &amp;amp;response, nil
+}
+func (s *StringService) Diff(ctx context.Context, req *StringRequest) (*StringResponse, error) {
+log.Println(req)
+if len(req.A) &amp;lt; 1 || len(req.B) &amp;lt; 1 {
+response := StringResponse{Ret: &amp;quot;&amp;quot;}
+return &amp;amp;response, nil
+}
+res := &amp;quot;&amp;quot;
+if len(req.A) &amp;gt;= len(req.B) {
+for _, char := range req.B {
+if strings.Contains(req.A, string(char)) {
+res = res + string(char)
+}
+}
+} else {
+for _, char := range req.A {
+if strings.Contains(req.B, string(char)) {
+res = res + string(char)
+}
+}
+}
+response := StringResponse{Ret: res}
+return &amp;amp;response, nil
+}
+&lt;/code>&lt;/pre>
+&lt;p>注意到传入参数是StringRequest，返回StringResponse，也就是我们之前定义的消息结构。&lt;/p>
+&lt;p>写好了业务到底如何实现，下面要开启server对端口的监听，接受rpc请求，流程如下：&lt;/p>
+&lt;ul>
+&lt;li>获取某端口的Listener&lt;/li>
+&lt;li>新建grpc.Server和上面我们定义的StringService&lt;/li>
+&lt;li>调用RegisterStringServiceServer向grpc.Server注册StringService&lt;/li>
+&lt;li>开启rpc监听&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> func main() {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> lis, err := net.Listen(&amp;#34;tcp&amp;#34;, &amp;#34;127.0.0.1:1234&amp;#34;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if err != nil {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> log.Fatalf(&amp;#34;failed to listen: %v&amp;#34;, err)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> log.Println(&amp;#34;server at 127.0.0.1:1234&amp;#34;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> grpcServer := grpc.NewServer()
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> stringService := new(service.StringService)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pb.RegisterStringServiceServer(grpcServer, stringService)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> grpcServer.Serve(lis)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="client端">client端&lt;/h2>
+&lt;p>client只要建立rpc连接，然后调用服务即可。流程如下：&lt;/p>
+&lt;ul>
+&lt;li>grpc.Dial拨号建立rpc连接，获得conn&lt;/li>
+&lt;li>从conn获取stringClient，这个变量实现的接口包含所有提供的服务&lt;/li>
+&lt;li>由stringClient调用各种服务&lt;/li>
+&lt;/ul>
+&lt;p>注意传入参数是我们之前定义的StringRequest，返回StringResponse，非常完美&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> func main() {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> serviceAddress := &amp;#34;127.0.0.1:1234&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> conn, err := grpc.Dial(serviceAddress, grpc.WithInsecure())
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if err != nil {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> panic(&amp;#34;connect error&amp;#34;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> defer conn.Close()
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> stringClient := pb.NewStringServiceClient(conn)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> stringReq := &amp;amp;pb.StringRequest{A: &amp;#34;A&amp;#34;, B: &amp;#34;B&amp;#34;}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> reply, _ := stringClient.Concat(context.Background(), stringReq)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> fmt.Printf(&amp;#34;StringService Concat : %s concat %s = %s\n&amp;#34;, stringReq.A, stringReq.B, reply.Ret)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>至此，server和client都写完了，开启server，然后开启client，就可以进行rpc调用。&lt;/p>
+&lt;h1 id="使用流的string-service例子">使用流的string-service例子&lt;/h1>
+&lt;p>流指的是请求消息流或响应消息流，每个单位都是对应的请求结构或响应结构，并持续发送，好处是可以连续发送，连续处理。而不是发一个返回一个，发一个返回一个。&lt;/p>
+&lt;p>grpc支持单向流或双向流。在proto文件中给参数添加&lt;code>stream&lt;/code>关键字就可以指明这是以流的形式发送的参数（或结果）：&lt;/p>
+&lt;pre>&lt;code>service StringService{
+rpc Concat(StringRequest) returns (StringResponse){}
+rpc Diff(StringRequest) returns (StringResponse){}
+rpc ConcatServerStream(StringRequest) returns (stream StringResponse){}
+rpc ConcatClientStream(stream StringRequest) returns (StringResponse){}
+rpc ConcatDoubleStream(stream StringRequest) returns (stream StringResponse){}
+}
+&lt;/code>&lt;/pre>
+&lt;h2 id="server发流">server发流&lt;/h2>
+&lt;p>这指的是，客户端发一个req，服务端流返回res，客户端读取res流。我们要关注的就是client调用服务，接受流请求的过程；和服务端发送流的写法。&lt;/p>
+&lt;pre>&lt;code>//client
+func streamServerConn(stringClient pb.StringServiceClient) {
+stringReq := &amp;amp;pb.StringRequest{A: &amp;quot;A&amp;quot;, B: &amp;quot;B&amp;quot;}
+//接受流
+stream, _ := stringClient.ConcatServerStream(context.Background(), stringReq)
+//循环读取流
+for {
+item, err := stream.Recv()
+if err == io.EOF {
+break
+}
+if err != nil {
+log.Println(&amp;quot;fail to recv:&amp;quot;, err)
+}
+fmt.Printf(&amp;quot;StringService Concat : %s concat %s = %s\n&amp;quot;, stringReq.A, stringReq.B, item.Ret)
+}
+}
+//server
+func (s *StringService) ConcatServerStream(req *StringRequest, qs StringService_ConcatServerStreamServer) error {
+response := StringResponse{Ret: req.A + req.B}
+for i := 0; i &amp;lt; 10; i++ {
+qs.Send(&amp;amp;response)
+}
+return nil
+}
+&lt;/code>&lt;/pre>
+&lt;h2 id="client发流">client发流&lt;/h2>
+&lt;pre>&lt;code>//client
+func streamClientConn(stringClient pb.StringServiceClient) {
+stream, err := stringClient.ConcatClientStream(context.Background())
+//流式发送requset
+for i := 0; i &amp;lt; 10; i++ {
+if err != nil {
+log.Println(&amp;quot;fail to call:&amp;quot;, err)
+break
+}
+stream.Send(&amp;amp;pb.StringRequest{A: strconv.Itoa(i), B: strconv.Itoa(i + 1)})
+}
+//发完后读取一个response
+recv, err := stream.CloseAndRecv()
+if err != nil {
+log.Println(&amp;quot;fail to recv:&amp;quot;, err)
+}
+fmt.Printf(&amp;quot;Ret is %s\n&amp;quot;, recv.Ret)
+}
+//server
+func (s *StringService) ConcatClientStream(qs StringService_ConcatClientStreamServer) error {
+var params []string
+for {
+item, err := qs.Recv()
+//客户端发完了，服务器才处理并返回一个response
+if err == io.EOF {
+qs.SendAndClose(&amp;amp;StringResponse{Ret: strings.Join(params, &amp;quot;&amp;quot;)})
+return nil
+}
+if err != nil {
+log.Println(&amp;quot;fail to recv:&amp;quot;, err)
+return err
+}
+params = append(params, item.A, item.B)
+}
+}
+&lt;/code>&lt;/pre>
+&lt;h2 id="双向流">双向流&lt;/h2>
+&lt;pre>&lt;code>//client
+func doubleStreamConn(stringClient pb.StringServiceClient) {
+stream, _ := stringClient.ConcatDoubleStream(context.Background())
+var i int
+for {
+err := stream.Send(&amp;amp;pb.StringRequest{A: strconv.Itoa(i), B: strconv.Itoa(i + 1)})
+if err != nil {
+log.Println(&amp;quot;fail to send:&amp;quot;, err)
+break
+}
+recv, err := stream.Recv()
+if err != nil {
+log.Println(&amp;quot;fail to recv:&amp;quot;, err)
+break
+}
+fmt.Printf(&amp;quot;Ret is %s\n&amp;quot;, recv.Ret)
+i++
+time.Sleep(time.Second)
+}
+}
+//server
+func (s *StringService) ConcatDoubleStream(qs StringService_ConcatDoubleStreamServer) error {
+for {
+in, err := qs.Recv()
+if err == io.EOF {
+return nil
+}
+if err != nil {
+log.Println(&amp;quot;fail to recv:&amp;quot;, err)
+return err
+}
+qs.Send(&amp;amp;StringResponse{Ret: in.A + in.B})
+}
+}
+&lt;/code>&lt;/pre>
+&lt;h2 id="总结">总结&lt;/h2>
+&lt;p>流传输：&lt;/p>
+&lt;ul>
+&lt;li>发送一个message：stream.send()&lt;/li>
+&lt;li>接受一个message：stream.recv()&lt;/li>
+&lt;li>发送一个msg，并关闭：stream.SendAndClose()&lt;/li>
+&lt;li>接受一个msg，并关闭：stream.CloseAndRecv()&lt;/li>
+&lt;li>判断流是否结束：err == io.EOF&lt;/li>
+&lt;/ul></description></item><item><title>一个使用Go Rpc库实现的RPC例子</title><link>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</link><pubDate>Sat, 25 Feb 2023 13:14:03 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/</guid><description>&lt;p>本文使用go rpc库实现服务的创建、客户端的请求。&lt;/p>
 &lt;p>server提供字符串拼接和字符串区别的服务，运行在127.0.0.1:1234。client可以调用rpc发送请求，调用server上的服务，并获取到结果。&lt;/p>
 &lt;p>&lt;strong>注意点：&lt;/strong>&lt;/p>
 &lt;p>client和server都要维护请求参数结构和响应参数结构，如拼接字符串的请求参数：&lt;/p>

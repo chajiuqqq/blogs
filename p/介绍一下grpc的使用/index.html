@@ -1,0 +1,251 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="gRPC和protocol buffers通常被一起使用，protoBuf是gRPC的接口定义语言，也是其底层消息交换结构。通过gRPC，一个"><title>介绍一下grpc的使用</title><link rel=canonical href=https://chajiuqqq.github.io/blogs/p/%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8Bgrpc%E7%9A%84%E4%BD%BF%E7%94%A8/><link rel=stylesheet href=/blogs/scss/style.min.ac77dcf8b111b51da39a92990f431923f210f3876d85798a2125667f96dc33a4.css><meta property="og:title" content="介绍一下grpc的使用"><meta property="og:description" content="gRPC和protocol buffers通常被一起使用，protoBuf是gRPC的接口定义语言，也是其底层消息交换结构。通过gRPC，一个"><meta property="og:url" content="https://chajiuqqq.github.io/blogs/p/%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8Bgrpc%E7%9A%84%E4%BD%BF%E7%94%A8/"><meta property="og:site_name" content="茶酒的小站"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="go-micro-book"><meta property="article:published_time" content="2023-02-28T11:28:33+08:00"><meta property="article:modified_time" content="2023-02-28T11:28:33+08:00"><meta name=twitter:title content="介绍一下grpc的使用"><meta name=twitter:description content="gRPC和protocol buffers通常被一起使用，protoBuf是gRPC的接口定义语言，也是其底层消息交换结构。通过gRPC，一个"><script async src="https://www.googletagmanager.com/gtag/js?id=G-BCR6BTPPNW"></script>
+<script>var doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-BCR6BTPPNW",{anonymize_ip:!1})}</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/blogs/><img src=/blogs/img/avatar_hu4031dbb736a187d9130ab1a88d3b3ee1_9967_300x0_resize_q75_box.jpeg width=300 height=300 class=site-logo loading=lazy alt=Avatar></a>
+<span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/blogs>茶酒的小站</a></h1><h2 class=site-description>一个年轻的小站</h2></div></header><ol class=social-menu><li><a href=https://github.com/chajiuqqq target=_blank title=GitHub><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://twitter.com target=_blank title=Twitter><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/blogs/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>主页</span></a></li><li><a href=/blogs/%E5%85%B3%E4%BA%8E/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="7" r="4"/><path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg><span>关于</span></a></li><li><a href=/blogs/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/blogs/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/blogs/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=i18n-switch><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><select name=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://chajiuqqq.github.io/blogs/en/>English</option><option value=https://chajiuqqq.github.io/blogs/ selected>中文</option><option value=https://chajiuqqq.github.io/blogs/ar/>عربي</option></select></li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>暗色模式</span></li></div></ol></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><header class=article-category><a href=/blogs/categories/golang/>golang</a>
+<a href=/blogs/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/>微服务</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/blogs/p/%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8Bgrpc%E7%9A%84%E4%BD%BF%E7%94%A8/>介绍一下grpc的使用</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Feb 28, 2023</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>阅读时长: 5 分钟</time></div></footer></div></header><section class=article-content><p>gRPC和protocol buffers通常被一起使用，protoBuf是gRPC的接口定义语言，也是其底层消息交换结构。通过gRPC，一个客户端可以像调用本地方法一样调用服务端应用的方法。客户端和服务端可以在多种不同环境下互动，比如java作为服务端语言，而go、python等作为客户端语言。</p><p>gRPC使用protoBuf作为结构化数据的序列算法，可以在<code>.proto</code>文件中定义数据结构，并用<code>protoc</code>生成目标语言的客户端、服务端代码。</p><p>下面是一个例子，数据被定义为一个message，并包含一系列的域；用rpc和方法名，参数，返回值构成服务。</p><pre><code>// The greeter service definition.
+service Greeter {
+    // Sends a greeting
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+    string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+    string message = 1;
+}
+</code></pre><p>在生成客户端、服务端代码后，还需要进一步开发使用。</p><h1 id=string-service例子>string-service例子</h1><p>下面以一个string-service作为例子介绍，首先定义proto文件：</p><pre><code>syntax = &quot;proto3&quot;;
+
+package pb;
+option go_package = &quot;grpc-string-test/pb&quot;;
+
+service StringService{
+    rpc Concat(StringRequest) returns (StringResponse){}
+    rpc Diff(StringRequest) returns (StringResponse){}
+}
+
+message StringRequest{
+    string A = 1;
+    string B = 2;
+}
+
+
+message StringResponse{
+    string Ret = 1;
+    string err = 2;
+}
+</code></pre><p>proto3需要加上<code>option go_package = "grpc-string-test/pb";</code>前面是model名，后面是包名。这样才能生成成功。</p><p>编译代码是：</p><pre><code>protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    string.proto
+</code></pre><p>这个命令需要到proto文件的目录执行。最后string.proto是要转换的proto文件名。最后会在当前目录下生成两个文件<code>string.pb.go</code>和<code>string_grpc.pb.go</code>，客户端和服务端都需要用到这两个文件。</p><h2 id=server端>server端</h2><p>为了实现具体的Concat和Diff方法，需要建立一个结构，并实现StringServiceServer接口</p><p>你首先可以这么做：</p><pre><code>type StringService struct {
+    pb.UnimplementedStringServiceServer
+}
+</code></pre><p>嵌入UnimplementedStringServiceServer，这是自动生成的一个结构，这样就默认实现了StringServiceServer接口，然后再重写Concat和Diff方法：</p><pre><code>func (s *StringService) Concat(ctx context.Context, req *StringRequest) (*StringResponse, error) {
+    log.Println(req)
+    if len(req.A)+len(req.B) &gt; StrMaxSize {
+        response := StringResponse{Ret: &quot;&quot;}
+        return &amp;response, nil
+    }
+    response := StringResponse{Ret: req.A + req.B}
+    return &amp;response, nil
+}
+
+func (s *StringService) Diff(ctx context.Context, req *StringRequest) (*StringResponse, error) {
+    log.Println(req)
+    if len(req.A) &lt; 1 || len(req.B) &lt; 1 {
+        response := StringResponse{Ret: &quot;&quot;}
+        return &amp;response, nil
+    }
+    res := &quot;&quot;
+    if len(req.A) &gt;= len(req.B) {
+        for _, char := range req.B {
+            if strings.Contains(req.A, string(char)) {
+                res = res + string(char)
+            }
+        }
+    } else {
+        for _, char := range req.A {
+            if strings.Contains(req.B, string(char)) {
+                res = res + string(char)
+            }
+        }
+    }
+    response := StringResponse{Ret: res}
+    return &amp;response, nil
+}
+</code></pre><p>注意到传入参数是StringRequest，返回StringResponse，也就是我们之前定义的消息结构。</p><p>写好了业务到底如何实现，下面要开启server对端口的监听，接受rpc请求，流程如下：</p><ul><li>获取某端口的Listener</li><li>新建grpc.Server和上面我们定义的StringService</li><li>调用RegisterStringServiceServer向grpc.Server注册StringService</li><li>开启rpc监听</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    func main() {
+</span></span><span class=line><span class=cl>        lis, err := net.Listen(&#34;tcp&#34;, &#34;127.0.0.1:1234&#34;)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        if err != nil {
+</span></span><span class=line><span class=cl>            log.Fatalf(&#34;failed to listen: %v&#34;, err)
+</span></span><span class=line><span class=cl>        }
+</span></span><span class=line><span class=cl>        log.Println(&#34;server at 127.0.0.1:1234&#34;)
+</span></span><span class=line><span class=cl>        grpcServer := grpc.NewServer()
+</span></span><span class=line><span class=cl>        stringService := new(service.StringService)
+</span></span><span class=line><span class=cl>        pb.RegisterStringServiceServer(grpcServer, stringService)
+</span></span><span class=line><span class=cl>        grpcServer.Serve(lis)
+</span></span><span class=line><span class=cl>    }
+</span></span></code></pre></td></tr></table></div></div><h2 id=client端>client端</h2><p>client只要建立rpc连接，然后调用服务即可。流程如下：</p><ul><li>grpc.Dial拨号建立rpc连接，获得conn</li><li>从conn获取stringClient，这个变量实现的接口包含所有提供的服务</li><li>由stringClient调用各种服务</li></ul><p>注意传入参数是我们之前定义的StringRequest，返回StringResponse，非常完美</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    func main() {
+</span></span><span class=line><span class=cl>        serviceAddress := &#34;127.0.0.1:1234&#34;
+</span></span><span class=line><span class=cl>        conn, err := grpc.Dial(serviceAddress, grpc.WithInsecure())
+</span></span><span class=line><span class=cl>        if err != nil {
+</span></span><span class=line><span class=cl>            panic(&#34;connect error&#34;)
+</span></span><span class=line><span class=cl>        }
+</span></span><span class=line><span class=cl>        defer conn.Close()
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        stringClient := pb.NewStringServiceClient(conn)
+</span></span><span class=line><span class=cl>        stringReq := &amp;pb.StringRequest{A: &#34;A&#34;, B: &#34;B&#34;}
+</span></span><span class=line><span class=cl>        reply, _ := stringClient.Concat(context.Background(), stringReq)
+</span></span><span class=line><span class=cl>        fmt.Printf(&#34;StringService Concat : %s concat %s = %s\n&#34;, stringReq.A, stringReq.B, reply.Ret)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    }
+</span></span></code></pre></td></tr></table></div></div><p>至此，server和client都写完了，开启server，然后开启client，就可以进行rpc调用。</p><h1 id=使用流的string-service例子>使用流的string-service例子</h1><p>流指的是请求消息流或响应消息流，每个单位都是对应的请求结构或响应结构，并持续发送，好处是可以连续发送，连续处理。而不是发一个返回一个，发一个返回一个。</p><p>grpc支持单向流或双向流。在proto文件中给参数添加<code>stream</code>关键字就可以指明这是以流的形式发送的参数（或结果）：</p><pre><code>service StringService{
+    rpc Concat(StringRequest) returns (StringResponse){}
+    rpc Diff(StringRequest) returns (StringResponse){}
+    rpc ConcatServerStream(StringRequest) returns (stream StringResponse){}
+    rpc ConcatClientStream(stream StringRequest) returns (StringResponse){}
+    rpc ConcatDoubleStream(stream StringRequest) returns (stream StringResponse){}
+}
+</code></pre><h2 id=server发流>server发流</h2><p>这指的是，客户端发一个req，服务端流返回res，客户端读取res流。我们要关注的就是client调用服务，接受流请求的过程；和服务端发送流的写法。</p><pre><code>//client
+func streamServerConn(stringClient pb.StringServiceClient) {
+
+    stringReq := &amp;pb.StringRequest{A: &quot;A&quot;, B: &quot;B&quot;}
+    //接受流
+    stream, _ := stringClient.ConcatServerStream(context.Background(), stringReq)
+    //循环读取流
+    for {
+        item, err := stream.Recv()
+        if err == io.EOF {
+            break
+        }
+        if err != nil {
+            log.Println(&quot;fail to recv:&quot;, err)
+        }
+        fmt.Printf(&quot;StringService Concat : %s concat %s = %s\n&quot;, stringReq.A, stringReq.B, item.Ret)
+    }
+
+}
+
+
+//server
+func (s *StringService) ConcatServerStream(req *StringRequest, qs StringService_ConcatServerStreamServer) error {
+    response := StringResponse{Ret: req.A + req.B}
+    for i := 0; i &lt; 10; i++ {
+        qs.Send(&amp;response)
+    }
+    return nil
+
+}
+</code></pre><h2 id=client发流>client发流</h2><pre><code>//client
+func streamClientConn(stringClient pb.StringServiceClient) {
+
+    stream, err := stringClient.ConcatClientStream(context.Background())
+    //流式发送requset
+    for i := 0; i &lt; 10; i++ {
+        if err != nil {
+            log.Println(&quot;fail to call:&quot;, err)
+            break
+        }
+        stream.Send(&amp;pb.StringRequest{A: strconv.Itoa(i), B: strconv.Itoa(i + 1)})
+    }
+
+    //发完后读取一个response
+    recv, err := stream.CloseAndRecv()
+    if err != nil {
+        log.Println(&quot;fail to recv:&quot;, err)
+    }
+
+    fmt.Printf(&quot;Ret is %s\n&quot;, recv.Ret)
+}
+
+//server
+func (s *StringService) ConcatClientStream(qs StringService_ConcatClientStreamServer) error {
+    var params []string
+    for {
+        item, err := qs.Recv()
+        //客户端发完了，服务器才处理并返回一个response
+        if err == io.EOF {
+            qs.SendAndClose(&amp;StringResponse{Ret: strings.Join(params, &quot;&quot;)})
+            return nil
+        }
+        if err != nil {
+            log.Println(&quot;fail to recv:&quot;, err)
+            return err
+        }
+        params = append(params, item.A, item.B)
+    }
+}
+</code></pre><h2 id=双向流>双向流</h2><pre><code>//client
+func doubleStreamConn(stringClient pb.StringServiceClient) {
+
+    stream, _ := stringClient.ConcatDoubleStream(context.Background())
+    var i int
+    for {
+        err := stream.Send(&amp;pb.StringRequest{A: strconv.Itoa(i), B: strconv.Itoa(i + 1)})
+        if err != nil {
+            log.Println(&quot;fail to send:&quot;, err)
+            break
+        }
+        recv, err := stream.Recv()
+        if err != nil {
+            log.Println(&quot;fail to recv:&quot;, err)
+            break
+        }
+        fmt.Printf(&quot;Ret is %s\n&quot;, recv.Ret)
+        i++
+        time.Sleep(time.Second)
+    }
+
+}
+
+//server
+func (s *StringService) ConcatDoubleStream(qs StringService_ConcatDoubleStreamServer) error {
+    for {
+        in, err := qs.Recv()
+        if err == io.EOF {
+            return nil
+        }
+        if err != nil {
+            log.Println(&quot;fail to recv:&quot;, err)
+            return err
+        }
+        qs.Send(&amp;StringResponse{Ret: in.A + in.B})
+    }
+}
+</code></pre><h2 id=总结>总结</h2><p>流传输：</p><ul><li>发送一个message：stream.send()</li><li>接受一个message：stream.recv()</li><li>发送一个msg，并关闭：stream.SendAndClose()</li><li>接受一个msg，并关闭：stream.CloseAndRecv()</li><li>判断流是否结束：err == io.EOF</li></ul></section><footer class=article-footer><section class=article-tags><a href=/blogs/tags/go-micro-book/>go-micro-book</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/><div class=article-details><h2 class=article-title>Gokit项目结构和Consul结合实现服务注册和发现</h2></div></a></article><article><a href=/blogs/p/%E4%B8%80%E4%B8%AA%E4%BD%BF%E7%94%A8go-rpc%E5%BA%93%E5%AE%9E%E7%8E%B0%E7%9A%84rpc%E4%BE%8B%E5%AD%90/><div class=article-details><h2 class=article-title>一个使用Go Rpc库实现的RPC例子</h2></div></a></article><article><a href=/blogs/p/golang%E4%B8%AD%E7%9A%84template%E6%A8%A1%E6%9D%BF%E5%BC%95%E6%93%8E/><div class=article-details><h2 class=article-title>Golang中的Template模板引擎</h2></div></a></article><article><a href=/blogs/p/golang%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%95/><div class=article-details><h2 class=article-title>Golang中的应用测试</h2></div></a></article><article><a href=/blogs/p/golang%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8/><div class=article-details><h2 class=article-title>Golang中的数据存储</h2></div></a></article></div></div></aside><div class=disqus-container><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//hugo-theme-stack.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2023 茶酒的小站</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.13.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#string-service例子>string-service例子</a><ol><li><a href=#server端>server端</a></li><li><a href=#client端>client端</a></li></ol></li><li><a href=#使用流的string-service例子>使用流的string-service例子</a><ol><li><a href=#server发流>server发流</a></li><li><a href=#client发流>client发流</a></li><li><a href=#双向流>双向流</a></li><li><a href=#总结>总结</a></li></ol></li></ol></nav></div></section></aside></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/blogs/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
