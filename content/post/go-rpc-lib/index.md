@@ -5,6 +5,7 @@ draft: false
 
 categories:
     - golang
+    - 微服务
 tags:
     - go-micro-book
 ---
