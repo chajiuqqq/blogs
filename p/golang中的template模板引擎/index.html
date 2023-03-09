@@ -18,7 +18,18 @@ t.Execute(w,&quot;hello world&quot;)
 //如果想要执行其他模板，用t.ExecuteTemplate,并在第二个参数指定模版名称
 t,_ := template.ParseFiles(&quot;index.html&quot;,&quot;content.html&quot;,&quot;navbar.html&quot;)
 t.ExecuteTemplate(w,&quot;content.html&quot;,&quot;hello world&quot;)
-</code></pre><p>如果你只是在html中加入一些{{.}}的指令，模板的名称和文件名称一样，当然也可以重新定义模版的名字，或在一个模板文件中定义多个模板。</p><p><strong>讲了这么多还不知道模版文件怎么写呢。下面讲讲动作语法。</strong></p><h1 id=template里的动作>template里的动作</h1><p>如果要访问结构里的field，用：<code>{{ .Name }}</code>，或 <code>{{ .User.Name }}</code></p><h2 id=1-条件动作>1. 条件动作</h2><p>接受true或false，从而决定执行（显示）哪条语句。下面如果传入true，则会显示content1语句。</p><pre><code>{{ if . }}
+</code></pre><p>如果你只是在html中加入一些{{.}}的指令，模板的名称和文件名称一样，当然也可以重新定义模版的名字，或在一个模板文件中定义多个模板。</p><p>注意传入的数据建议是指针，也就是加上数据的引用。并且在tmpl里调用func时，不会自动把x.field转为(&x).field，所以如果你定了一个结构的指针接受者方法，而传入tmpl一个值的数据，那么无法调用该方法。会提示在该类型中找不到该方法。</p><pre><code>//t.ExecuteTemplate(w,&quot;content.html&quot;,Thread{})
+t.ExecuteTemplate(w,&quot;content.html&quot;,&amp;Thread{})
+</code></pre><p>内嵌的field可以直接通过.调用，比如定义People和User：</p><pre><code>type People struct{
+    Name string
+}
+
+type User struct{
+    People
+    Username string
+    Pwd string
+}
+</code></pre><p>在tmpl中，传入user，如果直接 {{.Name}}是可以获取的。</p><p><strong>讲了这么多还不知道模版文件怎么写呢。下面讲讲动作语法。</strong></p><h1 id=template里的动作>template里的动作</h1><p>如果要访问结构里的field，用：<code>{{ .Name }}</code>，或 <code>{{ .User.Name }}</code></p><h2 id=1-条件动作>1. 条件动作</h2><p>接受true或false，从而决定执行（显示）哪条语句。下面如果传入true，则会显示content1语句。</p><pre><code>{{ if . }}
     content1
 {{ else }}
     content2
