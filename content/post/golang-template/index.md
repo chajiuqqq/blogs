@@ -57,6 +57,26 @@ go web的模版引擎使用方法分为以下两个步骤：
 
 如果你只是在html中加入一些{{.}}的指令，模板的名称和文件名称一样，当然也可以重新定义模版的名字，或在一个模板文件中定义多个模板。
 
+注意传入的数据建议是指针，也就是加上数据的引用。并且在tmpl里调用func时，不会自动把x.field转为(&x).field，所以如果你定了一个结构的指针接受者方法，而传入tmpl一个值的数据，那么无法调用该方法。会提示在该类型中找不到该方法。
+
+    //t.ExecuteTemplate(w,"content.html",Thread{})
+    t.ExecuteTemplate(w,"content.html",&Thread{})
+
+
+内嵌的field可以直接通过.调用，比如定义People和User：
+
+    type People struct{
+        Name string
+    }
+
+    type User struct{
+        People
+        Username string
+        Pwd string
+    }
+
+在tmpl中，传入user，如果直接 {{.Name}}是可以获取的。
+
 **讲了这么多还不知道模版文件怎么写呢。下面讲讲动作语法。**
 
 # template里的动作
