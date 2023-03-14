@@ -1,4 +1,169 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/post/</link><description>Recent content in Posts on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 01 Mar 2023 13:50:07 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/post/index.xml" rel="self" type="application/rss+xml"/><item><title>Gokit项目结构和Consul结合实现服务注册和发现</title><link>https://chajiuqqq.github.io/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/</link><pubDate>Wed, 01 Mar 2023 13:50:07 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/</guid><description>&lt;h1 id="go-kit的三层结构">go-kit的三层结构&lt;/h1>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on 茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/post/</link><description>Recent content in Posts on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 14 Mar 2023 20:37:50 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/post/index.xml" rel="self" type="application/rss+xml"/><item><title>docker搭建Joplin流程</title><link>https://chajiuqqq.github.io/blogs/p/docker%E6%90%AD%E5%BB%BAjoplin%E6%B5%81%E7%A8%8B/</link><pubDate>Tue, 14 Mar 2023 20:37:50 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/docker%E6%90%AD%E5%BB%BAjoplin%E6%B5%81%E7%A8%8B/</guid><description>&lt;p>Joplin是一个跨平台的开源笔记应用程序，支持Windows、macOS、Linux、Android和iOS。它具有强大的笔记管理功能，包括笔记的创建、编辑、笔记本的管理、标签的管理、笔记搜索等。&lt;/p>
+&lt;p>Joplin支持多平台同步，用户可以将笔记同步到所有设备上，包括桌面电脑、手机和平板电脑。官方提供免费Joplin Cloud进行笔记同步，也支持很多自建平台的笔记同步，如&lt;/p>
+&lt;ul>
+&lt;li>Dropbox&lt;/li>
+&lt;li>OneDrive&lt;/li>
+&lt;li>Nextcloud/ownCloud&lt;/li>
+&lt;li>WebDAV&lt;/li>
+&lt;li>SFTP&lt;/li>
+&lt;li>Joplin Server&lt;/li>
+&lt;/ul>
+&lt;p>本文介绍自建Joplin Server。&lt;/p>
+&lt;p>Joplin默认使用SQLite，但是不支持多用户并发访问，所以我们使用postgres，我们用docker-compose组合创建和管理容器，在～下创建docker-compose.yml:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-docker" data-lang="docker">&lt;span class="line">&lt;span class="cl">version: &lt;span class="s1">&amp;#39;3.1&amp;#39;&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>services:&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> db:&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> image: &lt;span class="s2">&amp;#34;postgres:13&amp;#34;&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> restart: always&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> environment:&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> POSTGRES_USER: joplin&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> POSTGRES_PASSWORD: joplinpwd&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> POSTGRES_DB: joplin&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> joplin:&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> image: &lt;span class="s2">&amp;#34;joplin/server:latest&amp;#34;&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> env_file:&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> - .env&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> ports:&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> - &lt;span class="s2">&amp;#34;22300:22300&amp;#34;&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>复制&lt;a class="link" href="https://raw.githubusercontent.com/laurent22/joplin/dev/.env-sample" target="_blank" rel="noopener"
+>.env-sample&lt;/a>到～下的&lt;code>.env&lt;/code>，这是joplin的配置文件。&lt;/p>
+&lt;p>修改&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">APP_BASE_URL=https://example.com/joplin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">APP_PORT=22300
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>APP_BASE_URL可以不用https，/joplin是用来跳转的，在nginx中设置访问/joplin时进行反向代理到本地的22300端口。一般直接改域名即可（如果用http，这里一定要改为http）。&lt;/p>
+&lt;p>修改数据库配置数据，和上面对应好：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">DB_CLIENT=pg
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">POSTGRES_PASSWORD=joplinpwd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">POSTGRES_DATABASE=joplin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">POSTGRES_USER=joplin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">POSTGRES_PORT=5432
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">POSTGRES_HOST=db
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="配置nginx修改etcnginxnginxconf">配置nginx，修改/etc/nginx/nginx.conf&lt;/h2>
+&lt;p>使用http，而不是https的话nginx配置文件这么写：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="line">&lt;span class="cl">&lt;span class="k">server&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">server_name&lt;/span> &lt;span class="s">www.chajiuqqq.cn&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">listen&lt;/span> &lt;span class="mi">80&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">location&lt;/span> &lt;span class="s">/joplin/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_pass&lt;/span> &lt;span class="s">http://127.0.0.1:22300/&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">Host&lt;/span> &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Forwarded-For&lt;/span> &lt;span class="nv">$proxy_add_x_forwarded_for&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Forwarded-Proto&lt;/span> &lt;span class="nv">$scheme&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Forwarded-Port&lt;/span> &lt;span class="nv">$server_port&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Forwarded-Host&lt;/span> &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">client_max_body_size&lt;/span> &lt;span class="s">400M&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果要用ssl，准备.pem和.key文件放到一个目录下， 这里以/root为例：&lt;/p>
+&lt;p>在Nginx中修改nginx.conf：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-nginx" data-lang="nginx">&lt;span class="line">&lt;span class="cl">&lt;span class="k">server&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">server_name&lt;/span> &lt;span class="s">www.chajiuqqq.cn&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">listen&lt;/span> &lt;span class="mi">443&lt;/span> &lt;span class="s">ssl&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">ssl_certificate&lt;/span> &lt;span class="s">/root/xxx.cn.pem&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">ssl_certificate_key&lt;/span> &lt;span class="s">/root/xxx.key&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">location&lt;/span> &lt;span class="s">/joplin/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_pass&lt;/span> &lt;span class="s">http://127.0.0.1:22300/&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">Host&lt;/span> &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Forwarded-For&lt;/span> &lt;span class="nv">$proxy_add_x_forwarded_for&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Forwarded-Proto&lt;/span> &lt;span class="nv">$scheme&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Forwarded-Port&lt;/span> &lt;span class="nv">$server_port&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">proxy_set_header&lt;/span> &lt;span class="s">X-Forwarded-Host&lt;/span> &lt;span class="nv">$host&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">client_max_body_size&lt;/span> &lt;span class="s">400M&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>注意两个地方结尾有/：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>location /joplin/&lt;/code>&lt;/li>
+&lt;li>&lt;code>proxy_pass http://127.0.0.1:22300/;&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h2 id="运行容器">运行容器&lt;/h2>
+&lt;p>在docker-compose.yml目录下运行&lt;code>docker compose up&lt;/code>，访问
+&lt;code>https://example.com/joplin/login&lt;/code>，默认用户名admin@localhost，密码admin。&lt;/p>
+&lt;p>建议创建普通用户，在app上登陆使用同步功能。app或pc设置里选择同步，然后选最底下的joplin server，地址就是&lt;code>https://example.com/joplin&lt;/code>&lt;/p></description></item><item><title>Gokit项目结构和Consul结合实现服务注册和发现</title><link>https://chajiuqqq.github.io/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/</link><pubDate>Wed, 01 Mar 2023 13:50:07 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/gokit%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84%E5%92%8Cconsul%E7%BB%93%E5%90%88%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E6%B3%A8%E5%86%8C%E5%92%8C%E5%8F%91%E7%8E%B0/</guid><description>&lt;h1 id="go-kit的三层结构">go-kit的三层结构&lt;/h1>
 &lt;p>go-kit项目采用分层架构方式。&lt;/p>
 &lt;ul>
 &lt;li>transport层：处理http、grpc等逻辑。比如在http中就是返回一个http.Handler，里面包含了URL和对应处理器的关系&lt;/li>
