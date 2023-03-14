@@ -2,6 +2,7 @@
 title: "docker搭建Joplin流程"
 date: 2023-03-14T20:37:50+08:00
 draft: false
+image: cover.jpeg
 categories:
     - 技术
 ---
