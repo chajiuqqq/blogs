@@ -73,9 +73,9 @@ params:
     provider: disqus
 
     disqusjs:
-      shortname:
-      apiUrl: https://chrisblog-2.disqus.com
-      apiKey:
+      shortname: chrisblog-2
+      apiUrl: 
+      apiKey: VfpiXGUoY9d1XSquzmIr4NtgdbENIZ9baVWgh2sgfUZRZTCw9cYPpK3uYWJLKaC7
       admin:
       adminLabel:
 
