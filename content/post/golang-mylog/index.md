@@ -4,9 +4,9 @@ date: 2023-02-07T11:03:38+08:00
 draft: false
 categories:
     - golang
+    - demo
 tags:
     - go-in-action
-    - demo 
 ---
 
 标准库的log包无法实现日志分级处理，这个demo可以实现日志的多级处理。原理是定义多个log对象，并指定不同的输出，实现不同等级日志不同输出。

@@ -4,9 +4,9 @@ date: 2023-02-07T12:01:09+08:00
 draft: false
 categories:
     - golang
+    - demo
 tags:
     - go-in-action
-    - demo 
 ---
 > go-in-action里的一个demo，给定需要匹配的字符串，在搜索源（如rss）中批量查询最新文章，返回结果（如相匹配的title和description）
 > 

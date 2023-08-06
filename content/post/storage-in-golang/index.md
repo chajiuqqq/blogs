@@ -16,7 +16,14 @@ Golang中的数据存储有三种方案：
 
 本文简述后面两种。
 
-# 文件存储
+- [文件存储](#文件存储)
+  - [csv读写](#csv读写)
+  - [gob读写](#gob读写)
+- [利用database/sql连接数据库并执行CRUD](#利用databasesql连接数据库并执行crud)
+- [go orm 关系映射器](#go-orm-关系映射器)
+
+
+## 文件存储
 
 下面展示了golang中读写文件的常用方式。
 
@@ -64,7 +71,7 @@ code:
     Read 12 bytes from file
     hello world!
 
-## csv读写
+### csv读写
 
 利用"encoding/csv"可实现csv读写，下面是小例子。将File传给csv.NewWriter()或csv.NewReader()
 
@@ -139,7 +146,7 @@ code:
     4,hello world 4,Jack4
     5,hello world 5,Jack5
 
-## gob读写
+### gob读写
 
 利用"encoding/gob"包，gob.NewEncoder()接受一个io.Writer; gob.NewDecoder()接受一个io.Reader.
 
@@ -201,7 +208,7 @@ code:
     }
 
 
-# 利用database/sql连接数据库并执行CRUD
+## 利用database/sql连接数据库并执行CRUD
 
 首先需要注入对应的数据库驱动，如postgres常用github.com/lib/pq驱动。在main包中注入：
 
@@ -238,7 +245,7 @@ CRUD总结：
 
         res,err := db.Exec("...", , )
 
-# go orm 关系映射器
+## go orm 关系映射器
 
 ORM 思想是将数据结构和表结构相对应。Gorm是go里最棒的ORM。
 
