@@ -1445,7 +1445,7 @@ wrote 12 bytes to file
 Read 12 bytes from file
 hello world!
 &lt;/code>&lt;/pre>
-&lt;h2 id="csv读写">csv读写&lt;/h2>
+&lt;h3 id="csv读写">csv读写&lt;/h3>
 &lt;p>利用&amp;quot;encoding/csv&amp;quot;可实现csv读写，下面是小例子。将File传给csv.NewWriter()或csv.NewReader()&lt;/p>
 &lt;pre>&lt;code>package main
 import (
@@ -1509,7 +1509,7 @@ fmt.Println(posts[0].Author)
 4,hello world 4,Jack4
 5,hello world 5,Jack5
 &lt;/code>&lt;/pre>
-&lt;h2 id="gob读写">gob读写&lt;/h2>
+&lt;h3 id="gob读写">gob读写&lt;/h3>
 &lt;p>利用&amp;quot;encoding/gob&amp;quot;包，gob.NewEncoder()接受一个io.Writer; gob.NewDecoder()接受一个io.Reader.&lt;/p>
 &lt;p>也就是说，可以提供一个buffer，供编码时存储结果；供解码时存储输入。&lt;/p>
 &lt;p>最后传入&lt;code>&amp;amp;postRecord&lt;/code>才能修改原变量内容。&lt;/p>
@@ -1557,7 +1557,7 @@ load(&amp;amp;postRecord, &amp;quot;post1&amp;quot;)
 fmt.Println(postRecord)
 }
 &lt;/code>&lt;/pre>
-&lt;h1 id="利用databasesql连接数据库并执行crud">利用database/sql连接数据库并执行CRUD&lt;/h1>
+&lt;h2 id="利用databasesql连接数据库并执行crud">利用database/sql连接数据库并执行CRUD&lt;/h2>
 &lt;p>首先需要注入对应的数据库驱动，如postgres常用github.com/lib/pq驱动。在main包中注入：&lt;/p>
 &lt;pre>&lt;code>import(
 _ &amp;quot;github.com/lib/pq&amp;quot;
@@ -1597,7 +1597,7 @@ rows.Scan()
 &lt;/code>&lt;/pre>
 &lt;/li>
 &lt;/ol>
-&lt;h1 id="go-orm-关系映射器">go orm 关系映射器&lt;/h1>
+&lt;h2 id="go-orm-关系映射器">go orm 关系映射器&lt;/h2>
 &lt;p>ORM 思想是将数据结构和表结构相对应。Gorm是go里最棒的ORM。下面介绍Gorm的大概用法，具体可见文档 &lt;a class="link" href="https://gorm.io/zh_CN/docs/index.html" target="_blank" rel="noopener"
 >https://gorm.io/zh_CN/docs/index.html&lt;/a>&lt;/p>
 &lt;h2 id="安装">安装&lt;/h2>
