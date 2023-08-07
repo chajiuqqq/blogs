@@ -197,8 +197,15 @@ menu:
     - identifier: github
       name: GitHub
       url: https://github.com/chajiuqqq
+      weight: 10
       params:
         icon: brand-github
+    - identifier: cv
+      name: cv
+      url: https://cvrest.com/cv/chris_cai123
+      weight: 100
+      params:
+        icon: cv
 
 related:
   includeNewer: true
