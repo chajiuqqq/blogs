@@ -1,5 +1,5 @@
 ---
-title: "给添加Disqus评论功能"
+title: "给blog添加Disqus评论功能"
 date: 2023-08-07T12:55:52+08:00
 image: ocean-3605547_1280.jpg
 ---
