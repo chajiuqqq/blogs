@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Aug 2023 12:55:52 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>给添加Disqus评论功能</title><link>https://chajiuqqq.github.io/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/</link><pubDate>Mon, 07 Aug 2023 12:55:52 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/</guid><description>&lt;img src="https://chajiuqqq.github.io/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/ocean-3605547_1280.jpg" alt="Featured image of post 给添加Disqus评论功能" />&lt;p>&lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener"
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Aug 2023 12:55:52 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>给blog添加Disqus评论功能</title><link>https://chajiuqqq.github.io/blogs/p/%E7%BB%99blog%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/</link><pubDate>Mon, 07 Aug 2023 12:55:52 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E7%BB%99blog%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/</guid><description>&lt;img src="https://chajiuqqq.github.io/blogs/p/%E7%BB%99blog%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/ocean-3605547_1280.jpg" alt="Featured image of post 给blog添加Disqus评论功能" />&lt;p>&lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener"
 >stack&lt;/a>是本blog使用的hugo主题，今天研究了一下如何配置disqus功能。&lt;/p>
 &lt;p>stack本身支持多种comments系统，只要在config配置下即可。&lt;/p>
 &lt;blockquote>
@@ -19,10 +19,10 @@
 >Advanced&lt;/a>这里还要加个doamin。&lt;/p>
 &lt;/li>
 &lt;/ol>
-&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/trusted-domain.png"
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E7%BB%99blog%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/trusted-domain.png"
 width="847"
 height="292"
-srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/trusted-domain_hueafd80cd7179c1aae781194c15176d65_37109_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/trusted-domain_hueafd80cd7179c1aae781194c15176d65_37109_1024x0_resize_box_3.png 1024w"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E7%BB%99blog%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/trusted-domain_hueafd80cd7179c1aae781194c15176d65_37109_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E7%BB%99blog%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/trusted-domain_hueafd80cd7179c1aae781194c15176d65_37109_1024x0_resize_box_3.png 1024w"
 loading="lazy"
 alt="Alt text"
 class="gallery-image"
