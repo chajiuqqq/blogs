@@ -20,7 +20,7 @@ languages:
     weight: 3
 
 # Change it to your Disqus shortname before using
-disqusShortname: hugo-theme-stack
+disqusShortname: chrisblog-2
 
 # GA Tracking ID
 googleAnalytics: G-BCR6BTPPNW
