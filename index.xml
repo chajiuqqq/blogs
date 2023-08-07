@@ -1,4 +1,62 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 06 Aug 2023 21:36:12 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>Comment Policy</title><link>https://chajiuqqq.github.io/blogs/p/comment-policy/</link><pubDate>Sun, 06 Aug 2023 21:36:12 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/comment-policy/</guid><description>&lt;p>欢迎友善的讨论，恶意的、人身攻击的言论会被删除。&lt;/p></description></item><item><title>docker搭建Joplin流程</title><link>https://chajiuqqq.github.io/blogs/p/docker%E6%90%AD%E5%BB%BAjoplin%E6%B5%81%E7%A8%8B/</link><pubDate>Tue, 14 Mar 2023 20:37:50 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/docker%E6%90%AD%E5%BB%BAjoplin%E6%B5%81%E7%A8%8B/</guid><description>&lt;img src="https://chajiuqqq.github.io/blogs/p/docker%E6%90%AD%E5%BB%BAjoplin%E6%B5%81%E7%A8%8B/cover.jpeg" alt="Featured image of post docker搭建Joplin流程" />&lt;p>Joplin是一个跨平台的开源笔记应用程序，支持Windows、macOS、Linux、Android和iOS。它具有强大的笔记管理功能，包括笔记的创建、编辑、笔记本的管理、标签的管理、笔记搜索等。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>茶酒的小站</title><link>https://chajiuqqq.github.io/blogs/</link><description>Recent content on 茶酒的小站</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 07 Aug 2023 12:55:52 +0800</lastBuildDate><atom:link href="https://chajiuqqq.github.io/blogs/index.xml" rel="self" type="application/rss+xml"/><item><title>给添加Disqus评论功能</title><link>https://chajiuqqq.github.io/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/</link><pubDate>Mon, 07 Aug 2023 12:55:52 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/</guid><description>&lt;img src="https://chajiuqqq.github.io/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/ocean-3605547_1280.jpg" alt="Featured image of post 给添加Disqus评论功能" />&lt;p>&lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener"
+>stack&lt;/a>是本blog使用的hugo主题，今天研究了一下如何配置disqus功能。&lt;/p>
+&lt;p>stack本身支持多种comments系统，只要在config配置下即可。&lt;/p>
+&lt;blockquote>
+&lt;p>可以从&lt;a class="link" href="https://stack.jimmycai.com/config/comments" target="_blank" rel="noopener"
+>文档&lt;/a>开始,然后看DisqusJS的&lt;a class="link" href="https://github.com/SukkaW/DisqusJS" target="_blank" rel="noopener"
+>介绍&lt;/a>。&lt;/p>
+&lt;/blockquote>
+&lt;ol>
+&lt;li>
+&lt;p>先在Disqus注册APP，然后在 &lt;a class="link" href="https://disqus.com/api/applications/" target="_blank" rel="noopener"
+>Disqus API Application&lt;/a>处注册一个 Application。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>获取API Key ，添加domain。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在&lt;a class="link" href="https://chrisblog-2.disqus.com/admin/settings/advanced/" target="_blank" rel="noopener"
+>Advanced&lt;/a>这里还要加个doamin。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://chajiuqqq.github.io/blogs/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/trusted-domain.png"
+width="847"
+height="292"
+srcset="https://chajiuqqq.github.io/blogs/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/trusted-domain_hueafd80cd7179c1aae781194c15176d65_37109_480x0_resize_box_3.png 480w, https://chajiuqqq.github.io/blogs/blogs/p/%E7%BB%99%E6%B7%BB%E5%8A%A0disqus%E8%AF%84%E8%AE%BA%E5%8A%9F%E8%83%BD/trusted-domain_hueafd80cd7179c1aae781194c15176d65_37109_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="Alt text"
+class="gallery-image"
+data-flex-grow="290"
+data-flex-basis="696px"
+>&lt;/p>
+&lt;ol start="4">
+&lt;li>然后主要修改config以下几个地方：&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>根目录下的disqusShortname，从&lt;a class="link" href="https://disqus.com/admin/settings/general/" target="_blank" rel="noopener"
+>这里获取&lt;/a>，这边文档给了WARNING，说是必须从这里修改，不然无法起作用，确实是这样。&lt;/li>
+&lt;li>comment下的disqusjs:
+apiUrl抄我这个就可以。apiKey和shortname用你自己的，不确定shortname这边还有没有必要填。&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> disqusjs:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> shortname: chrisblog-2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> apiUrl: https://disqus.com/api/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> apiKey: xxxxxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> admin:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> adminLabel:
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>最后结果可以看下面的评论区效果，可以登录disqus账号来发评论，admin可以在disqus中管理评论，估计也可以配置发送邮件。&lt;/p></description></item><item><title>Comment Policy</title><link>https://chajiuqqq.github.io/blogs/p/comment-policy/</link><pubDate>Sun, 06 Aug 2023 21:36:12 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/comment-policy/</guid><description>&lt;p>欢迎友善的讨论，恶意的、人身攻击的言论会被删除。&lt;/p></description></item><item><title>docker搭建Joplin流程</title><link>https://chajiuqqq.github.io/blogs/p/docker%E6%90%AD%E5%BB%BAjoplin%E6%B5%81%E7%A8%8B/</link><pubDate>Tue, 14 Mar 2023 20:37:50 +0800</pubDate><guid>https://chajiuqqq.github.io/blogs/p/docker%E6%90%AD%E5%BB%BAjoplin%E6%B5%81%E7%A8%8B/</guid><description>&lt;img src="https://chajiuqqq.github.io/blogs/p/docker%E6%90%AD%E5%BB%BAjoplin%E6%B5%81%E7%A8%8B/cover.jpeg" alt="Featured image of post docker搭建Joplin流程" />&lt;p>Joplin是一个跨平台的开源笔记应用程序，支持Windows、macOS、Linux、Android和iOS。它具有强大的笔记管理功能，包括笔记的创建、编辑、笔记本的管理、标签的管理、笔记搜索等。&lt;/p>
 &lt;p>Joplin支持多平台同步，用户可以将笔记同步到所有设备上，包括桌面电脑、手机和平板电脑。官方提供免费Joplin Cloud进行笔记同步，也支持很多自建平台的笔记同步，如&lt;/p>
 &lt;ul>
 &lt;li>Dropbox&lt;/li>
