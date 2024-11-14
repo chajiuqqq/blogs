@@ -26,7 +26,7 @@ jobs:
             git config --local user.email "chajiuqqq@gmail.com"
             git config --local user.name "chajiuqqq"
             git add .
-            git commit -m "Add Posts"
+            git commit -m "Add Posts" || echo "nothing to commit"
         - name: Push changes
           uses: ad-m/github-push-action@master
           with:
