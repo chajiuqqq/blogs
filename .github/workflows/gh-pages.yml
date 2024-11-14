@@ -20,7 +20,7 @@ jobs:
             owner: 'chajiuqqq'
             skip-author: 'bot'
             use-issue-seperator: 'true'
-            output: 'content/posts'
+            output: 'content/post'
         - name: Commit files
           run: |
             git config --local user.email "chajiuqqq@gmail.com"
